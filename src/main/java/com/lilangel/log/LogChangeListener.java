@@ -1,4 +1,4 @@
-package log;
+package com.lilangel.log;
 
 public interface LogChangeListener
 {

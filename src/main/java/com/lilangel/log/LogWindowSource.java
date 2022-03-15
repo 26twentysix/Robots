@@ -1,4 +1,4 @@
-package log;
+package com.lilangel.log;
 
 import java.util.ArrayList;
 import java.util.Collections;

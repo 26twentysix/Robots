@@ -1,4 +1,4 @@
-package gui;
+package com.lilangel.gui;
 
 import java.awt.Frame;
 
