@@ -18,19 +18,15 @@ import java.util.TimerTask;
 
 import javax.swing.JPanel;
 
+/**
+ * Class that visualize the Model through MVP pattern (for now it doesn't)
+ */
 public class GameVisualizer extends JPanel
 {
-    private final Timer m_timer = initTimer();
-    private Drawer drawer;
-    private Presenter presenter;
+    private final Drawer drawer;
+    private final ViewListener presenter;
     
-    private static Timer initTimer() 
-    {
-        Timer timer = new Timer("events generator", true);
-        return timer;
-    }
-    
-    public GameVisualizer(Presenter presenter)
+    public GameVisualizer(ViewListener presenter)
     {
         this.presenter = presenter;
         this.drawer = new Drawer();
@@ -44,15 +40,11 @@ public class GameVisualizer extends JPanel
         });
         setDoubleBuffered(true);
     }
-    
+
+    //Я думаю это должно быть в презентере, но сейчас у меня голова сломалась, я два часа думал как эту хуйню разобрать
     protected void onRedrawEvent()
     {
         EventQueue.invokeLater(this::repaint);
-    }
-    
-    private static int round(double value)
-    {
-        return (int)(value + 0.5);
     }
     
     @Override
@@ -60,5 +52,6 @@ public class GameVisualizer extends JPanel
     {
         super.paint(g);
         Graphics2D g2d = (Graphics2D)g;
+        drawer.draw(g2d);
     }
 }

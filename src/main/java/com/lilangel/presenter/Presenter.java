@@ -1,16 +1,18 @@
 package com.lilangel.presenter;
 
-import com.lilangel.gui.GameVisualizer;
 import com.lilangel.gui.View;
 import com.lilangel.model.Model;
-import com.lilangel.model.ModelState;
+
 import jdk.jshell.spi.ExecutionControl;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * MVP Presenter component, responsible for updating View and giving tasks for Model
+ */
 public class Presenter implements ModelListener, ViewListener {
     Model model;
 
@@ -24,31 +26,30 @@ public class Presenter implements ModelListener, ViewListener {
         this.view = view;
     }
 
+    /**
+     * Timer for redrawing
+     */
     private final Timer timer = initTimer();
 
-    private static Timer initTimer()
-    {
+    private static Timer initTimer() {
         return new Timer("events generator", true);
     }
 
-    public Presenter(){
-        timer.schedule(new TimerTask()
-        {
+    public Presenter() {
+        timer.schedule(new TimerTask() {
             @Override
-            public void run()
-            {
+            public void run() {
                 onRedrawEvent();
             }
         }, 0, 50);
     }
 
-    protected void onRedrawEvent()
-    {
+    protected void onRedrawEvent() {
 
     }
 
     @Override
-    public void onModelUpdateEvent(ActionEvent e){
+    public void onModelUpdateEvent(ActionEvent e) {
         try {
             throw new ExecutionControl.NotImplementedException("не реализованы действия на обновление модели");
         } catch (ExecutionControl.NotImplementedException ex) {

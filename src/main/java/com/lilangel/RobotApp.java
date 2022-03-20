@@ -1,13 +1,12 @@
 package com.lilangel;
 
-import com.lilangel.gui.MainApplicationFrame;
 import com.lilangel.gui.View;
 import com.lilangel.model.Model;
 import com.lilangel.presenter.Presenter;
 
-import javax.swing.*;
-import java.awt.*;
-
+/**
+ * Main app class, that initialize Model, View and Presenter and starts the things
+ */
 public class RobotApp {
     Model model;
     View view;
