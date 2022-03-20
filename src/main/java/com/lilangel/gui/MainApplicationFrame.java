@@ -1,5 +1,7 @@
 package com.lilangel.gui;
 
+import com.lilangel.log.Logger;
+
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
@@ -13,9 +15,6 @@ import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
-import com.lilangel.log.Logger;
-
 /**
  * Что требуется сделать:
  * 1. Метод создания меню перегружен функционалом и трудно читается. 
@@ -26,7 +25,7 @@ public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
     
-    public MainApplicationFrame() {
+    public MainApplicationFrame(LogWindow logWindow, GameWindow gameWindow) {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
         int inset = 50;        
@@ -36,29 +35,14 @@ public class MainApplicationFrame extends JFrame
             screenSize.height - inset*2);
 
         setContentPane(desktopPane);
-        
-        
-        LogWindow logWindow = createLogWindow();
-        addWindow(logWindow);
 
-        GameWindow gameWindow = new GameWindow();
-        gameWindow.setSize(400,  400);
+        addWindow(logWindow);
         addWindow(gameWindow);
 
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
-    
-    protected LogWindow createLogWindow()
-    {
-        LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
-        logWindow.setLocation(10,10);
-        logWindow.setSize(300, 800);
-        setMinimumSize(logWindow.getSize());
-        logWindow.pack();
-        Logger.debug("Протокол работает");
-        return logWindow;
-    }
+
     
     protected void addWindow(JInternalFrame frame)
     {
