@@ -1,20 +1,40 @@
 package com.lilangel.gui;
 
+import com.lilangel.presenter.ViewListener;
+
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
+import javax.swing.text.View;
 
-public class GameWindow extends JInternalFrame
+//TODO вот это должно быть View
+public class GameWindow extends JInternalFrame implements ModelView
 {
-    private final GameVisualizer m_visualizer;
-    public GameWindow(GameVisualizer gameVisualizer)
+    private final GameVisualizer visualizer;
+    private final ViewListener presenter;
+
+    public GameWindow(ViewListener presenter)
     {
         super("Игровое поле", true, true, true, true);
-        m_visualizer = gameVisualizer;
+        this.presenter = presenter;
+        this.visualizer = new GameVisualizer(this);
         JPanel panel = new JPanel(new BorderLayout());
-        panel.add(m_visualizer, BorderLayout.CENTER);
+        panel.add(visualizer, BorderLayout.CENTER);
         getContentPane().add(panel);
         pack();
+    }
+
+    @Override
+    public void notifyPresenter(ActionEvent e) {
+        switch (e.getActionCommand()){
+            case "mouseEvent" : presenter.onButtonClickedEvent(e);
+        }
+    }
+
+    @Override
+    public void update() {
+        visualizer.onRedrawEvent();
     }
 }

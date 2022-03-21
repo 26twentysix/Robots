@@ -3,7 +3,14 @@ package com.lilangel.gui;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
+/**
+ * Class that draws things
+ */
 public class Drawer {
+
+    public void draw(Graphics2D g){
+
+    }
 
     private static int round(double value)
     {
@@ -20,6 +27,9 @@ public class Drawer {
         g.drawOval(centerX - diam1 / 2, centerY - diam2 / 2, diam1, diam2);
     }
 
+    /**
+     * currently does not work, //TODO исправить
+     */
     private void drawRobot(Graphics2D g, int x, int y, double direction)
     {
         int robotCenterX = round(x);
