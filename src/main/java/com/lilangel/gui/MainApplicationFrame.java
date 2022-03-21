@@ -1,9 +1,9 @@
 package com.lilangel.gui;
 
 import com.lilangel.log.Logger;
+import com.lilangel.presenter.ViewListener;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.*;
 import java.awt.event.KeyEvent;
 
 import javax.swing.JDesktopPane;
@@ -24,8 +24,13 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class MainApplicationFrame extends JFrame
 {
     private final JDesktopPane desktopPane = new JDesktopPane();
-    
-    public MainApplicationFrame(LogWindow logWindow, GameWindow gameWindow) {
+
+    private final GameWindow view;
+
+    public ModelView getView(){
+        return this.view;
+    }
+    public MainApplicationFrame(ViewListener presenter) {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
         int inset = 50;        
@@ -36,11 +41,28 @@ public class MainApplicationFrame extends JFrame
 
         setContentPane(desktopPane);
 
-        addWindow(logWindow);
-        addWindow(gameWindow);
+        this.view = createGameWindow(presenter);
+        addWindow(view);
+        addWindow(createLogWindow());
 
         setJMenuBar(generateMenuBar());
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+    }
+
+    protected GameWindow createGameWindow(ViewListener presenter) {
+        GameWindow gameWindow = new GameWindow(presenter);
+        gameWindow.setLocation(310, 10);
+        gameWindow.setSize(400, 400);
+        return gameWindow;
+    }
+
+    protected LogWindow createLogWindow() {
+        LogWindow logWindow = new LogWindow(Logger.getDefaultLogSource());
+        logWindow.setLocation(10, 10);
+        logWindow.setSize(300, 800);
+        logWindow.pack();
+        Logger.debug("Протокол работает");
+        return logWindow;
     }
 
     
@@ -113,9 +135,7 @@ public class MainApplicationFrame extends JFrame
         
         {
             JMenuItem addLogMessageItem = new JMenuItem("Сообщение в лог", KeyEvent.VK_S);
-            addLogMessageItem.addActionListener((event) -> {
-                Logger.debug("Новая строка");
-            });
+            addLogMessageItem.addActionListener((event) -> Logger.debug("Новая строка"));
             testMenu.add(addLogMessageItem);
         }
 

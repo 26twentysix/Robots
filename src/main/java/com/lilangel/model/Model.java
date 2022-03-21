@@ -13,12 +13,15 @@ public class Model {
     private final ArrayList<Robot> robots;
     private final int robotsCount = 20; //пока 20, потом посмотрим, может можно больше
 
-    public Model(ModelListener presenter) {
-        this.presenter = presenter;
+    public Model() {
         this.battleGround = new double[150][150];
         this.robots = new ArrayList<>(robotsCount);
         for(int i =0; i<robotsCount;i++)
             robots.add(new Robot());
+    }
+
+    public void setPresenter(ModelListener presenter){
+        this.presenter = presenter;
     }
 
     public void startFight() {

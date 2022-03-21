@@ -1,26 +1,47 @@
 package com.lilangel;
 
-import com.lilangel.gui.View;
+import com.lilangel.gui.MainApplicationFrame;
 import com.lilangel.model.Model;
 import com.lilangel.presenter.Presenter;
+
+import javax.swing.*;
+import java.awt.*;
 
 /**
  * Main app class, that initialize Model, View and Presenter and starts the things
  */
 public class RobotApp {
     Model model;
-    View view;
+    MainApplicationFrame frame;
     Presenter presenter;
 
     public RobotApp(){
         this.presenter = new Presenter();
-        this.model = new Model(presenter);
-        this.view = new View(presenter);
+        this.model = new Model();
+        this.model.setPresenter(presenter);
+        this.frame = new MainApplicationFrame(presenter);
         presenter.setModel(model);
-        presenter.setView(view);
+        presenter.setView(this.frame.getView());
     }
 
     public void startApp(){
-        this.view.start();
+        startFrame();
+    }
+
+    public void startFrame() {
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            //UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        SwingUtilities.invokeLater(() -> {
+            MainApplicationFrame frame = this.frame;
+            frame.pack();
+            frame.setVisible(true);
+            frame.setExtendedState(Frame.MAXIMIZED_BOTH);
+        });
     }
 }
