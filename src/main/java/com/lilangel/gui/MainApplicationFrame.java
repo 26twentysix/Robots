@@ -31,6 +31,7 @@ public class MainApplicationFrame extends JFrame
     public ModelView getView() {
         return this.view;
     }
+
     public MainApplicationFrame(ViewListener presenter) {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
@@ -66,7 +67,6 @@ public class MainApplicationFrame extends JFrame
         return logWindow;
     }
 
-    
     protected void addWindow(JInternalFrame frame) {
         desktopPane.add(frame);
         frame.setVisible(true);
@@ -103,22 +103,18 @@ public class MainApplicationFrame extends JFrame
     
     private JMenuBar generateMenuBar() {
         JMenuBar menuBar = new JMenuBar();
-
         JMenu lookAndFeelMenu = createMenu("Режим отображения", KeyEvent.VK_V,
                 "Управление режимом отображения приложения");
         JMenuItem systemLookAndFeel = createMenuItem("Системная схема", KeyEvent.VK_S,
                 "System");
-        lookAndFeelMenu.add(systemLookAndFeel);
-
         JMenuItem crossPlatformLookAndFeel = createMenuItem("Универсальная схема", KeyEvent.VK_S,
                 "CrossPlatform");
-        lookAndFeelMenu.add(crossPlatformLookAndFeel);
-
         JMenu testMenu = createMenu("Тесты", KeyEvent.VK_T, "Тестовые команды");
         JMenuItem addLogMessageItem = createMenuItem("Сообщение в лог", KeyEvent.VK_S,
                 "LoggerDebug");
+        lookAndFeelMenu.add(crossPlatformLookAndFeel);
+        lookAndFeelMenu.add(systemLookAndFeel);
         testMenu.add(addLogMessageItem);
-
         menuBar.add(lookAndFeelMenu);
         menuBar.add(testMenu);
         return menuBar;
