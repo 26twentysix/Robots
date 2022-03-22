@@ -9,7 +9,6 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.text.View;
 
-//TODO вот это должно быть View
 public class GameWindow extends JInternalFrame implements ModelView
 {
     private final GameVisualizer visualizer;

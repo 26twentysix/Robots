@@ -61,6 +61,7 @@ public class Presenter implements ModelListener, ViewListener {
 
     @Override
     public void onButtonClickedEvent(ActionEvent e) {
+        //TODO сделать собственные эксепшены, наследуемые от RuntimeExcepetion
         try {
             throw new ExecutionControl.NotImplementedException("не реализованы дейсвтия на кнопки " + e.getActionCommand());
         } catch (ExecutionControl.NotImplementedException ex) {

@@ -16,6 +16,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
     private LogWindowSource m_logSource;
     private TextArea m_logContent;
 
+    //TODO добавить лог на действия пользователя, + рефкатор
     public LogWindow(LogWindowSource logSource) 
     {
         super("Протокол работы", true, true, true, true);
