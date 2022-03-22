@@ -2,14 +2,16 @@ package com.lilangel.gui;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.util.Random;
 
-/**
- * Class that draws things
- */
 public class Drawer {
 
     public void draw(Graphics2D g){
-
+        Random rnd = new Random();
+        int x = rnd.nextInt(1,150);
+        int y = rnd.nextInt(1,150);
+        drawOval(g, x,y,20,40);
+        fillOval(g,x,y,20,40);
     }
 
     private static int round(double value)
