@@ -20,7 +20,7 @@ public class Model {
             robots.add(new Robot());
     }
 
-    public void setPresenter(ModelListener presenter){
+    public void setPresenter(ModelListener presenter) {
         this.presenter = presenter;
     }
 
@@ -28,7 +28,7 @@ public class Model {
 
     }
 
-    public ModelState getState(){
+    public ModelState getState() {
         return new ModelState(robots);
     }
 

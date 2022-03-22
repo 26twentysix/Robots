@@ -15,7 +15,7 @@ public class RobotApp {
     MainApplicationFrame frame;
     Presenter presenter;
 
-    public RobotApp(){
+    public RobotApp() {
         this.presenter = new Presenter();
         this.model = new Model();
         this.model.setPresenter(presenter);
@@ -24,7 +24,7 @@ public class RobotApp {
         presenter.setView(this.frame.getView());
     }
 
-    public void startApp(){
+    public void startApp() {
         startFrame();
     }
 

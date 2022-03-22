@@ -28,7 +28,7 @@ public class MainApplicationFrame extends JFrame
 
     private final GameWindow view;
 
-    public ModelView getView(){
+    public ModelView getView() {
         return this.view;
     }
     public MainApplicationFrame(ViewListener presenter) {
@@ -67,8 +67,7 @@ public class MainApplicationFrame extends JFrame
     }
 
     
-    protected void addWindow(JInternalFrame frame)
-    {
+    protected void addWindow(JInternalFrame frame) {
         desktopPane.add(frame);
         frame.setVisible(true);
     }
@@ -102,8 +101,7 @@ public class MainApplicationFrame extends JFrame
 //        return menuBar;
 //    }
     
-    private JMenuBar generateMenuBar()
-    {
+    private JMenuBar generateMenuBar() {
         JMenuBar menuBar = new JMenuBar();
 
         JMenu lookAndFeelMenu = createMenu("Режим отображения", KeyEvent.VK_V,
@@ -151,16 +149,12 @@ public class MainApplicationFrame extends JFrame
         return newMenuItem;
     }
 
-    private void setLookAndFeel(String className)
-    {
-        try
-        {
+    private void setLookAndFeel(String className) {
+        try {
             UIManager.setLookAndFeel(className);
             SwingUtilities.updateComponentTreeUI(this);
-        }
-        catch (ClassNotFoundException | InstantiationException
-            | IllegalAccessException | UnsupportedLookAndFeelException e)
-        {
+        } catch (ClassNotFoundException | InstantiationException
+            | IllegalAccessException | UnsupportedLookAndFeelException e) {
             // just ignore
         }
     }

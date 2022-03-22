@@ -14,8 +14,7 @@ public class GameWindow extends JInternalFrame implements ModelView
     private final GameVisualizer visualizer;
     private final ViewListener presenter;
 
-    public GameWindow(ViewListener presenter)
-    {
+    public GameWindow(ViewListener presenter) {
         super("Игровое поле", true, true, true, true);
         this.presenter = presenter;
         this.visualizer = new GameVisualizer(this);

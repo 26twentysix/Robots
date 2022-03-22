@@ -13,28 +13,23 @@ public class GameVisualizer extends JPanel
 {
     private final Drawer drawer;
 
-    public GameVisualizer(GameWindow gameWindow)
-    {
+    public GameVisualizer(GameWindow gameWindow) {
         this.drawer = new Drawer();
-        addMouseListener(new MouseAdapter()
-        {
+        addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e)
-            {
+            public void mouseClicked(MouseEvent e) {
                 gameWindow.notifyPresenter(new ActionEvent(e, 1,"mouseEvent"));
             }
         });
         setDoubleBuffered(true);
     }
 
-    protected void onRedrawEvent()
-    {
+    protected void onRedrawEvent() {
         EventQueue.invokeLater(this::repaint);
     }
     
     @Override
-    public void paint(Graphics g)
-    {
+    public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D)g;
         drawer.draw(g2d);
