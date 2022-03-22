@@ -13,8 +13,8 @@ import com.lilangel.log.LogWindowSource;
 
 public class LogWindow extends JInternalFrame implements LogChangeListener
 {
-    private LogWindowSource m_logSource;
-    private TextArea m_logContent;
+    private final LogWindowSource m_logSource;
+    private final TextArea m_logContent;
 
     //TODO добавить лог на действия пользователя, + рефкатор
     public LogWindow(LogWindowSource logSource) {

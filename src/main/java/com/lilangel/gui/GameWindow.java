@@ -26,8 +26,8 @@ public class GameWindow extends JInternalFrame implements ModelView
 
     @Override
     public void notifyPresenter(ActionEvent e) {
-        switch (e.getActionCommand()){
-            case "mouseEvent" : presenter.onButtonClickedEvent(e);
+        switch (e.getActionCommand()) {
+            case "mouseEvent" -> presenter.onButtonClickedEvent(e);
         }
     }
 

@@ -11,9 +11,9 @@ import java.awt.*;
  * Main app class, that initialize Model, View and Presenter and starts the things
  */
 public class RobotApp {
-    Model model;
-    MainApplicationFrame frame;
-    Presenter presenter;
+    final Model model;
+    final MainApplicationFrame frame;
+    final Presenter presenter;
 
     public RobotApp() {
         this.presenter = new Presenter();
