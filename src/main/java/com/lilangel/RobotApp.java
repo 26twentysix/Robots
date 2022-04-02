@@ -2,6 +2,7 @@ package com.lilangel;
 
 import com.lilangel.gui.MainApplicationFrame;
 import com.lilangel.model.Model;
+import com.lilangel.model.Battleground;
 import com.lilangel.presenter.Presenter;
 
 import javax.swing.*;
@@ -17,7 +18,7 @@ public class RobotApp {
 
     public RobotApp() {
         this.presenter = new Presenter();
-        this.model = new Model();
+        this.model = new Battleground();
         this.model.setPresenter(presenter);
         this.frame = new MainApplicationFrame(presenter);
         presenter.setModel(model);
