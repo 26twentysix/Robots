@@ -33,7 +33,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
 
     private void updateLogContent() {
         StringBuilder content = new StringBuilder();
-        for (LogEntry entry : logSource.all()) {
+        for (LogEntry entry : logSource.getAll()) {
             content.append(entry.getMessage()).append("\n");
         }
         logContent.setText(content.toString());

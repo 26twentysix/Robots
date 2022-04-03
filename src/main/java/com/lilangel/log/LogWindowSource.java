@@ -7,37 +7,37 @@ import java.util.Collections;
  * Что починить:
  * 1. Этот класс порождает утечку ресурсов (связанные слушатели оказываются
  * удерживаемыми в памяти)
- * 2. Этот класс хранит активные сообщения лога, но в такой реализации он 
- * их лишь накапливает. Надо же, чтобы количество сообщений в логе было ограничено 
- * величиной m_iQueueLength (т.е. реально нужна очередь сообщений 
- * ограниченного размера) 
+ * 2. Этот класс хранит активные сообщения лога, но в такой реализации он
+ * их лишь накапливает. Надо же, чтобы количество сообщений в логе было ограничено
+ * величиной queueLength (т.е. реально нужна очередь сообщений
+ * ограниченного размера)
  */
 public class LogWindowSource {
     private final int queueLength;
     private final ArrayList<LogEntry> messages;
     private final ArrayList<LogChangeListener> listeners;
     private volatile LogChangeListener[] activeListeners;
-    
+
     public LogWindowSource(int queueLength) {
         this.queueLength = queueLength;
         this.messages = new ArrayList<>(queueLength);
         this.listeners = new ArrayList<>();
     }
-    
+
     public void registerListener(LogChangeListener listener) {
-        synchronized(listeners) {
+        synchronized (listeners) {
             listeners.add(listener);
             activeListeners = null;
         }
     }
-    
+
     public void unregisterListener(LogChangeListener listener) {
-        synchronized(listeners) {
+        synchronized (listeners) {
             listeners.remove(listener);
             activeListeners = null;
         }
     }
-    
+
     public void append(LogLevel logLevel, String strMessage) {
         LogEntry entry = new LogEntry(logLevel, strMessage);
         messages.add(entry);
@@ -54,8 +54,8 @@ public class LogWindowSource {
             listener.onLogChanged();
         }
     }
-    
-    public int size() {
+
+    public int getSize() {
         return messages.size();
     }
 
@@ -67,7 +67,7 @@ public class LogWindowSource {
         return messages.subList(startFrom, indexTo);
     }
 
-    public Iterable<LogEntry> all() {
+    public Iterable<LogEntry> getAll() {
         return messages;
     }
 }

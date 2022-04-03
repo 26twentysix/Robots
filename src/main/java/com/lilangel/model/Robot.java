@@ -9,7 +9,7 @@ public class Robot {
     /**
      * Battleground on which the robot is located
      */
-    private final Battleground battleground;
+    private final BattleGround battleground;
     /**
      * a flag that signals whether the robot has chosen the next action
      */
@@ -52,7 +52,7 @@ public class Robot {
      */
     private RobotAction preparedAction;
 
-    public Robot(int xPos, int yPos, Battleground battleground) {
+    public Robot(int xPos, int yPos, BattleGround battleground) {
         this.battleground = battleground;
         Random rnd = new Random();
         this.genome = rnd.ints(255, 0, 256).toArray();

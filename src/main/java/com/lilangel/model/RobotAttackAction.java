@@ -1,7 +1,7 @@
 package com.lilangel.model;
 
 /**
- * Robot's attack action, describes how {@link Robot} will attack at the end of the {@link Battleground} tact
+ * Robot's attack action, describes how {@link Robot} will attack at the end of the {@link BattleGround} tact
  */
 public class RobotAttackAction implements RobotAction{
     private final Robot robot;

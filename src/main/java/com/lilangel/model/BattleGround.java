@@ -7,7 +7,7 @@ import java.util.ArrayList;
 /**
  * Class that describes the model of battleground
  */
-public class Battleground implements Model {
+public class BattleGround implements Model {
     /**
      * Presenter that model connected with
      */
@@ -24,7 +24,7 @@ public class Battleground implements Model {
     private ArrayList<Robot> robots;
     private final int robotsCount = 20; //пока 20, потом посмотрим, может можно больше
 
-    public Battleground() {
+    public BattleGround() {
         this.battleground = new ObjectOnTile[width][height];
         this.robots = new ArrayList<>(robotsCount);
         for (int i = 0;i< width;i++)
