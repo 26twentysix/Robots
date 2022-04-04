@@ -25,10 +25,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
 
-    private final GameWindow view;
+    private final GameWindow gameWindow;
 
-    public ModelView getView() {
-        return this.view;
+    public ModelView getGameVisualizer() {
+        return this.gameWindow.getVisualizer();
     }
 
     public MainApplicationFrame(ViewListener presenter) {
@@ -42,8 +42,8 @@ public class MainApplicationFrame extends JFrame {
 
         setContentPane(desktopPane);
 
-        this.view = createGameWindow(presenter);
-        addWindow(view);
+        this.gameWindow = createGameWindow(presenter);
+        addWindow(gameWindow);
         addWindow(createLogWindow());
 
         setJMenuBar(generateMenuBar());

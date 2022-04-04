@@ -22,7 +22,7 @@ public class RobotApp {
         this.model.setPresenter(presenter);
         this.frame = new MainApplicationFrame(presenter);
         presenter.setModel(model);
-        presenter.setView(this.frame.getView());
+        presenter.setView(this.frame.getGameVisualizer());
     }
 
     public void startApp() {

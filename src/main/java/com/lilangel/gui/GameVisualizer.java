@@ -9,7 +9,7 @@ import java.awt.event.MouseEvent;
 /**
  * Class that visualize the Model through MVP pattern (for now it doesn't)
  */
-public class GameVisualizer extends JPanel {
+public class GameVisualizer extends JPanel implements ModelView {
     private final Drawer drawer;
 
     public GameVisualizer(GameWindow gameWindow) {
@@ -32,5 +32,15 @@ public class GameVisualizer extends JPanel {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         drawer.draw(g2d);
+    }
+
+    @Override
+    public void notifyPresenter(ActionEvent e) {
+
+    }
+
+    @Override
+    public void update() {
+
     }
 }

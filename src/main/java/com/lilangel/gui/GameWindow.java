@@ -9,7 +9,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.text.View;
 
-public class GameWindow extends JInternalFrame implements ModelView {
+public class GameWindow extends JInternalFrame {
     private final GameVisualizer visualizer;
     private final ViewListener presenter;
 
@@ -23,15 +23,7 @@ public class GameWindow extends JInternalFrame implements ModelView {
         pack();
     }
 
-    @Override
-    public void notifyPresenter(ActionEvent e) {
-        switch (e.getActionCommand()) {
-            case "mouseEvent" -> presenter.onButtonClickedEvent(e);
-        }
-    }
-
-    @Override
-    public void update() {
-        visualizer.onRedrawEvent();
+    public GameVisualizer getVisualizer() {
+        return visualizer;
     }
 }
