@@ -28,18 +28,18 @@ public class RobotMoveAction implements RobotAction {
 
     @Override
     public void doAction() {
-        if(targetPositionX > fieldWidth)
-            targetPositionX-= fieldWidth;
+        if (targetPositionX > fieldWidth)
+            targetPositionX -= fieldWidth;
         if (targetPositionX < 0)
-            targetPositionX+= fieldWidth;
-        if(targetPositionY> fieldHeight)
-            targetPositionY-= fieldHeight;
-        if(targetPositionY < 0)
-            targetPositionY+= fieldHeight;
-        ObjectOnTile obj = robot.selectTileOnField(targetPositionX,targetPositionY);
-        while(obj == ObjectOnTile.WALL || obj == ObjectOnTile.ROBOT){
+            targetPositionX += fieldWidth;
+        if (targetPositionY > fieldHeight)
+            targetPositionY -= fieldHeight;
+        if (targetPositionY < 0)
+            targetPositionY += fieldHeight;
+        ObjectOnTile obj = robot.selectTileOnField(targetPositionX, targetPositionY);
+        while (obj == ObjectOnTile.WALL || obj == ObjectOnTile.ROBOT) {
             shortenStep();
-            obj = robot.selectTileOnField(targetPositionX,targetPositionY);
+            obj = robot.selectTileOnField(targetPositionX, targetPositionY);
         }
         robot.changePosition(targetPositionX, targetPositionY);
         robot.reduceEnergy(cost);

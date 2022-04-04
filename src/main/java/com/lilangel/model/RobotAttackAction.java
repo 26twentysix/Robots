@@ -18,7 +18,7 @@ public class RobotAttackAction implements RobotAction {
 
     @Override
     public void doAction() {
-        robot.attackTile(positionX,positionY);
+        robot.attackTile(positionX, positionY);
         robot.reduceEnergy(cost);
     }
 

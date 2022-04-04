@@ -102,7 +102,7 @@ public class Robot {
                 count++;
             }
         if (healthPoints < 1)
-            battleground.killRobot(positionX,positionY);
+            battleground.killRobot(positionX, positionY);
     }
 
     /**
