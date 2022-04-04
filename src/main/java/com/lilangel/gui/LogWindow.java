@@ -11,8 +11,7 @@ import com.lilangel.log.LogChangeListener;
 import com.lilangel.log.LogEntry;
 import com.lilangel.log.LogWindowSource;
 
-public class LogWindow extends JInternalFrame implements LogChangeListener
-{
+public class LogWindow extends JInternalFrame implements LogChangeListener {
     private final LogWindowSource logSource;
     private final TextArea logContent;
 
@@ -23,7 +22,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
         this.logSource.registerListener(this);
         logContent = new TextArea("");
         logContent.setSize(200, 500);
-        
+
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(logContent, BorderLayout.CENTER);
         getContentPane().add(panel);
@@ -39,7 +38,7 @@ public class LogWindow extends JInternalFrame implements LogChangeListener
         logContent.setText(content.toString());
         logContent.invalidate();
     }
-    
+
     @Override
     public void onLogChanged() {
         EventQueue.invokeLater(this::updateLogContent);

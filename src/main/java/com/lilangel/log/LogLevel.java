@@ -7,13 +7,13 @@ public enum LogLevel {
     Warning(3),
     Error(4),
     Fatal(5);
-    
+
     private final int level;
-    
+
     LogLevel(int level) {
         this.level = level;
     }
-    
+
     public int level() {
         return this.level;
     }

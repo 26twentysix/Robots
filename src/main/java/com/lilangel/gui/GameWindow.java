@@ -9,8 +9,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 import javax.swing.text.View;
 
-public class GameWindow extends JInternalFrame implements ModelView
-{
+public class GameWindow extends JInternalFrame implements ModelView {
     private final GameVisualizer visualizer;
     private final ViewListener presenter;
 

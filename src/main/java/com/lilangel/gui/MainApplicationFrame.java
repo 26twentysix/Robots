@@ -16,14 +16,13 @@ import javax.swing.JMenuItem;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+
 /**
  * Что требуется сделать:
- * 1. Метод создания меню перегружен функционалом и трудно читается. 
+ * 1. Метод создания меню перегружен функционалом и трудно читается.
  * Следует разделить его на серию более простых методов (или вообще выделить отдельный класс).
- *
  */
-public class MainApplicationFrame extends JFrame
-{
+public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
 
     private final GameWindow view;
@@ -35,11 +34,11 @@ public class MainApplicationFrame extends JFrame
     public MainApplicationFrame(ViewListener presenter) {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
-        int inset = 50;        
+        int inset = 50;
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         setBounds(inset, inset,
-            screenSize.width  - inset*2,
-            screenSize.height - inset*2);
+                screenSize.width - inset * 2,
+                screenSize.height - inset * 2);
 
         setContentPane(desktopPane);
 
@@ -71,7 +70,7 @@ public class MainApplicationFrame extends JFrame
         desktopPane.add(frame);
         frame.setVisible(true);
     }
-    
+
 //    protected JMenuBar createMenuBar() {
 //        JMenuBar menuBar = new JMenuBar();
 // 
@@ -100,7 +99,7 @@ public class MainApplicationFrame extends JFrame
 // 
 //        return menuBar;
 //    }
-    
+
     private JMenuBar generateMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         JMenu lookAndFeelMenu = createMenu("Режим отображения", KeyEvent.VK_V,
@@ -129,7 +128,7 @@ public class MainApplicationFrame extends JFrame
 
     private JMenuItem createMenuItem(String menuItemName, int key, String additionalArgument) {
         JMenuItem newMenuItem = new JMenuItem(menuItemName, key);
-        newMenuItem.addActionListener((event)-> {
+        newMenuItem.addActionListener((event) -> {
             switch (additionalArgument.toLowerCase(Locale.ROOT)) {
                 case "crossplatform" -> {
                     setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
@@ -150,7 +149,7 @@ public class MainApplicationFrame extends JFrame
             UIManager.setLookAndFeel(className);
             SwingUtilities.updateComponentTreeUI(this);
         } catch (ClassNotFoundException | InstantiationException
-            | IllegalAccessException | UnsupportedLookAndFeelException e) {
+                | IllegalAccessException | UnsupportedLookAndFeelException e) {
             // just ignore
         }
     }

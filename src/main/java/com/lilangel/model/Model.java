@@ -7,5 +7,6 @@ import com.lilangel.presenter.ModelListener;
  */
 public interface Model {
     void notifyPresenter();
+
     void setPresenter(ModelListener presenter);
 }

@@ -8,10 +8,10 @@ public class RobotMoveAction implements RobotAction {
     private int positionX;
     private int positionY;
 
-    RobotMoveAction(Robot robot, int positionX, int positionY){
+    RobotMoveAction(Robot robot, int positionX, int positionY) {
         this.robot = robot;
-        this.positionX=positionX;
-        this.positionY=positionY;
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
 
     @Override

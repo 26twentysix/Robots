@@ -27,8 +27,8 @@ public class BattleGround implements Model {
     public BattleGround() {
         this.battleground = new ObjectOnTile[width][height];
         this.robots = new ArrayList<>(robotsCount);
-        for (int i = 0;i< width;i++)
-            for(int j = 0; j<height;j++)
+        for (int i = 0; i < width; i++)
+            for (int j = 0; j < height; j++)
                 battleground[i][j] = ObjectOnTile.EMPTY;
     }
 
@@ -51,6 +51,7 @@ public class BattleGround implements Model {
 
     /**
      * Method that returns object on tile at cooridnates [x,y]
+     *
      * @param x x coordinate
      * @param y y coordinate
      * @return instance of {@link ObjectOnTile} that is on the tile

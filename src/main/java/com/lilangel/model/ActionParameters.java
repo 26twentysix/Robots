@@ -6,7 +6,7 @@ class ActionParameters {
     private int stepX;
     private int stepY;
 
-    ActionParameters(int command){
+    ActionParameters(int command) {
         int direction = command / 10;
         int distance = command % 10 + 1;
         switch (direction) {

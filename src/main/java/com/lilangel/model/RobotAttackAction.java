@@ -3,12 +3,12 @@ package com.lilangel.model;
 /**
  * Robot's attack action, describes how {@link Robot} will attack at the end of the {@link BattleGround} tact
  */
-public class RobotAttackAction implements RobotAction{
+public class RobotAttackAction implements RobotAction {
     private final Robot robot;
     private int positionX;
     private int positionY;
 
-    RobotAttackAction(Robot robot, int positionX, int positionY){
+    RobotAttackAction(Robot robot, int positionX, int positionY) {
         this.robot = robot;
         this.positionX = positionX;
         this.positionY = positionY;

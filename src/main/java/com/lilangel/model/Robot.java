@@ -17,6 +17,7 @@ public class Robot {
 
     /**
      * Getter for {@link Robot#ready}
+     *
      * @return {@link Robot#ready}
      */
     public boolean isReady() {
@@ -86,12 +87,13 @@ public class Robot {
     /**
      * Method that performs robot's action
      */
-    public void doPreparedAction(){
+    public void doPreparedAction() {
         preparedAction.doAction();
     }
 
     /**
      * Method that changes instruction pointer according to object, that was the target of robot action
+     *
      * @param objectType - int value of some {@link ObjectOnTile} instance
      */
     private void changeInstructionPointer(int objectType) {
@@ -102,11 +104,12 @@ public class Robot {
             case 3 -> 10; //стена - оффсет 10
             default -> objectType;
         };
-        instructionPointer = (instructionPointer+offset) % 255;
+        instructionPointer = (instructionPointer + offset) % 255;
     }
 
     /**
      * Method that moves the bot
+     *
      * @param command number from genome, that is corresponds to moving action
      * @return instance of {@link RobotMoveAction}, that describes certain move
      */
@@ -124,12 +127,13 @@ public class Robot {
             obj = battleground.getTile(xPosition + deltaX, yPosition + deltaY).ordinal();
         }
         changeInstructionPointer(obj);
-        return new RobotMoveAction(this,xPosition+deltaX,yPosition+deltaY);
+        return new RobotMoveAction(this, xPosition + deltaX, yPosition + deltaY);
     }
 
 
     /**
      * Method that makes robot to attack
+     *
      * @param command number from genome, that corresponds to attack action
      * @return instance of {@link RobotAttackAction}, that describes certain attack
      */
@@ -137,13 +141,14 @@ public class Robot {
         command -= 80; //тоже чтобы правильно работало, читай genome.txt
         ActionParameters params = new ActionParameters(command);
         int deltaX = params.getDeltaX(), deltaY = params.getDeltaY();
-        int obj = battleground.getTile(xPosition+deltaX,yPosition+deltaY).ordinal();
+        int obj = battleground.getTile(xPosition + deltaX, yPosition + deltaY).ordinal();
         changeInstructionPointer(obj);
-        return new RobotAttackAction(this,xPosition+ params.getStepX(),yPosition+ params.getStepY());
+        return new RobotAttackAction(this, xPosition + params.getStepX(), yPosition + params.getStepY());
     }
 
     /**
      * Method that makes robot to look around
+     *
      * @param command number from genome that corresponds to looking action
      */
     private void look(int command) {
@@ -161,10 +166,11 @@ public class Robot {
 
     /**
      * Method that makes robot to repair him self
+     *
      * @param command - number from genome that corresponds to repairing action
      */
     private void repair(int command) {
-        int delta = (command - 130)%20;
+        int delta = (command - 130) % 20;
         energy -= delta;
         healthPoints += delta;
         if (energy < 0) energy = 0;
