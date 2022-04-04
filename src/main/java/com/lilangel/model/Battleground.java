@@ -53,10 +53,12 @@ public class Battleground implements Model {
      * Method that forces robots into action
      */
     public void startFight() {
-//        while(!robots.isEmpty())
-        for (var robot : robots){
-            robot.prepareAction();//это так потому что изначально задумка была каждого совать в отдельный поток,
-            robot.doPreparedAction();//ждать пока каждый приготовит действие, потом каждый их исполняет, но они и так работают быстро
+        while(!robots.isEmpty()){
+            for (var robot : robots) {
+                robot.prepareAction();//это так потому что изначально задумка была каждого совать в отдельный поток,
+                robot.doPreparedAction();//ждать пока каждый приготовит действие, потом каждый их исполняет, но они и так работают быстро
+            }
+//            notifyPresenter();
         }
     }
 
