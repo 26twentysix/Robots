@@ -9,7 +9,9 @@ public class Robot {
     /**
      * Battleground on which the robot is located
      */
-    private final BattleGround battleground;
+    private Battleground battleground;
+    private final int fieldWidth;
+    private final int fieldHeight;
     /**
      * a flag that signals whether the robot has chosen the next action
      */
@@ -24,11 +26,19 @@ public class Robot {
         return this.ready;
     }
 
+    public int getPositionX() {
+        return positionX;
+    }
+
+    public int getPositionY() {
+        return positionY;
+    }
+
     /**
      * Coordinates of the robot
      */
-    private int xPosition;
-    private int yPosition;
+    private int positionX;
+    private int positionY;
 
     /**
      * Array of integers that presents a genome
@@ -38,6 +48,12 @@ public class Robot {
      * Number that points to current gen in genome
      */
     private int instructionPointer;
+
+    void reduceEnergy(int energy) {
+        if (energy < 0)
+            return;
+        this.energy -= energy;
+    }
 
     /**
      * Number of robots energy, it consumes by all robot actions, when 0 - robot can't move
@@ -53,12 +69,12 @@ public class Robot {
      */
     private RobotAction preparedAction;
 
-    public Robot(int xPos, int yPos, BattleGround battleground) {
+    public Robot(Battleground battleground) {
         this.battleground = battleground;
+        fieldWidth = battleground.field.length;
+        fieldHeight = battleground.field[0].length;
         Random rnd = new Random();
         this.genome = rnd.ints(255, 0, 256).toArray();
-        this.xPosition = xPos;
-        this.yPosition = yPos;
         energy = 100;
         healthPoints = 30;
         instructionPointer = rnd.nextInt(255);
@@ -69,8 +85,10 @@ public class Robot {
      * Method that prepares robot's action, basing on genome
      */
     public void prepareAction() {
+        int count = 0;
+        preparedAction = new RobotStandStillAction();
         if (energy > 0 && healthPoints > 0)
-            while (!ready) {
+            while (!ready && count < 15) {
                 int currentCommand = genome[instructionPointer];
                 if (currentCommand >= 10 && currentCommand <= 49)
                     look(currentCommand);
@@ -81,7 +99,10 @@ public class Robot {
                     preparedAction = attack(currentCommand);
                     ready = true;
                 } else repair(currentCommand);
+                count++;
             }
+        if (healthPoints < 1)
+            battleground.killRobot(positionX,positionY);
     }
 
     /**
@@ -118,16 +139,17 @@ public class Robot {
 
         ActionParameters params = new ActionParameters(command);
         int deltaX = params.getDeltaX(), deltaY = params.getDeltaY(), stepX = params.getStepX(), stepY = params.getStepY();
-        int obj = battleground.getTile(xPosition + deltaX, yPosition + deltaY).ordinal();
+        int obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
         int previousObj = 0;
         while (obj == ObjectOnTile.ROBOT.ordinal() || obj == ObjectOnTile.WALL.ordinal()) {
             deltaX -= stepX;
             deltaY -= stepY;
             previousObj = obj;
-            obj = battleground.getTile(xPosition + deltaX, yPosition + deltaY).ordinal();
+            obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
         }
         changeInstructionPointer(obj);
-        return new RobotMoveAction(this, xPosition + deltaX, yPosition + deltaY);
+        return new RobotMoveAction(this, params.getDirection(),
+                positionX + deltaX, positionY + deltaY, Math.max(Math.abs(deltaX), Math.abs(deltaY)));
     }
 
 
@@ -141,9 +163,10 @@ public class Robot {
         command -= 80; //тоже чтобы правильно работало, читай genome.txt
         ActionParameters params = new ActionParameters(command);
         int deltaX = params.getDeltaX(), deltaY = params.getDeltaY();
-        int obj = battleground.getTile(xPosition + deltaX, yPosition + deltaY).ordinal();
+        int obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
         changeInstructionPointer(obj);
-        return new RobotAttackAction(this, xPosition + params.getStepX(), yPosition + params.getStepY());
+        return new RobotAttackAction(this, positionX + params.getStepX(), positionY + params.getStepY(),
+                Math.max(deltaX, deltaY));
     }
 
     /**
@@ -154,11 +177,11 @@ public class Robot {
     private void look(int command) {
         ActionParameters params = new ActionParameters(command);
         int deltaX = params.getDeltaX(), deltaY = params.getDeltaY(), stepX = params.getStepX(), stepY = params.getStepY();
-        int obj = battleground.getTile(xPosition + deltaX, yPosition + deltaY).ordinal();
+        int obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
         while (obj == ObjectOnTile.ROBOT.ordinal() || obj == ObjectOnTile.WALL.ordinal()) {
             deltaX += stepX;
             deltaY += stepY;
-            obj = battleground.getTile(xPosition + deltaX, yPosition + deltaY).ordinal();
+            obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
         }
         energy -= Math.max(deltaX, deltaY);
         changeInstructionPointer(obj);
@@ -176,5 +199,50 @@ public class Robot {
         if (energy < 0) energy = 0;
         if (healthPoints > 70) healthPoints = 70;
         changeInstructionPointer(command);
+    }
+
+    protected void changePosition(int x, int y) {
+        this.positionX = x;
+        this.positionY = y;
+    }
+
+    ObjectOnTile selectTileOnField(int x, int y) {
+        if (x >= fieldWidth)
+            x -= fieldWidth;
+        if (x < 0)
+            x += fieldWidth;
+        if (y >= fieldHeight)
+            y -= fieldHeight;
+        if (y < 0)
+            y += fieldHeight;
+        return battleground.field[x][y];
+    }
+
+    void attackTile(int x, int y) {
+        ObjectOnTile obj = selectTileOnField(x, y);
+        if (obj == ObjectOnTile.ROBOT) {
+            battleground.killRobot(x, y);
+        }
+        battleground.setTileEmpty(x, y);
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 0;
+        for (int i = 0; i < 6; i++) {
+            hash += genome[i];
+            hash *= 17;
+        }
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        else {
+            Robot another = (Robot) obj;
+            return this.positionX == another.positionX && this.positionY == another.positionY;
+        }
     }
 }
