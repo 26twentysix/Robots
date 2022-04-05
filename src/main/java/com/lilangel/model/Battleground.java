@@ -1,10 +1,10 @@
 package com.lilangel.model;
 
 import com.lilangel.presenter.ModelListener;
-import jdk.jshell.spi.ExecutionControl;
 
 import java.awt.event.ActionEvent;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -69,13 +69,13 @@ public class Battleground implements Model {
      * Method that forces robots into action
      */
     public void startFight() {
-        while (!robots.isEmpty()) {
+//        while (!robots.isEmpty()) {
             for (var robot : robots) {
                 robot.prepareAction();//это так потому что изначально задумка была каждого совать в отдельный поток,
                 robot.doPreparedAction();//ждать пока каждый приготовит действие, потом каждый их исполняет, но они и так работают быстро
             }
 //            notifyPresenter();
-        }
+//        }
     }
 
     public void fillField() {

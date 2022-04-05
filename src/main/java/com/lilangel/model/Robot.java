@@ -1,5 +1,7 @@
 package com.lilangel.model;
 
+import com.lilangel.model.RobotActions.*;
+
 import java.util.Random;
 
 /**
@@ -49,10 +51,8 @@ public class Robot {
      */
     private int instructionPointer;
 
-    void reduceEnergy(int energy) {
-        if (energy < 0)
-            return;
-        this.energy -= energy;
+    public void changeEnergy(int energy) {
+        this.energy += energy;
     }
 
     /**
@@ -101,8 +101,10 @@ public class Robot {
                 } else repair(currentCommand);
                 count++;
             }
-        if (healthPoints < 1)
+        if (healthPoints < 1){
             battleground.killRobot(positionX, positionY);
+            energy = 0;
+        }
     }
 
     /**
@@ -144,7 +146,7 @@ public class Robot {
         while (obj == ObjectOnTile.ROBOT.ordinal() || obj == ObjectOnTile.WALL.ordinal()) {
             deltaX -= stepX;
             deltaY -= stepY;
-            previousObj = obj;
+            previousObj = obj; //TODO при помощи этого учитывать наступление на энергию
             obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
         }
         changeInstructionPointer(obj);
@@ -165,7 +167,7 @@ public class Robot {
         int deltaX = params.getDeltaX(), deltaY = params.getDeltaY();
         int obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
         changeInstructionPointer(obj);
-        return new RobotAttackAction(this, positionX + params.getStepX(), positionY + params.getStepY(),
+        return new RobotAttackAction(this, params.getStepX(), params.getStepY(),
                 Math.max(deltaX, deltaY));
     }
 
@@ -201,12 +203,12 @@ public class Robot {
         changeInstructionPointer(command);
     }
 
-    protected void changePosition(int x, int y) {
+    public void changePosition(int x, int y) {
         this.positionX = x;
         this.positionY = y;
     }
 
-    ObjectOnTile selectTileOnField(int x, int y) {
+    public ObjectOnTile selectTileOnField(int x, int y) {
         if (x >= fieldWidth)
             x -= fieldWidth;
         if (x < 0)
@@ -218,7 +220,7 @@ public class Robot {
         return battleground.field[x][y];
     }
 
-    void attackTile(int x, int y) {
+    public void attackTile(int x, int y) {
         ObjectOnTile obj = selectTileOnField(x, y);
         if (obj == ObjectOnTile.ROBOT) {
             battleground.killRobot(x, y);
