@@ -1,4 +1,7 @@
-package com.lilangel.model;
+package com.lilangel.model.RobotActions;
+
+import com.lilangel.model.Battleground;
+import com.lilangel.model.Robot;
 
 /**
  * Robot's attack action, describes how {@link Robot} will attack at the end of the {@link Battleground} tact
@@ -9,17 +12,17 @@ public class RobotAttackAction implements RobotAction {
     private int positionY;
     private int cost;
 
-    RobotAttackAction(Robot robot, int positionX, int positionY, int cost) {
+    public RobotAttackAction(Robot robot, int deltaX, int deltaY, int cost) {
         this.robot = robot;
-        this.positionX = positionX;
-        this.positionY = positionY;
+        this.positionX = robot.getPositionX() + deltaX;
+        this.positionY = robot.getPositionY() + deltaY;
         this.cost = cost;
     }
 
     @Override
     public void doAction() {
         robot.attackTile(positionX, positionY);
-        robot.reduceEnergy(cost);
+        robot.changeEnergy(cost);
     }
 
     public int getPositionX() {

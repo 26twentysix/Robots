@@ -1,6 +1,8 @@
-package com.lilangel.model;
+package com.lilangel.model.RobotActions;
 
-class ActionParameters {
+import com.lilangel.model.Direction;
+
+public class ActionParameters {
     private int deltaY;
     private int deltaX;
     private int stepX;
@@ -8,7 +10,7 @@ class ActionParameters {
 
     private Direction direction;
 
-    ActionParameters(int command) {
+    public ActionParameters(int command) {
         int dir = command / 10;
         int distance = command % 10 + 1;
         switch (dir) {

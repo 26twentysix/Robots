@@ -1,4 +1,4 @@
-package com.lilangel.model;
+package com.lilangel.model.RobotActions;
 
 /**
  * Interface for robot's actions

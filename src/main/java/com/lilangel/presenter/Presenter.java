@@ -1,17 +1,11 @@
 package com.lilangel.presenter;
 
-import com.lilangel.gui.GameVisualizer;
 import com.lilangel.gui.ModelView;
 import com.lilangel.model.Model;
 
-import jdk.jshell.spi.ExecutionControl;
-
 import java.awt.event.ActionEvent;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
-import com.lilangel.model.OurNotImplemetedException;
+import com.lilangel.execpions.OurNotImplemetedException;
 
 /**
  * MVP Presenter component, responsible for updating View and giving tasks for Model
@@ -44,7 +38,6 @@ public class Presenter implements ModelListener, ViewListener {
 
     @Override
     public void onButtonClickedEvent(ActionEvent e) {
-        //TODO сделать собственные эксепшены, наследуемые от RuntimeExcepetion
         throw new OurNotImplemetedException();
     }
 

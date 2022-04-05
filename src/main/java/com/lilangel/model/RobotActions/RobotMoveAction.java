@@ -1,4 +1,9 @@
-package com.lilangel.model;
+package com.lilangel.model.RobotActions;
+
+import com.lilangel.model.Battleground;
+import com.lilangel.model.Direction;
+import com.lilangel.model.ObjectOnTile;
+import com.lilangel.model.Robot;
 
 /**
  * Robot's move action, describes how {@link Robot} will move at the end of the {@link Battleground} tact
@@ -16,7 +21,7 @@ public class RobotMoveAction implements RobotAction {
     private int targetPositionX;
     private int targetPositionY;
 
-    RobotMoveAction(Robot robot, Direction direction, int targetPositionX, int targerPositionY, int cost) {
+    public RobotMoveAction(Robot robot, Direction direction, int targetPositionX, int targerPositionY, int cost) {
         this.robot = robot;
         this.direction = direction;
         this.previousPositionX = robot.getPositionX();
@@ -41,8 +46,10 @@ public class RobotMoveAction implements RobotAction {
             shortenStep();
             obj = robot.selectTileOnField(targetPositionX, targetPositionY);
         }
+        if(obj == ObjectOnTile.ENERGY)
+            robot.changeEnergy(20);
         robot.changePosition(targetPositionX, targetPositionY);
-        robot.reduceEnergy(cost);
+        robot.changeEnergy(-cost);
     }
 
     public int getPreviousPositionX() {
