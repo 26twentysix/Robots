@@ -18,15 +18,16 @@ public class Battleground implements Model {
      */
     ObjectOnTile[][] field;
 
-    public ObjectOnTile[][] getField(){
+    public ObjectOnTile[][] getField() {
         return field;
     }
+
     private final int height = 200;
     private final int width = 300;
     /**
      * List of robots
      */
-        private CopyOnWriteArrayList<Robot> robots;
+    private CopyOnWriteArrayList<Robot> robots;
     private final int robotsCount = 100; //пока 20, потом посмотрим, может можно больше
     private final int robotConstant = 57; //нужна для работы генератора боевого поля, взята из воздуха
 
@@ -34,7 +35,7 @@ public class Battleground implements Model {
         this.robots = new CopyOnWriteArrayList<>();
         this.field = new ObjectOnTile[width][height];
         for (ObjectOnTile[] objectOnTiles : field) Arrays.fill(objectOnTiles, ObjectOnTile.EMPTY);
-        for (int i = 0; i< robotsCount; i++)
+        for (int i = 0; i < robotsCount; i++)
             this.robots.add(new Robot(this));
         fillField();
     }
@@ -53,7 +54,7 @@ public class Battleground implements Model {
      * Method that forces robots into action
      */
     public void startFight() {
-        while(!robots.isEmpty()){
+        while (!robots.isEmpty()) {
             for (var robot : robots) {
                 robot.prepareAction();//это так потому что изначально задумка была каждого совать в отдельный поток,
                 robot.doPreparedAction();//ждать пока каждый приготовит действие, потом каждый их исполняет, но они и так работают быстро
@@ -65,11 +66,11 @@ public class Battleground implements Model {
     public void fillField() {
         for (int i = 0; i < width; i++) {
             field[i][0] = ObjectOnTile.EMPTY;
-            field[i][height-1] = ObjectOnTile.EMPTY;
+            field[i][height - 1] = ObjectOnTile.EMPTY;
         }
         for (int i = 0; i < height; i++) {
             field[0][i] = ObjectOnTile.EMPTY;
-            field[width-1][i] = ObjectOnTile.EMPTY;
+            field[width - 1][i] = ObjectOnTile.EMPTY;
         }
         int counter = 0;
         Random rnd = new Random();
@@ -80,7 +81,7 @@ public class Battleground implements Model {
                     counter++;
                     if (counter > robotsCount)
                         continue;
-                    robots.get(counter-1).changePosition(i,j);
+                    robots.get(counter - 1).changePosition(i, j);
                 }
                 field[i][j] = getObjectFromInt(randomInt);
             }
@@ -96,14 +97,14 @@ public class Battleground implements Model {
         else return ObjectOnTile.EMPTY;
     }
 
-    void killRobot(int x, int y){
+    void killRobot(int x, int y) {
         Robot robotIdenticalToNeededOne = new Robot(this);
         robotIdenticalToNeededOne.changePosition(x, y);
         robots.remove(robotIdenticalToNeededOne);
-        setTileEmpty(x,y);
+        setTileEmpty(x, y);
     }
 
-    void setTileEmpty(int x, int y){
+    void setTileEmpty(int x, int y) {
         field[x][y] = ObjectOnTile.EMPTY;
     }
 }
