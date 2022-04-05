@@ -10,4 +10,8 @@ public class ModelUpdateEvent extends ActionEvent {
         super(source, id, command);
         this.field = field;
     }
+
+    public ObjectOnTile[][] getField(){
+        return field;
+    }
 }
