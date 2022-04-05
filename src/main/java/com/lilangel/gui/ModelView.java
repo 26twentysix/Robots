@@ -12,4 +12,6 @@ public interface ModelView {
     void notifyPresenter(ActionEvent e);
 
     void update();
+
+    int addDrawEvent(ActionEvent e);
 }

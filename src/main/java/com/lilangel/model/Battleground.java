@@ -1,7 +1,9 @@
 package com.lilangel.model;
 
 import com.lilangel.presenter.ModelListener;
+import jdk.jshell.spi.ExecutionControl;
 
+import java.awt.event.ActionEvent;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -18,6 +20,8 @@ public class Battleground implements Model {
      */
     ObjectOnTile[][] field;
 
+    ActionEvent event = null;
+
     public ObjectOnTile[][] getField() {
         return field;
     }
@@ -28,7 +32,7 @@ public class Battleground implements Model {
      * List of robots
      */
     private CopyOnWriteArrayList<Robot> robots;
-    private final int robotsCount = 100; //пока 20, потом посмотрим, может можно больше
+    private final int robotsCount = 100; //пока 100, потом посмотрим, может можно больше
     private final int robotConstant = 57; //нужна для работы генератора боевого поля, взята из воздуха
 
     public Battleground() {
@@ -42,7 +46,18 @@ public class Battleground implements Model {
 
     @Override
     public void notifyPresenter() {
-
+        ModelUpdateEvent event = new ModelUpdateEvent(this, 1, "abc", this.field);
+        int returnCode = presenter.onModelUpdateEvent(event);
+        if (returnCode == 1) {
+            while (returnCode == 1) {
+                try {
+                    Thread.sleep(10);
+                    returnCode = presenter.onModelUpdateEvent(event);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     @Override

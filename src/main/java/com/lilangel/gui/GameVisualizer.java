@@ -5,12 +5,20 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 /**
  * Class that visualize the Model through MVP pattern (for now it doesn't)
  */
 public class GameVisualizer extends JPanel implements ModelView {
     private final Drawer drawer;
+
+    private final int DRAW_QUEUE_SIZE = 1000;
+
+    private Queue<ActionEvent> drawQueue = new ArrayDeque<>();
 
     public GameVisualizer(GameWindow gameWindow) {
         this.drawer = new Drawer();
@@ -37,6 +45,17 @@ public class GameVisualizer extends JPanel implements ModelView {
     @Override
     public void notifyPresenter(ActionEvent e) {
 
+    }
+
+    @Override
+    public int addDrawEvent(ActionEvent e) {
+        if (drawQueue.size() > DRAW_QUEUE_SIZE) {
+            return 1;
+        }
+        else {
+            this.drawQueue.add(e);
+            return 0;
+        }
     }
 
     @Override

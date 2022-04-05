@@ -1,5 +1,6 @@
 package com.lilangel.presenter;
 
+import com.lilangel.gui.GameVisualizer;
 import com.lilangel.gui.ModelView;
 import com.lilangel.model.Model;
 
@@ -9,6 +10,8 @@ import java.awt.event.ActionEvent;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import com.lilangel.model.OurNotImplemetedException;
 
 /**
  * MVP Presenter component, responsible for updating View and giving tasks for Model
@@ -24,66 +27,36 @@ public class Presenter implements ModelListener, ViewListener {
 
     public void setView(ModelView view) {
         this.view = view;
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                onRedrawEvent();
-            }
-        }, 0, 50);
     }
 
     /**
      * Timer for redrawing
      */
-    private final Timer timer = initTimer();
-
-    private static Timer initTimer() {
-        return new Timer("events generator", true);
-    }
 
     public Presenter() {
 
     }
 
-    protected void onRedrawEvent() {
-        view.update();
-    }
-
     @Override
-    public void onModelUpdateEvent(ActionEvent e) {
-        try {
-            onRedrawEvent();
-            throw new ExecutionControl.NotImplementedException("не реализованы действия на обновление модели");
-        } catch (ExecutionControl.NotImplementedException ex) {
-            ex.printStackTrace();
-        }
+    public int onModelUpdateEvent(ActionEvent e) {
+        return view.addDrawEvent(e);
     }
 
     @Override
     public void onButtonClickedEvent(ActionEvent e) {
         //TODO сделать собственные эксепшены, наследуемые от RuntimeExcepetion
-        try {
-            throw new ExecutionControl.NotImplementedException("не реализованы дейсвтия на кнопки " + e.getActionCommand());
-        } catch (ExecutionControl.NotImplementedException ex) {
-            ex.printStackTrace();
-        }
+        throw new OurNotImplemetedException();
     }
 
     @Override
     public void onWindowsCloseEvent(ActionEvent e) {
-        try {
-            throw new ExecutionControl.NotImplementedException("не реализован ивент на закрытие окна");
-        } catch (ExecutionControl.NotImplementedException ex) {
-            ex.printStackTrace();
-        }
+        throw new OurNotImplemetedException();
+
     }
 
     @Override
     public void onWindowResizeEvent(ActionEvent e) {
-        try {
-            throw new ExecutionControl.NotImplementedException("не реализовано изменение размера окна");
-        } catch (ExecutionControl.NotImplementedException ex) {
-            ex.printStackTrace();
-        }
+        throw new OurNotImplemetedException();
+
     }
 }
