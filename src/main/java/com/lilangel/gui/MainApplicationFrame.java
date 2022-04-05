@@ -1,7 +1,7 @@
 package com.lilangel.gui;
 
 import com.lilangel.log.Logger;
-import com.lilangel.presenter.ViewListener;
+import com.lilangel.presenter.*;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;

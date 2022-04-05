@@ -17,7 +17,7 @@ public class GameVisualizer extends JPanel implements ModelView {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                gameWindow.notifyPresenter(new ActionEvent(e, 1, "mouseEvent"));
+                notifyPresenter(new ActionEvent(e, 1, "mouseEvent"));
             }
         });
         setDoubleBuffered(true);
