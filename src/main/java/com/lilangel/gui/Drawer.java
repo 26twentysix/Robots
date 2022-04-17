@@ -1,17 +1,25 @@
 package com.lilangel.gui;
 
+import com.lilangel.model.ObjectOnTile;
+
 import java.awt.*;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
 import java.util.Random;
 
 public class Drawer {
 
-    public void draw(Graphics2D g) {
-        Random rnd = new Random();
-        int x = rnd.nextInt(1, 150);
-        int y = rnd.nextInt(1, 150);
-        drawOval(g, x, y, 20, 40);
-        fillOval(g, x, y, 20, 40);
+    public void draw(Graphics2D g, ObjectOnTile[][] state) {
+        for (int i = 0; i < state.length; i++) {
+            for (int j = 0; j < state[i].length; j++) {
+                switch (state[i][j]) {
+                    case WALL -> drawWall(g,i * 8, j * 8);
+                    case EMPTY -> drawEmpty(g,i * 8, j * 8);
+                    case ROBOT -> drawRobot(g,i * 8, j * 8);
+                    case ENERGY -> drawEnergy(g,i * 8, j * 8);
+                }
+            }
+        }
     }
 
     private static int round(double value) {
@@ -29,11 +37,9 @@ public class Drawer {
     /**
      * currently does not work, //TODO исправить
      */
-    private void drawRobot(Graphics2D g, int x, int y, double direction) {
+    private void drawRobot(Graphics2D g, int x, int y) {
         int robotCenterX = round(x);
         int robotCenterY = round(y);
-        AffineTransform t = AffineTransform.getRotateInstance(direction, robotCenterX, robotCenterY);
-        g.setTransform(t);
         g.setColor(Color.MAGENTA);
         fillOval(g, robotCenterX, robotCenterY, 30, 10);
         g.setColor(Color.BLACK);
@@ -42,5 +48,21 @@ public class Drawer {
         fillOval(g, robotCenterX + 10, robotCenterY, 5, 5);
         g.setColor(Color.BLACK);
         drawOval(g, robotCenterX + 10, robotCenterY, 5, 5);
+    }
+
+    private void drawEmpty(Graphics2D g, int x, int y) {
+        g.setColor(Color.BLACK);
+        g.drawRect(x, y, 8, 8);
+    }
+
+    private void drawWall(Graphics2D g, int x, int y) {
+        g.setColor(Color.GRAY);
+        g.fillRect(x, y, 8, 8);
+
+    }
+
+    private void drawEnergy(Graphics2D g, int x, int y) {
+        g.setColor(Color.PINK);
+        g.fillRect(x, y, 8, 8);
     }
 }
