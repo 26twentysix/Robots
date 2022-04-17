@@ -38,16 +38,8 @@ public class Drawer {
      * currently does not work, //TODO исправить
      */
     private void drawRobot(Graphics2D g, int x, int y) {
-        int robotCenterX = round(x);
-        int robotCenterY = round(y);
-        g.setColor(Color.MAGENTA);
-        fillOval(g, robotCenterX, robotCenterY, 30, 10);
-        g.setColor(Color.BLACK);
-        drawOval(g, robotCenterX, robotCenterY, 30, 10);
-        g.setColor(Color.WHITE);
-        fillOval(g, robotCenterX + 10, robotCenterY, 5, 5);
-        g.setColor(Color.BLACK);
-        drawOval(g, robotCenterX + 10, robotCenterY, 5, 5);
+        g.setColor(Color.BLUE);
+        g.fillRect(x + 1, y + 1, 6, 6);
     }
 
     private void drawEmpty(Graphics2D g, int x, int y) {
@@ -63,6 +55,6 @@ public class Drawer {
 
     private void drawEnergy(Graphics2D g, int x, int y) {
         g.setColor(Color.PINK);
-        g.fillRect(x, y, 8, 8);
+        g.fillRect(x + 1, y + 1, 6, 6);
     }
 }
