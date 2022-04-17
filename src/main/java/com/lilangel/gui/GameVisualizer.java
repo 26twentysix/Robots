@@ -48,9 +48,12 @@ public class GameVisualizer extends JPanel implements ModelView {
     public void paint(Graphics g) { // вот этот метод умеет рисовать один кадр, используя для этого Drawer
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
-        var state = Objects.requireNonNull(drawQueue.poll()).getField();
-        // Drawer должен отрисовывать один кадр
-        drawer.draw(g2d, state);
+        if (!drawQueue.isEmpty()) {
+            var state = drawQueue.poll().getField();
+            // Drawer должен отрисовывать один кадр
+            System.out.println("Получил поле");
+            drawer.draw(g2d, state);
+        }
     }
 
     @Override
