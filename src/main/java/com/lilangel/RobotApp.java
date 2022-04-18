@@ -2,7 +2,7 @@ package com.lilangel;
 
 import com.lilangel.gui.MainApplicationFrame;
 import com.lilangel.model.Model;
-import com.lilangel.model.Battleground;
+import com.lilangel.model.RobotsModel;
 import com.lilangel.presenter.Presenter;
 
 import javax.swing.*;
@@ -18,7 +18,7 @@ public class RobotApp {
 
     public RobotApp() {
         this.presenter = new Presenter();
-        this.model = new Battleground();
+        this.model = new RobotsModel();
         this.model.setPresenter(presenter);
         this.frame = new MainApplicationFrame(presenter);
         presenter.setModel(model);
@@ -26,7 +26,12 @@ public class RobotApp {
     }
 
     public void startApp() {
-        startFrame();
+        var frameThread = new Thread(this::startFrame);
+        var modelThread = new Thread(model);
+        modelThread.setDaemon(true);
+        modelThread.start();
+
+        frameThread.start();
     }
 
     public void startFrame() {

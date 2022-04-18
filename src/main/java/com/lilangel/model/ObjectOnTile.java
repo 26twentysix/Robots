@@ -7,5 +7,15 @@ public enum ObjectOnTile {
     EMPTY,
     ENERGY,
     ROBOT,
-    WALL
+    WALL;
+
+    @Override
+    public String toString(){
+        return switch (this) {
+            case EMPTY -> ".";
+            case ENERGY -> "$";
+            case WALL -> "#";
+            case ROBOT -> "*";
+        };
+    }
 }

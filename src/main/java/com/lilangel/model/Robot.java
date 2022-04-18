@@ -1,31 +1,36 @@
 package com.lilangel.model;
 
-import com.lilangel.model.RobotActions.*;
-
 import java.util.Random;
 
 /**
  * Class that describes Robot
  */
 public class Robot {
-    /**
-     * Battleground on which the robot is located
-     */
-    private Battleground battleground;
-    private final int fieldWidth;
-    private final int fieldHeight;
-    /**
-     * a flag that signals whether the robot has chosen the next action
-     */
-    private boolean ready;
+    private int positionX;
+    private int positionY;
+    Field field;
 
-    /**
-     * Getter for {@link Robot#ready}
-     *
-     * @return {@link Robot#ready}
-     */
-    public boolean isReady() {
-        return this.ready;
+    private final int maxEnergy = 50;
+    double energy;
+    private final int maxHealthPoints = 100;
+    int healthpoints;
+
+    final int genomeLimit = 240;
+    int[] genome = new int[genomeLimit];
+    int genomePointer;
+    final int basePointerIncrease = 10;
+
+
+    public void increaseGenomePointer(ObjectOnTile obj) {
+        int value = switch (obj) {
+            case WALL -> basePointerIncrease;
+            case ROBOT -> basePointerIncrease * 3;
+            case ENERGY -> basePointerIncrease * 2;
+            case EMPTY -> basePointerIncrease * 4;
+        };
+
+        this.genomePointer += value;
+        this.genomePointer %= genomeLimit;
     }
 
     public int getPositionX() {
@@ -36,215 +41,118 @@ public class Robot {
         return positionY;
     }
 
-    /**
-     * Coordinates of the robot
-     */
-    private int positionX;
-    private int positionY;
-
-    /**
-     * Array of integers that presents a genome
-     */
-    private int[] genome = new int[255];
-    /**
-     * Number that points to current gen in genome
-     */
-    private int instructionPointer;
-
-    public void changeEnergy(int energy) {
-        this.energy += energy;
+    boolean isAlive() {
+        return energy > 0 && healthpoints > 0;
     }
 
-    /**
-     * Number of robots energy, it consumes by all robot actions, when 0 - robot can't move
-     */
-    private int energy;
-    /**
-     * Robots health points, when 0 - robot's body will no longer exist
-     */
-    private int healthPoints;
+    public Robot(Field field) {
+        this.field = field;
+        Random random = new Random();
+        int xPos = random.nextInt(ModelConstants.FIELD_WIDTH.value);
+        int yPos = random.nextInt(ModelConstants.FIELD_HEIGT.value);
+        ObjectOnTile obj = field.getTile(xPos, yPos);
+        while(obj != ObjectOnTile.EMPTY && obj != null){
+            xPos = random.nextInt(ModelConstants.FIELD_WIDTH.value);
+            yPos = random.nextInt(ModelConstants.FIELD_HEIGT.value);
+            obj = field.getTile(xPos, yPos);
+        }
+        this.positionX = xPos;
+        this.positionY = yPos;
 
-    /**
-     * Action that robot will preform at the end of Battleground tact
-     */
-    private RobotAction preparedAction;
+        for (int i = 0; i < genomeLimit; i++) {
+            genome[i] = random.nextInt(genomeLimit);
+        }
 
-    public Robot(Battleground battleground) {
-        this.battleground = battleground;
-        fieldWidth = battleground.field.length;
-        fieldHeight = battleground.field[0].length;
-        Random rnd = new Random();
-        this.genome = rnd.ints(255, 0, 256).toArray();
-        energy = 100;
-        healthPoints = 30;
-        instructionPointer = rnd.nextInt(255);
-        ready = false;
+        this.genomePointer = random.nextInt(genomeLimit);
+
+        this.healthpoints = maxEnergy;
+        this.energy = maxHealthPoints;
     }
 
-    /**
-     * Method that prepares robot's action, basing on genome
-     */
-    public void prepareAction() {
-        int count = 0;
-        preparedAction = new RobotStandStillAction();
-        if (energy > 0 && healthPoints > 0)
-            while (!ready && count < 15) {
-                int currentCommand = genome[instructionPointer];
-                if (currentCommand >= 10 && currentCommand <= 49)
-                    look(currentCommand);
-                else if (currentCommand >= 50 && currentCommand <= 89) {
-                    preparedAction = move(currentCommand);
-                    ready = true;
-                } else if (currentCommand >= 90 && currentCommand <= 129) {
-                    preparedAction = attack(currentCommand);
-                    ready = true;
-                } else repair(currentCommand);
-                count++;
-            }
-        if (healthPoints < 1){
-            battleground.killRobot(positionX, positionY);
-            energy = 0;
+    void performAction() {
+        boolean ready = false;
+        int iterations = 0;
+        while (!ready) {
+            if (genome[genomePointer] >= 0 && genome[genomePointer] <= 39)
+                look(genome[genomePointer]);
+            else if (genome[genomePointer] >= 40 && genome[genomePointer] <= 79) {
+                move(genome[genomePointer] % 40);
+                ready = true;
+            } else if (genome[genomePointer] >= 80 && genome[genomePointer] <= 119) {
+                attack(genome[genomePointer] % 80);
+                ready = true;
+            } else repair(genome[genomePointer] % 120);
+            iterations++;
+            if (iterations > 9)
+                ready = true;
         }
     }
 
-    /**
-     * Method that performs robot's action
-     */
-    public void doPreparedAction() {
-        preparedAction.doAction();
+    private void look(int value) {
+        ActionParameters parameters = new ActionParameters(value);
+        increaseGenomePointer(field.getTile(this.positionX + parameters.getDeltaX(), this.positionY + parameters.getDeltaY()));
+        energy -= parameters.getCost() / 3;
     }
 
-    /**
-     * Method that changes instruction pointer according to object, that was the target of robot action
-     *
-     * @param objectType - int value of some {@link ObjectOnTile} instance
-     */
-    private void changeInstructionPointer(int objectType) {
-        int offset = switch (objectType) {//енамы тут не работают, потому что после case может идти только константа, а енам с точки зрения компилятора не константа
-            case 0 -> 40; //пустое место - оффсет 40
-            case 1 -> 20; //энергия - оффсет 20
-            case 2 -> 30; //робот - оффест 30
-            case 3 -> 10; //стена - оффсет 10
-            default -> objectType;
-        };
-        instructionPointer = (instructionPointer + offset) % 255;
-    }
-
-    /**
-     * Method that moves the bot
-     *
-     * @param command number from genome, that is corresponds to moving action
-     * @return instance of {@link RobotMoveAction}, that describes certain move
-     */
-    private RobotAction move(int command) {
-        command -= 40; //чтобы правильно работало, все по задумке
-
-        ActionParameters params = new ActionParameters(command);
-        int deltaX = params.getDeltaX(), deltaY = params.getDeltaY(), stepX = params.getStepX(), stepY = params.getStepY();
-        int obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
-        int previousObj = 0;
-        while (obj == ObjectOnTile.ROBOT.ordinal() || obj == ObjectOnTile.WALL.ordinal()) {
-            deltaX -= stepX;
-            deltaY -= stepY;
-            previousObj = obj; //TODO при помощи этого учитывать наступление на энергию
-            obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
+    private void move(int value) {
+        ActionParameters parameters = new ActionParameters(value);
+        int deltaX = parameters.getDeltaX() / 3;
+        int deltaY = parameters.getDeltaY() / 3;
+        ObjectOnTile target = field.getTile(this.positionX + deltaX, this.positionY + deltaY);
+        ObjectOnTile previousTarget = ObjectOnTile.EMPTY;
+        while (target != ObjectOnTile.EMPTY && target != ObjectOnTile.ENERGY && (deltaX > 0 || deltaY > 0)) {
+            deltaX-=parameters.getStepX();
+            deltaY-=parameters.getStepY();
+            previousTarget = target;
+            target = field.getTile(this.positionX + deltaX, this.positionY + deltaY);
         }
-        changeInstructionPointer(obj);
-        return new RobotMoveAction(this, params.getDirection(),
-                positionX + deltaX, positionY + deltaY, Math.max(Math.abs(deltaX), Math.abs(deltaY)));
+
+        field.setTile(this.positionX, this.positionY, ObjectOnTile.EMPTY);
+        this.positionX += parameters.getDeltaX();
+        this.positionY += parameters.getDeltaY();
+        field.setTile(this.positionX, this.positionY, ObjectOnTile.ROBOT);
+
+        if (previousTarget == ObjectOnTile.WALL) {
+            healthpoints -= 5;
+            increaseGenomePointer(previousTarget);
+        } else increaseGenomePointer(target);
+
+        if (target == ObjectOnTile.ENERGY)
+            energy += maxEnergy * 0.14;
+
+        this.energy -= parameters.getCost();
     }
 
+    private void attack(int value) {
+        ActionParameters parameters = new ActionParameters(value);
+        int deltaX = parameters.getDeltaX() / 2;
+        int deltaY = parameters.getDeltaY() / 2;
+        int targetX = this.positionX + deltaX;
+        int targetY = this.positionY + deltaY;
+        ObjectOnTile target = field.getTile(targetX, targetY);
 
-    /**
-     * Method that makes robot to attack
-     *
-     * @param command number from genome, that corresponds to attack action
-     * @return instance of {@link RobotAttackAction}, that describes certain attack
-     */
-    private RobotAction attack(int command) {
-        command -= 80; //тоже чтобы правильно работало, читай genome.txt
-        ActionParameters params = new ActionParameters(command);
-        int deltaX = params.getDeltaX(), deltaY = params.getDeltaY();
-        int obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
-        changeInstructionPointer(obj);
-        return new RobotAttackAction(this, params.getStepX(), params.getStepY(),
-                Math.max(deltaX, deltaY));
-    }
-
-    /**
-     * Method that makes robot to look around
-     *
-     * @param command number from genome that corresponds to looking action
-     */
-    private void look(int command) {
-        ActionParameters params = new ActionParameters(command);
-        int deltaX = params.getDeltaX(), deltaY = params.getDeltaY(), stepX = params.getStepX(), stepY = params.getStepY();
-        int obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
-        while (obj == ObjectOnTile.ROBOT.ordinal() || obj == ObjectOnTile.WALL.ordinal()) {
-            deltaX += stepX;
-            deltaY += stepY;
-            obj = selectTileOnField(positionX + deltaX, positionY + deltaY).ordinal();
+        if (target == ObjectOnTile.ROBOT && targetX != this.positionX && targetY != this.positionY) {
+            Robot enemy = field.getRobot(targetX, targetY);
+            enemy.hitRobot(parameters.getCost());
         }
-        energy -= Math.max(deltaX, deltaY);
-        changeInstructionPointer(obj);
+
+        if (target == ObjectOnTile.WALL && parameters.getCost() > 6)
+            field.setTile(targetX, targetY, ObjectOnTile.EMPTY);
+        if (target == ObjectOnTile.ENERGY && parameters.getCost() > 4)
+            field.setTile(targetX, targetY, ObjectOnTile.EMPTY);
+
+        increaseGenomePointer(target);
+        energy-=parameters.getCost();
     }
 
-    /**
-     * Method that makes robot to repair him self
-     *
-     * @param command - number from genome that corresponds to repairing action
-     */
-    private void repair(int command) {
-        int delta = (command - 130) % 20;
-        energy -= delta;
-        healthPoints += delta;
-        if (energy < 0) energy = 0;
-        if (healthPoints > 70) healthPoints = 70;
-        changeInstructionPointer(command);
+    private void repair(int value) {
+        int repairValue = value / 12;
+        energy -= repairValue/7.0;
+        genomePointer += value;
+        genomePointer%=genomeLimit;
     }
 
-    public void changePosition(int x, int y) {
-        this.positionX = x;
-        this.positionY = y;
-    }
-
-    public ObjectOnTile selectTileOnField(int x, int y) {
-        if (x >= fieldWidth)
-            x -= fieldWidth;
-        if (x < 0)
-            x += fieldWidth;
-        if (y >= fieldHeight)
-            y -= fieldHeight;
-        if (y < 0)
-            y += fieldHeight;
-        return battleground.field[x][y];
-    }
-
-    public void attackTile(int x, int y) {
-        ObjectOnTile obj = selectTileOnField(x, y);
-        if (obj == ObjectOnTile.ROBOT) {
-            battleground.killRobot(x, y);
-        }
-        battleground.setTileEmpty(x, y);
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        for (int i = 0; i < 6; i++) {
-            hash += genome[i];
-            hash *= 17;
-        }
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null)
-            return false;
-        else {
-            Robot another = (Robot) obj;
-            return this.positionX == another.positionX && this.positionY == another.positionY;
-        }
+    private void hitRobot(int damage) {
+        healthpoints -= damage;
     }
 }

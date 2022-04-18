@@ -1,6 +1,7 @@
 package com.lilangel.gui;
 
 import com.lilangel.model.ModelUpdateEvent;
+import com.lilangel.model.ObjectOnTile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -30,7 +31,7 @@ public class GameVisualizer extends JPanel implements ModelView {
         });
         setDoubleBuffered(true);
         Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(task,0,50);
+        timer.scheduleAtFixedRate(task, 0, 300);
     }
 
     TimerTask task = new TimerTask() {
@@ -44,17 +45,47 @@ public class GameVisualizer extends JPanel implements ModelView {
         EventQueue.invokeLater(this::repaint);
     }
 
+    ModelUpdateEvent previousState = new ModelUpdateEvent(this,0,"",new ObjectOnTile[200][300]);
+    int i = 0;
+
     @Override
     public void paint(Graphics g) { // вот этот метод умеет рисовать один кадр, используя для этого Drawer
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         if (!drawQueue.isEmpty()) {
-            var state = drawQueue.poll().getField();
+            var state = drawQueue.poll();
+            System.out.print(i++);
+            if (!stateChanged(previousState.getField(), state.getField())) {
+                System.out.println(" state didnt changed");
+                previousState = state;
+            }
             // Drawer должен отрисовывать один кадр
             System.out.println("Получил поле");
-            drawer.draw(g2d, state);
+            drawer.draw(g2d, state.getField());
+            previousState = state;
         }
     }
+
+    boolean stateChanged(ObjectOnTile[][] firstState, ObjectOnTile[][] secondState) {
+        for (int i = 0; i < firstState.length; i++)
+            for (int j = 0; j < firstState[i].length; j++)
+                if (firstState[i][j] != secondState[i][j]) {
+                    return true;
+                }
+        return false;
+    }
+
+//    @Override
+//    public void update(Graphics g) {
+//        super.update(g);
+//        Graphics2D g2d = (Graphics2D) g;
+//        if (!drawQueue.isEmpty()) {
+//            var state = drawQueue.poll().getField();
+//            // Drawer должен отрисовывать один кадр
+//            System.out.println("Получил поле");
+//            drawer.draw(g2d, state);
+//        }
+//    }
 
     @Override
     public void notifyPresenter(ActionEvent e) {
@@ -65,8 +96,7 @@ public class GameVisualizer extends JPanel implements ModelView {
     public int addDrawEvent(ActionEvent e) {
         if (drawQueue.size() > DRAW_QUEUE_SIZE) {
             return 1;
-        }
-        else {
+        } else {
             this.drawQueue.add((ModelUpdateEvent) e);
             return 0;
         }
