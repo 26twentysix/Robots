@@ -45,8 +45,8 @@ public class GameVisualizer extends JPanel implements ModelView {
         EventQueue.invokeLater(this::repaint);
     }
 
-    ModelUpdateEvent previousState = new ModelUpdateEvent(this,0,"",new ObjectOnTile[200][300]);
-    int i = 0;
+//    ModelUpdateEvent previousState = new ModelUpdateEvent(this,0,"",new ObjectOnTile[200][300]);
+//    int i = 0;
 
     @Override
     public void paint(Graphics g) { // вот этот метод умеет рисовать один кадр, используя для этого Drawer
@@ -54,37 +54,25 @@ public class GameVisualizer extends JPanel implements ModelView {
         Graphics2D g2d = (Graphics2D) g;
         if (!drawQueue.isEmpty()) {
             var state = drawQueue.poll();
-            System.out.print(i++);
-            if (!stateChanged(previousState.getField(), state.getField())) {
-                System.out.println(" state didnt changed");
-                previousState = state;
-            }
+//            System.out.print(i++);
+//            if (!stateChanged(previousState.getField(), state.getField())) {
+//                System.out.println(" state didnt changed");
+//                previousState = state;
+//            }
             // Drawer должен отрисовывать один кадр
             System.out.println("Получил поле");
             drawer.draw(g2d, state.getField());
-            previousState = state;
+//            previousState = state;
         }
     }
 
-    boolean stateChanged(ObjectOnTile[][] firstState, ObjectOnTile[][] secondState) {
-        for (int i = 0; i < firstState.length; i++)
-            for (int j = 0; j < firstState[i].length; j++)
-                if (firstState[i][j] != secondState[i][j]) {
-                    return true;
-                }
-        return false;
-    }
-
-//    @Override
-//    public void update(Graphics g) {
-//        super.update(g);
-//        Graphics2D g2d = (Graphics2D) g;
-//        if (!drawQueue.isEmpty()) {
-//            var state = drawQueue.poll().getField();
-//            // Drawer должен отрисовывать один кадр
-//            System.out.println("Получил поле");
-//            drawer.draw(g2d, state);
-//        }
+//    boolean stateChanged(ObjectOnTile[][] firstState, ObjectOnTile[][] secondState) {
+//        for (int i = 0; i < firstState.length; i++)
+//            for (int j = 0; j < firstState[i].length; j++)
+//                if (firstState[i][j] != secondState[i][j]) {
+//                    return true;
+//                }
+//        return false;
 //    }
 
     @Override
