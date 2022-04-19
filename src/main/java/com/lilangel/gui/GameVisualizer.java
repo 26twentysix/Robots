@@ -29,7 +29,7 @@ public class GameVisualizer extends JPanel implements ModelView {
                 notifyPresenter(new ActionEvent(e, 1, "mouseEvent"));
             }
         });
-        setDoubleBuffered(true);
+        this.setDoubleBuffered(true);
         Timer timer = new Timer(true);
         timer.scheduleAtFixedRate(task, 0, 300);
     }
@@ -60,7 +60,7 @@ public class GameVisualizer extends JPanel implements ModelView {
 //                previousState = state;
 //            }
             // Drawer должен отрисовывать один кадр
-            System.out.println("Получил поле");
+//            System.out.println("Получил поле");
             drawer.draw(g2d, state.getField());
 //            previousState = state;
         }

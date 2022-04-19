@@ -13,10 +13,10 @@ public class Drawer {
         for (int i = 0; i < state.length; i++) {
             for (int j = 0; j < state[i].length; j++) {
                 switch (state[i][j]) {
-                    case WALL -> drawWall(g,i * 8, j * 8);
-                    case EMPTY -> drawEmpty(g,i * 8, j * 8);
-                    case ROBOT -> drawRobot(g,i * 8, j * 8);
-                    case ENERGY -> drawEnergy(g,i * 8, j * 8);
+                    case WALL -> drawWall(g,j * 8, i * 8);
+                    case EMPTY -> drawEmpty(g,j * 8, i * 8);
+                    case ROBOT -> drawRobot(g,j * 8, i * 8);
+                    case ENERGY -> drawEnergy(g,j * 8, i * 8);
                 }
             }
         }
