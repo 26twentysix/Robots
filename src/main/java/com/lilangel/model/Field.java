@@ -19,29 +19,27 @@ public class Field {
     }
 
     ObjectOnTile getTile(int x, int y) {
-        if (x < 0)
-            x += width;
-        if (x >= width)
-            x -= width;
-        if (y < 0)
-            y += height;
-        if (y >= height)
-            y -= height;
+        Coordinates normalized = normalize(x,y);
 
-        return field[y][x];
+        return field[normalized.yPos()][normalized.xPos()];
     }
 
     void setTile(int x, int y, ObjectOnTile obj) {
-        if (x < 0)
-            x += width;
-        if (x >= width)
-            x -= width;
-        if (y < 0)
-            y += height;
-        if (y >= height)
-            y -= height;
+        Coordinates normalized = normalize(x,y);
 
-        this.field[y][x] = obj;
+        this.field[normalized.yPos()][normalized.xPos()] = obj;
+    }
+
+    private Coordinates normalize(int x, int y){
+        while (x < 0)
+            x += width;
+        while (x >= width)
+            x -= width;
+        while (y < 0)
+            y += height;
+        while (y >= height)
+            y -= height;
+        return new Coordinates(x, y);
     }
 
     boolean isAnyRobotAlive() {
@@ -115,7 +113,7 @@ public class Field {
         return result;
     }
 
-    public String hasFieldChanged() {
+    public String fieldChanges() {
         for (int i = 0; i < height; i++)
             for (int j = 0; j < width; j++) {
                 if (previousState[i][j] != field[i][j])

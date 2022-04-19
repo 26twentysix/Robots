@@ -10,7 +10,7 @@ public class Robot {
     private int positionY;
     Field field;
 
-    private final int maxEnergy = 50;
+    private final int maxEnergy = 100;
     double energy;
     private final int maxHealthPoints = 100;
     int healthpoints;
@@ -72,7 +72,7 @@ public class Robot {
     void performAction() {
         boolean ready = false;
         int iterations = 0;
-        while (!ready) {
+        while (!ready && isAlive()) {
             if (genome[genomePointer] >= 0 && genome[genomePointer] <= 39)
                 look(genome[genomePointer]);
             else if (genome[genomePointer] >= 40 && genome[genomePointer] <= 79) {
@@ -148,7 +148,7 @@ public class Robot {
     private void repair(int value) {
         int repairValue = value / 12;
         energy -= repairValue/7.0;
-        genomePointer += value;
+        genomePointer += value+1;
         genomePointer%=genomeLimit;
     }
 
