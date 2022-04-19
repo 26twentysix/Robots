@@ -24,7 +24,17 @@ public class RobotsModel implements Model {
 
     @Override
     public void notifyPresenter(String message) {
-        presenter.onModelUpdateEvent(new ModelUpdateEvent(this,1,message,field.makeCopyOfCurrentState()));
+        ModelUpdateEvent event = new ModelUpdateEvent(this,1,message,field.makeCopyOfCurrentState());
+        int returnCode = presenter.onModelUpdateEvent(new ModelUpdateEvent(this,1,message,field.makeCopyOfCurrentState()));
+        if(returnCode == 1){
+            try {
+                // TODO переделать на invokeLater чтобы модель не затыкалась в этом методе из-за медленности отрисовки
+                Thread.sleep(10);
+                returnCode = presenter.onModelUpdateEvent(new ModelUpdateEvent(this,1,message,field.makeCopyOfCurrentState()));
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override

@@ -10,7 +10,7 @@ public class Robot {
     private int positionY;
     Field field;
 
-    private final int maxEnergy = 100;
+    private final int maxEnergy = 1000;
     double energy;
     private final int maxHealthPoints = 100;
     int healthpoints;
