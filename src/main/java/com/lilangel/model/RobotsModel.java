@@ -1,6 +1,5 @@
 package com.lilangel.model;
 
-import com.lilangel.log.Logger;
 import com.lilangel.presenter.ModelListener;
 
 /**
@@ -32,7 +31,7 @@ public class RobotsModel implements Model {
     public void run() {
         while(field.isAnyRobotAlive()){
             field.doTact();
-            notifyPresenter(field.hasFieldChanged());
+            notifyPresenter(field.fieldChanges());
         }
         System.out.println("simulation finished");
     }
