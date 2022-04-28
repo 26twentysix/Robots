@@ -14,7 +14,7 @@ public class GameWindow extends JInternalFrame {
     private final ViewListener presenter;
 
     public GameWindow(ViewListener presenter) {
-        super("Игровое поле", false, true, false, true);
+        super("Игровое поле", false, false, false, true);
         this.presenter = presenter;
         this.visualizer = new GameVisualizer(this);
         JPanel panel = new JPanel(new BorderLayout());
