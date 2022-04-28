@@ -1,4 +1,4 @@
-package com.lilangel.model;
+package com.lilangel.models;
 
 public record Coordinates(int xPos, int yPos) {
     @Override

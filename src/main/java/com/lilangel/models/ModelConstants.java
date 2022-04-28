@@ -1,4 +1,4 @@
-package com.lilangel.model;
+package com.lilangel.models;
 
 public enum ModelConstants {
     ROBOTS_COUNT(100),

@@ -1,7 +1,7 @@
 package com.lilangel.presenter;
 
 import com.lilangel.gui.ModelView;
-import com.lilangel.model.Model;
+import com.lilangel.models.Model;
 
 import java.awt.event.ActionEvent;
 

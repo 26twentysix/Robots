@@ -1,4 +1,4 @@
-package com.lilangel.model;
+package com.lilangel.models;
 
 /**
  * Enum for objects that can be placed on battleground

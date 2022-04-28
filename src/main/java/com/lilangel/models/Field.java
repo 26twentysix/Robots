@@ -1,14 +1,16 @@
-package com.lilangel.model;
+package com.lilangel.models;
+
+import com.lilangel.models.actions.RobotAction;
 
 import java.util.*;
 
 public class Field {
-    private ObjectOnTile[][] field;
+    private final ObjectOnTile[][] field;
     private ObjectOnTile[][] previousState;
     private final int width = ModelConstants.FIELD_WIDTH.value;
     private final int height = ModelConstants.FIELD_HEIGT.value;
 
-    private Map<Coordinates, Robot> robotsMapping;
+    private final Map<Coordinates, Robot> robotsMapping;
     private ArrayList<Robot> robots;
     private final int robotsLimit = ModelConstants.ROBOTS_COUNT.value;
 
@@ -18,13 +20,13 @@ public class Field {
         return this.field;
     }
 
-    ObjectOnTile getTile(int x, int y) {
+    public ObjectOnTile getTile(int x, int y) {
         Coordinates normalized = normalize(x,y);
 
         return field[normalized.yPos()][normalized.xPos()];
     }
 
-    void setTile(int x, int y, ObjectOnTile obj) {
+    public void setTile(int x, int y, ObjectOnTile obj) {
         Coordinates normalized = normalize(x,y);
 
         this.field[normalized.yPos()][normalized.xPos()] = obj;
@@ -46,7 +48,7 @@ public class Field {
         return !robots.isEmpty();
     }
 
-    Robot getRobot(int x, int y) {
+    public Robot getRobot(int x, int y) {
         return robotsMapping.get(new Coordinates(x, y));
     }
 
@@ -66,11 +68,25 @@ public class Field {
 
     private void summonRobots() {
         for (int i = 0; i < robotsLimit; i++) {
-            Robot robot = new Robot(this);
+
+            Robot robot = new Robot(getEmtpyCell());
             robots.add(robot);
             field[robot.getPositionY()][robot.getPositionX()] = ObjectOnTile.ROBOT;
             robotsMapping.put(new Coordinates(robot.getPositionX(), robot.getPositionY()), robot);
         }
+    }
+
+    private Coordinates getEmtpyCell(){
+        Random random = new Random();
+        int xPos = random.nextInt(ModelConstants.FIELD_WIDTH.value);
+        int yPos = random.nextInt(ModelConstants.FIELD_HEIGT.value);
+        ObjectOnTile obj = field[yPos][xPos];
+        while(obj!=ObjectOnTile.EMPTY && obj!=null){
+            xPos = random.nextInt(ModelConstants.FIELD_WIDTH.value);
+            yPos = random.nextInt(ModelConstants.FIELD_HEIGT.value);
+            obj = field[yPos][xPos];
+        }
+        return new Coordinates(xPos,yPos);
     }
 
     private void fillField() {
@@ -97,8 +113,16 @@ public class Field {
         ArrayList<Robot> aliveList = new ArrayList<>();
         for (Robot robot : robots) {
             robotsMapping.remove(new Coordinates(robot.getPositionX(), robot.getPositionY()));
-            robot.performAction();
+            int iterations = 0;
+            while(robot.Active()){
+                RobotAction action = robot.prepareAction();
+                action.handle(robot,this);
+                iterations++;
+                if(iterations>9) break;
+            }
             if (robot.isAlive()) aliveList.add(robot);
+            robot.setActive();
+            String a = fieldChanges();
             robotsMapping.put(new Coordinates(robot.getPositionX(), robot.getPositionY()), robot);
         }
         this.robots = aliveList;

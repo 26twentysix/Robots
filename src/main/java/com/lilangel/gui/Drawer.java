@@ -1,11 +1,8 @@
 package com.lilangel.gui;
 
-import com.lilangel.model.ObjectOnTile;
+import com.lilangel.models.ObjectOnTile;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.util.Random;
 
 public class Drawer {
 

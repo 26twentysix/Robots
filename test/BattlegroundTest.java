@@ -1,7 +1,5 @@
-import com.lilangel.model.Field;
-import com.lilangel.model.ModelConstants;
-import com.lilangel.model.RobotsModel;
-import com.lilangel.model.ObjectOnTile;
+import com.lilangel.models.Field;
+import com.lilangel.models.ModelConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

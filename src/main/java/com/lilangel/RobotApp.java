@@ -1,8 +1,8 @@
 package com.lilangel;
 
 import com.lilangel.gui.MainApplicationFrame;
-import com.lilangel.model.Model;
-import com.lilangel.model.RobotsModel;
+import com.lilangel.models.Model;
+import com.lilangel.models.RobotsModel;
 import com.lilangel.presenter.Presenter;
 
 import javax.swing.*;

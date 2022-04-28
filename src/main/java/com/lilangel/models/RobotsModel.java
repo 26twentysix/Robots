@@ -1,4 +1,4 @@
-package com.lilangel.model;
+package com.lilangel.models;
 
 import com.lilangel.presenter.ModelListener;
 
@@ -25,7 +25,7 @@ public class RobotsModel implements Model {
     @Override
     public void notifyPresenter(String message) {
         ModelUpdateEvent event = new ModelUpdateEvent(this,1,message,field.makeCopyOfCurrentState());
-        int returnCode = presenter.onModelUpdateEvent(new ModelUpdateEvent(this,1,message,field.makeCopyOfCurrentState()));
+        int returnCode = presenter.onModelUpdateEvent(event);
         if(returnCode == 1){
             try {
                 // TODO переделать на invokeLater чтобы модель не затыкалась в этом методе из-за медленности отрисовки

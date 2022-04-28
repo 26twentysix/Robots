@@ -1,7 +1,6 @@
 package com.lilangel.gui;
 
-import com.lilangel.model.ModelUpdateEvent;
-import com.lilangel.model.ObjectOnTile;
+import com.lilangel.models.ModelUpdateEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +18,7 @@ public class GameVisualizer extends JPanel implements ModelView {
 
     private final int DRAW_QUEUE_SIZE = 1000;
 
-    private Queue<ModelUpdateEvent> drawQueue = new ArrayDeque<>();
+    private final Queue<ModelUpdateEvent> drawQueue = new ArrayDeque<>();
 
     public GameVisualizer(GameWindow gameWindow) {
         this.drawer = new Drawer();
