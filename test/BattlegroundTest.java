@@ -1,5 +1,5 @@
 import com.lilangel.models.Field;
-import com.lilangel.models.ModelConstants;
+import com.lilangel.models.enums.ModelConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
