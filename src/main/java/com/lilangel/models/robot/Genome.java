@@ -1,4 +1,6 @@
-package com.lilangel.models;
+package com.lilangel.models.robot;
+
+import com.lilangel.models.enums.ObjectOnTile;
 
 import java.util.Random;
 

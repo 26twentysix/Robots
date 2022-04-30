@@ -1,6 +1,6 @@
-package com.lilangel.models;
+package com.lilangel.models.robot;
 
-import com.lilangel.models.actions.*;
+import com.lilangel.models.robot.actions.*;
 
 /**
  * Class that describes Robot
@@ -59,7 +59,7 @@ public class Robot {
         this.active = true;
     }
 
-    boolean isAlive() {
+    public boolean isAlive() {
         return energy > 0 && healthpoints > 0;
     }
 
@@ -72,7 +72,7 @@ public class Robot {
         this.active = true;
     }
 
-    RobotAction prepareAction() {
+    public RobotAction prepareAction() {
         RobotAction action = new StandStillRobotAction(new ActionParameters(0));//StandStill do nothing, so ActionParams with 0
         if (isAlive()) {
             int geneValue = genome.getGene();

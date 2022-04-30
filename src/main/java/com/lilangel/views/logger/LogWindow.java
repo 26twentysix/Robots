@@ -1,4 +1,4 @@
-package com.lilangel.gui;
+package com.lilangel.views.logger;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;

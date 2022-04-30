@@ -1,8 +1,8 @@
-package com.lilangel.models.actions;
+package com.lilangel.models.robot.actions;
 
 import com.lilangel.models.Field;
-import com.lilangel.models.ObjectOnTile;
-import com.lilangel.models.Robot;
+import com.lilangel.models.enums.ObjectOnTile;
+import com.lilangel.models.robot.Robot;
 
 public class AttackRobotAction implements RobotAction {
 

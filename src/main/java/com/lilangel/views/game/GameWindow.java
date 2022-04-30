@@ -1,13 +1,12 @@
-package com.lilangel.gui;
+package com.lilangel.views.game;
 
-import com.lilangel.presenter.ViewListener;
+import com.lilangel.presenters.ViewListener;
+import com.lilangel.views.game.GameVisualizer;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
 
 import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
-import javax.swing.text.View;
 
 public class GameWindow extends JInternalFrame {
     private final GameVisualizer visualizer;
@@ -16,7 +15,7 @@ public class GameWindow extends JInternalFrame {
     public GameWindow(ViewListener presenter) {
         super("Игровое поле", false, false, false, true);
         this.presenter = presenter;
-        this.visualizer = new GameVisualizer(this);
+        this.visualizer = new GameVisualizer();
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(visualizer, BorderLayout.CENTER);
         getContentPane().add(panel);

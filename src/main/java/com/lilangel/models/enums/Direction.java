@@ -1,4 +1,4 @@
-package com.lilangel.models;
+package com.lilangel.models.enums;
 
 public enum Direction {
     RIGHT,

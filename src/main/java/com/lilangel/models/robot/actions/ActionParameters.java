@@ -1,6 +1,6 @@
-package com.lilangel.models.actions;
+package com.lilangel.models.robot.actions;
 
-import com.lilangel.models.Direction;
+import com.lilangel.models.enums.Direction;
 
 public class ActionParameters {
     private final int gene;

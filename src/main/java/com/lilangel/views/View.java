@@ -1,11 +1,11 @@
-package com.lilangel.gui;
+package com.lilangel.views;
 
 import java.awt.event.ActionEvent;
 
 /**
  * MVP View component, responsible for drawing and telling Presenter about User interaction with app
  */
-public interface ModelView {
+public interface View {
     /**
      * Method that starts the main app window {@link MainApplicationFrame}
      */

@@ -1,6 +1,7 @@
-package com.lilangel.gui;
+package com.lilangel.views.game;
 
 import com.lilangel.models.ModelUpdateEvent;
+import com.lilangel.views.View;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,14 +14,14 @@ import java.util.Timer;
 /**
  * Class that visualize the Model through MVP pattern (for now it doesn't)
  */
-public class GameVisualizer extends JPanel implements ModelView {
+public class GameVisualizer extends JPanel implements View {
     private final Drawer drawer;
 
     private final int DRAW_QUEUE_SIZE = 1000;
 
-    private final Queue<ModelUpdateEvent> drawQueue = new ArrayDeque<>();
+    private final Queue<FieldDrawEvent> drawQueue = new ArrayDeque<>();
 
-    public GameVisualizer(GameWindow gameWindow) {
+    public GameVisualizer() {
         this.drawer = new Drawer();
         addMouseListener(new MouseAdapter() {
             @Override
@@ -81,11 +82,12 @@ public class GameVisualizer extends JPanel implements ModelView {
 
     @Override
     public int addDrawEvent(ActionEvent e) {
-        if (drawQueue.size() > DRAW_QUEUE_SIZE) {
-            return 1;
-        } else {
-            this.drawQueue.add((ModelUpdateEvent) e);
-            return 0;
+        if (drawQueue.size() <= DRAW_QUEUE_SIZE) {
+            if (e instanceof FieldDrawEvent) {
+                this.drawQueue.add((FieldDrawEvent) e);
+                return 0;
+            }
         }
+        return 1;
     }
 }

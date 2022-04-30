@@ -1,6 +1,6 @@
-package com.lilangel.gui;
+package com.lilangel.views.game;
 
-import com.lilangel.models.ObjectOnTile;
+import com.lilangel.models.enums.ObjectOnTile;
 
 import java.awt.*;
 

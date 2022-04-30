@@ -1,4 +1,4 @@
-package com.lilangel.models;
+package com.lilangel.models.robot;
 
 public record Coordinates(int xPos, int yPos) {
     @Override

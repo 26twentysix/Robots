@@ -1,7 +1,7 @@
-package com.lilangel.models.actions;
+package com.lilangel.models.robot.actions;
 
 import com.lilangel.models.Field;
-import com.lilangel.models.Robot;
+import com.lilangel.models.robot.Robot;
 
 public class RepairRobotAction implements RobotAction {
 

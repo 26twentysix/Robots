@@ -1,7 +1,11 @@
-package com.lilangel.gui;
+package com.lilangel.views;
 
 import com.lilangel.log.Logger;
-import com.lilangel.presenter.*;
+import com.lilangel.presenters.*;
+import com.lilangel.views.game.GameWindow;
+import com.lilangel.views.logger.LogWindow;
+import com.lilangel.views.monitor.MonitorVisualizer;
+import com.lilangel.views.monitor.MonitorWindow;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -26,9 +30,14 @@ public class MainApplicationFrame extends JFrame {
     private final JDesktopPane desktopPane = new JDesktopPane();
 
     private final GameWindow gameWindow;
+    private final MonitorWindow monitorWindow;
 
-    public ModelView getGameVisualizer() {
+    public View getGameVisualizer() {
         return this.gameWindow.getVisualizer();
+    }
+
+    public View getMonitorVisualizer() {
+        return this.monitorWindow.getVisualizer();
     }
 
     public MainApplicationFrame(ViewListener presenter) {
@@ -43,6 +52,8 @@ public class MainApplicationFrame extends JFrame {
         setContentPane(desktopPane);
 
         this.gameWindow = createGameWindow(presenter);
+        this.monitorWindow = createMonitorWindow(presenter);
+        addWindow(monitorWindow);
         addWindow(gameWindow);
         addWindow(createLogWindow());
 
@@ -64,6 +75,13 @@ public class MainApplicationFrame extends JFrame {
         logWindow.pack();
         Logger.debug("Протокол работает");
         return logWindow;
+    }
+
+    protected MonitorWindow createMonitorWindow(ViewListener presenter){
+        MonitorWindow monitorWindow = new MonitorWindow(presenter);
+        monitorWindow.setLocation(10,550);
+        monitorWindow.setSize(210,362);
+        return monitorWindow;
     }
 
     protected void addWindow(JInternalFrame frame) {
