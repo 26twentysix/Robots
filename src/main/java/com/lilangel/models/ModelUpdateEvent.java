@@ -1,5 +1,7 @@
 package com.lilangel.models;
 
+import com.lilangel.models.enums.ObjectOnTile;
+
 import java.awt.event.ActionEvent;
 
 public class ModelUpdateEvent extends ActionEvent {
