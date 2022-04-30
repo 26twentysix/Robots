@@ -1,12 +1,17 @@
 package com.lilangel.models;
 
-import com.lilangel.models.actions.RobotAction;
+import com.lilangel.models.robot.actions.RobotAction;
+import com.lilangel.models.enums.ModelConstants;
+import com.lilangel.models.enums.ObjectOnTile;
+import com.lilangel.models.robot.Coordinates;
+import com.lilangel.models.robot.Robot;
 
 import java.util.*;
 
 public class Field {
     private final ObjectOnTile[][] field;
     private ObjectOnTile[][] previousState;
+
     private final int width = ModelConstants.FIELD_WIDTH.value;
     private final int height = ModelConstants.FIELD_HEIGT.value;
 
@@ -16,8 +21,10 @@ public class Field {
 
     private boolean hasChanged;
 
-    ObjectOnTile[][] getField() {
-        return this.field;
+    private Robot observableRobot;
+
+    public Robot getObservableRobot() {
+        return observableRobot;
     }
 
     public ObjectOnTile getTile(int x, int y) {

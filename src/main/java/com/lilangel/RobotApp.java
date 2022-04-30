@@ -1,9 +1,11 @@
 package com.lilangel;
 
-import com.lilangel.gui.MainApplicationFrame;
 import com.lilangel.models.Model;
 import com.lilangel.models.RobotsModel;
-import com.lilangel.presenter.Presenter;
+import com.lilangel.presenters.ModelListener;
+import com.lilangel.presenters.MonitorPresenter;
+import com.lilangel.views.MainApplicationFrame;
+import com.lilangel.presenters.GamePresenter;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,26 +14,35 @@ import java.awt.*;
  * Main app class, that initialize Model, View and Presenter and starts the things
  */
 public class RobotApp {
-    final Model model;
+    final RobotsModel model;
     final MainApplicationFrame frame;
-    final Presenter presenter;
+    final GamePresenter gamePresenter;
+    final MonitorPresenter monitorPresenter;
 
     public RobotApp() {
-        this.presenter = new Presenter();
+        this.gamePresenter = new GamePresenter();
+        this.monitorPresenter = new MonitorPresenter();
+
+        this.frame = new MainApplicationFrame(gamePresenter);
+
         this.model = new RobotsModel();
-        this.model.setPresenter(presenter);
-        this.frame = new MainApplicationFrame(presenter);
-        presenter.setModel(model);
-        presenter.setView(this.frame.getGameVisualizer());
+        this.model.setPresenters(new ModelListener[]{gamePresenter, monitorPresenter});
+
+        gamePresenter.setModel(model);
+        gamePresenter.setView(this.frame.getGameVisualizer());
+
+        monitorPresenter.setModel(model);
+        monitorPresenter.setView(this.frame.getMonitorVisualizer());
     }
 
     public void startApp() {
-        var frameThread = new Thread(this::startFrame);
+//        var frameThread = new Thread(this::startFrame);
         var modelThread = new Thread(model);
         modelThread.setDaemon(true);
         modelThread.start();
 
-        frameThread.start();
+//        frameThread.start();
+        this.startFrame();
     }
 
     public void startFrame() {

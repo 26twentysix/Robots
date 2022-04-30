@@ -1,6 +1,6 @@
 package com.lilangel.models;
 
-import com.lilangel.presenter.ModelListener;
+import com.lilangel.presenters.ModelListener;
 
 /**
  * Inteface for the model
@@ -8,5 +8,5 @@ import com.lilangel.presenter.ModelListener;
 public interface Model extends Runnable{
     void notifyPresenter(String message);
 
-    void setPresenter(ModelListener presenter);
+    void setPresenters(ModelListener[] presenters);
 }
