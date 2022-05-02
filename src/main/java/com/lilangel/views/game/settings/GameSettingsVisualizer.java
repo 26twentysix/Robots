@@ -17,6 +17,7 @@ public class GameSettingsVisualizer extends JPanel implements View {
     private ViewListener listener;
 
     public GameSettingsVisualizer(){
+        this.setLayout(null);
         JButton speedUpButton = createButton(new ImageIcon("src/resources/mc_button_speedup.png"),
                 new ImageIcon("src/resources/mc_button_speedup_mouseover.png"),
                 new ImageIcon("src/resources/mc_button_speedup_click.png"),
@@ -43,11 +44,6 @@ public class GameSettingsVisualizer extends JPanel implements View {
         add(speedDownButton);
         add(pauseButton);
         add(playButton);
-        speedUpButton.setVisible(true);
-        speedDownButton.setVisible(true);
-        pauseButton.setVisible(true);
-        speedInfoButton.setVisible(true);
-        this.setDoubleBuffered(true);
         this.setBounds(0,0,425,127);
     }
 

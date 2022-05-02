@@ -14,7 +14,7 @@ public class GameSettingsWindow extends JInternalFrame {
     private final GameSettingsVisualizer visualizer;
 
     public GameSettingsWindow() {
-        super("Настройки", true, false, false, true);
+        super("Настройки", false, false, false, true);
         this.visualizer = new GameSettingsVisualizer();
         JPanel panel = new JPanel(null);
         panel.add(visualizer);
