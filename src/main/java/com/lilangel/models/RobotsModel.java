@@ -47,6 +47,11 @@ public class RobotsModel implements Model, FieldStateModel, MonitorModel{
     }
 
     @Override
+    public void selectRobot(int x, int y) {
+        field.observeRobot(x,y);
+    }
+
+    @Override
     public Robot getObservableRobot() {
         return field.getObservableRobot();
     }

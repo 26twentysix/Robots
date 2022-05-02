@@ -4,4 +4,5 @@ import com.lilangel.models.enums.ObjectOnTile;
 
 public interface FieldStateModel extends Model{
     ObjectOnTile[][] getField();
+    void selectRobot(int x, int y);
 }

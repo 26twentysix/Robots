@@ -1,18 +1,15 @@
 package com.lilangel.presenters;
 
 import com.lilangel.models.FieldStateModel;
-import com.lilangel.views.DrawEvent;
-import com.lilangel.views.MainApplicationFrame;
-import com.lilangel.views.ReturnCode;
-import com.lilangel.views.View;
-import com.lilangel.views.game.FieldDrawEvent;
+import com.lilangel.views.*;
+import com.lilangel.views.game.main.FieldDrawEvent;
 import com.lilangel.views.game.enums.GameSpeed;
+import com.lilangel.views.game.main.FieldClickEvent;
+import com.lilangel.views.game.settings.ButtonClickEvent;
+import com.lilangel.views.game.settings.SpeedModeButtonDrawEvent;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayDeque;
-import java.util.Queue;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 /**
  * MVP Presenter component, responsible for updating View and giving tasks for Model
@@ -29,26 +26,30 @@ public class GamePresenter implements ModelListener, ViewListener {
 
     View settingView;
 
-    public GamePresenter(MainApplicationFrame frame){
+    Timer gameViewTimer;
+
+    public GamePresenter(MainApplicationFrame frame) {
         this.gameView = frame.getGameVisualizer();
         this.settingView = frame.getGameSettingsVisualizer();
         this.gameView.setListener(this);
         this.settingView.setListener(this);
+
+        this.gameViewTimer = new Timer(true);
+        scheduleGameViewUpdate(gameViewTimer,GameSpeed.NORMAL);
+
         new Timer(true).scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                settingView.update(new DrawEvent(new Object(),0,"nothing"));
+                settingView.update();
             }
-        },0,16);
-        scheduleGameViewUpdate(GameSpeed.NORMAL);
+        }, 0, 16);
     }
 
-    private void scheduleGameViewUpdate(GameSpeed speed){
-        Timer timer = new Timer(true);
+    private void scheduleGameViewUpdate(Timer timer, GameSpeed speed) {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if(!drawQueue.isEmpty())
+                if (!drawQueue.isEmpty())
                     gameView.update(drawQueue.poll());
             }
         }, 0, (int) (100 * speed.value));
@@ -58,10 +59,10 @@ public class GamePresenter implements ModelListener, ViewListener {
     public void onModelUpdateEvent(ActionEvent e) {
         if (e == null || "no".equals(e.getActionCommand())) return;
 
-        FieldDrawEvent event = new FieldDrawEvent(e.getSource(),0,"redraw idk", model.getField());
+        FieldDrawEvent event = new FieldDrawEvent(e.getSource(), 0, "redraw idk", model.getField());
         ReturnCode code = addDrawEvent(event);
 
-        while (code == ReturnCode.QUEUE_IS_FULL){
+        while (code == ReturnCode.QUEUE_IS_FULL) {
             try {
                 Thread.sleep(10);
                 code = addDrawEvent(event);
@@ -82,6 +83,57 @@ public class GamePresenter implements ModelListener, ViewListener {
 
     @Override
     public void onViewEvent(ActionEvent e) {
-        //TODO вот тут должен быть диспатчер
+        Source source = (Source) e.getSource();
+        switch (source) {
+            case GAME_VISUALIZER -> gameVisualizerEventHandler(e);
+            case GAME_SETTINGS_VISUALIZER -> gameSettingsVisualizerEventHandler(e);
+            case MONITOR_VISUALIZER -> {
+                //igonre
+            }
+        }
     }
+
+    private void gameVisualizerEventHandler(ActionEvent e) {
+        if (e != null)
+            if (e instanceof FieldClickEvent event) {
+                model.selectRobot(event.getTile().x, event.getTile().y);
+                System.out.println("handler " + event.getTile().x + " " + event.getTile().y);
+            }
+    }
+
+    private int i = 3;
+    private int previousI = i;
+    Map<Integer, GameSpeed> speedMap = new HashMap<>() {{
+        put(5, GameSpeed.VERY_FAST);
+        put(4, GameSpeed.FAST);
+        put(3, GameSpeed.NORMAL);
+        put(2, GameSpeed.SLOW);
+        put(1, GameSpeed.VERY_SLOW);
+        put(0, GameSpeed.PAUSE);
+    }};
+
+    private void gameSettingsVisualizerEventHandler(ActionEvent e) {
+        if (e != null)
+            if (e instanceof ButtonClickEvent event) {
+                switch (event.getEvent()) {
+                    case CLICK_ON_PAUSE_BUTTON -> {
+                        previousI = i;
+                        i = 0;
+                    }
+                    case CLICK_ON_PLAY_BUTTON -> i = previousI;
+                    case CLICK_ON_GAME_SPEED_UP -> {
+                        if (i < 5) i++;
+                    }
+                    case CLICK_ON_GAME_SPEED_DOWN -> {
+                        if (i > 0) i--;
+                    }
+                }
+                gameViewTimer.cancel();
+                gameViewTimer = new Timer(true);
+                GameSpeed mode = speedMap.get(i);
+                settingView.update(new SpeedModeButtonDrawEvent(this,0,"",mode));
+                scheduleGameViewUpdate(gameViewTimer, mode);
+            }
+    }
+
 }

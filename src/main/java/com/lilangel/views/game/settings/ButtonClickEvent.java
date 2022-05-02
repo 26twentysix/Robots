@@ -1,4 +1,4 @@
-package com.lilangel.views.game;
+package com.lilangel.views.game.settings;
 
 import com.lilangel.views.game.enums.ButtonClickEvents;
 

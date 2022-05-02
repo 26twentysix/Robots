@@ -22,25 +22,21 @@ public class RobotApp {
         this.frame = new MainApplicationFrame();
 
         this.gamePresenter = new GamePresenter(this.frame);
-        this.monitorPresenter = new MonitorPresenter();
+        this.monitorPresenter = new MonitorPresenter(this.frame);
 
         this.model = new RobotsModel();
         this.model.setPresenters(new ModelListener[]{gamePresenter, monitorPresenter});
 
         gamePresenter.setModel(model);
-
         monitorPresenter.setModel(model);
-        monitorPresenter.setView(this.frame.getMonitorVisualizer());
     }
 
     public void startApp() {
-//        var frameThread = new Thread(this::startFrame);
         var modelThread = new Thread(model);
         modelThread.setDaemon(true);
         modelThread.start();
 
-//        frameThread.start();
-        this.startFrame();
+        SwingUtilities.invokeLater(this::startFrame);
     }
 
     public void startFrame() {

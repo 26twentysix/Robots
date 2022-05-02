@@ -1,4 +1,4 @@
-package com.lilangel.views.game;
+package com.lilangel.views.game.main;
 
 import com.lilangel.models.enums.ObjectOnTile;
 import com.lilangel.views.DrawEvent;

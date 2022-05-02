@@ -2,9 +2,8 @@ package com.lilangel.views.game.main;
 
 import com.lilangel.presenters.ViewListener;
 import com.lilangel.views.DrawEvent;
+import com.lilangel.views.Source;
 import com.lilangel.views.View;
-import com.lilangel.views.game.FieldClickEvent;
-import com.lilangel.views.game.FieldDrawEvent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,10 +30,9 @@ public class GameVisualizer extends JPanel implements View {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                notifyListeners(new ActionEvent(e.getSource(),0,e.paramString()));
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     Point currentPosition = e.getPoint();
-                    notifyListeners(new FieldClickEvent(e.getSource(), 0, e.paramString(),
+                    notifyListeners(new FieldClickEvent(Source.GAME_VISUALIZER, 0, e.paramString(),
                             new Point(currentPosition.x / 16,currentPosition.y / 16)));
                 }
             }
@@ -58,6 +56,11 @@ public class GameVisualizer extends JPanel implements View {
     @Override
     public void notifyListeners(ActionEvent e) {
         listener.onViewEvent(e);
+    }
+
+    @Override
+    public void update() {
+
     }
 
     @Override

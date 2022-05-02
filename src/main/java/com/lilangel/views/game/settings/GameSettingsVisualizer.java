@@ -2,8 +2,10 @@ package com.lilangel.views.game.settings;
 
 import com.lilangel.presenters.ViewListener;
 import com.lilangel.views.DrawEvent;
+import com.lilangel.views.Source;
 import com.lilangel.views.View;
 import com.lilangel.views.game.enums.ButtonClickEvents;
+import com.lilangel.views.game.enums.GameSpeed;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +13,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.lilangel.views.game.enums.ButtonClickEvents.*;
 
 public class GameSettingsVisualizer extends JPanel implements View {
 
@@ -25,7 +29,7 @@ public class GameSettingsVisualizer extends JPanel implements View {
         JButton speedDownButton = createButton(new ImageIcon("src/resources/mc_button_speeddown.png"),
                 new ImageIcon("src/resources/mc_button_speeddown_mouseover.png"),
                 new ImageIcon("src/resources/mc_button_speeddown_click.png"),
-                5, 5, 200, 40, ButtonClickEvents.CLICK_ON_GAME_SPEED_DOWN.command, new ButtonClickListener());
+                5, 5, 200, 40, CLICK_ON_GAME_SPEED_DOWN.command, new ButtonClickListener());
 
         JButton pauseButton = createButton(new ImageIcon("src/resources/mc_button_pause.png"),
                 new ImageIcon("src/resources/mc_button_pause_mouseover.png"),
@@ -34,8 +38,8 @@ public class GameSettingsVisualizer extends JPanel implements View {
         JButton playButton = createButton(new ImageIcon("src/resources/mc_button_play.png"),
                 new ImageIcon("src/resources/mc_button_play_mouseover.png"),
                 new ImageIcon("src/resources/mc_button_play_click.png"),
-                5, 50, 32, 32, ButtonClickEvents.CLICK_ON_PLAY_BUTTON.command, new ButtonClickListener());
-        playButton.setVisible(false);
+                65, 50, 32, 32, ButtonClickEvents.CLICK_ON_PLAY_BUTTON.command, new ButtonClickListener());
+        playButton.setVisible(true);
         JButton speedInfoButton = createSimpleButton(new ImageIcon("src/resources/game_speed_normal.png"),
                 110, 50, 300, 40);
 
@@ -69,22 +73,17 @@ public class GameSettingsVisualizer extends JPanel implements View {
         return jButton;
     }
 
-    Map<String,ButtonClickEvents> eventsMap = new HashMap<>() {{
-        put(ButtonClickEvents.CLICK_ON_GAME_SPEED_UP.command, ButtonClickEvents.CLICK_ON_GAME_SPEED_UP);
-        put(ButtonClickEvents.CLICK_ON_GAME_SPEED_DOWN.command, ButtonClickEvents.CLICK_ON_GAME_SPEED_DOWN);
-        put(ButtonClickEvents.CLICK_ON_PAUSE_BUTTON.command, ButtonClickEvents.CLICK_ON_PAUSE_BUTTON);
-        put(ButtonClickEvents.CLICK_ON_PLAY_BUTTON.command, ButtonClickEvents.CLICK_ON_PLAY_BUTTON);
-    }};
-
     class ButtonClickListener implements ActionListener {
+        Map<String,ButtonClickEvents> eventsMap = new HashMap<>() {{
+            put(ButtonClickEvents.CLICK_ON_GAME_SPEED_UP.command, ButtonClickEvents.CLICK_ON_GAME_SPEED_UP);
+            put(ButtonClickEvents.CLICK_ON_GAME_SPEED_DOWN.command, CLICK_ON_GAME_SPEED_DOWN);
+            put(ButtonClickEvents.CLICK_ON_PAUSE_BUTTON.command, ButtonClickEvents.CLICK_ON_PAUSE_BUTTON);
+            put(ButtonClickEvents.CLICK_ON_PLAY_BUTTON.command, ButtonClickEvents.CLICK_ON_PLAY_BUTTON);
+        }};
+
         @Override
         public void actionPerformed(ActionEvent e) {
-            switch (eventsMap.get(e.getActionCommand())) {
-                case CLICK_ON_GAME_SPEED_DOWN -> System.out.println(1);
-                case CLICK_ON_GAME_SPEED_UP -> System.out.println(2);
-                case CLICK_ON_PAUSE_BUTTON -> System.out.println(3);
-                case CLICK_ON_PLAY_BUTTON -> System.out.println(4);
-            }
+            notifyListeners(new ButtonClickEvent(Source.GAME_SETTINGS_VISUALIZER,e.getID(),e.getActionCommand(),eventsMap.get(e.getActionCommand())));
         }
     }
 
@@ -99,9 +98,15 @@ public class GameSettingsVisualizer extends JPanel implements View {
     }
 
     @Override
-    public void update(DrawEvent event) {
+    public void update() {
+        update(new DrawEvent(new Object(),0,""));
+    }
+
+    @Override
+    public void update(DrawEvent e) {
+        if(e instanceof SpeedModeButtonDrawEvent event)
+            changeSpeedInfoButtonIcon(event.getMode());
         onRedrawEvent();
-        this.setVisible(true);
     }
 
     @Override
@@ -118,5 +123,19 @@ public class GameSettingsVisualizer extends JPanel implements View {
 
     protected void onRedrawEvent() {
         EventQueue.invokeLater(this::repaint);
+    }
+
+    Map<GameSpeed,String> iconsMap = new HashMap<>(){{
+        put(GameSpeed.NORMAL, "src/resources/game_speed_normal.png");
+        put(GameSpeed.FAST, "src/resources/game_speed_fast.png");
+        put(GameSpeed.VERY_FAST, "src/resources/game_speed_veryfast.png");
+        put(GameSpeed.SLOW,"src/resources/game_speed_slow.png");
+        put(GameSpeed.VERY_SLOW,"src/resources/game_speed_veryslow.png");
+        put(GameSpeed.PAUSE,"src/resources/game_speed_pause.png");
+    }};
+
+    private void changeSpeedInfoButtonIcon(GameSpeed mode){
+        JButton speedModeButton = (JButton)this.getComponentAt(110,50);
+        speedModeButton.setIcon(new ImageIcon(iconsMap.get(mode)));
     }
 }

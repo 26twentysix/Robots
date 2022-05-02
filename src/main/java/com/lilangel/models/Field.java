@@ -23,8 +23,21 @@ public class Field {
 
     private Robot observableRobot;
 
+    void observeRobot(int x, int y){
+        if(robotsMapping.containsKey(new Coordinates(x,y))){
+            this.observableRobot = robotsMapping.get(new Coordinates(x,y));
+            System.out.println("field "+observableRobot.getPositionX() + " " + observableRobot.getPositionY());
+        }
+    }
+
     public Robot getObservableRobot() {
-        return observableRobot;
+        try {
+            if (observableRobot != null)
+            return (Robot) observableRobot.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public ObjectOnTile getTile(int x, int y) {
@@ -134,7 +147,6 @@ public class Field {
         }
         this.robots = aliveList;
 
-//        hasChanged = hasFieldChanged();
     }
 
     public ObjectOnTile[][] makeCopyOfCurrentState(){
@@ -149,9 +161,7 @@ public class Field {
             for (int j = 0; j < width; j++) {
                 if (previousState[i][j] != field[i][j])
                     return "yes: " + i +";"+ j + " " + previousState[i][j] + " --> " + field[i][j];
-//                    return true;
             }
         return "no";
-//        return false;
     }
 }

@@ -5,7 +5,8 @@ public enum GameSpeed {
     SLOW(2),
     NORMAL(1),
     FAST(0.5),
-    VERY_FAST(0.1);
+    VERY_FAST(0.1),
+    PAUSE(1000000);
 
     public final double value;
 

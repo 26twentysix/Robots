@@ -5,7 +5,7 @@ import com.lilangel.models.robot.actions.*;
 /**
  * Class that describes Robot
  */
-public class Robot {
+public class Robot implements Cloneable{
     private int positionX;
     private int positionY;
 
@@ -22,10 +22,26 @@ public class Robot {
         this.positionY += valueY;
     }
 
-    private final int maxEnergy = 10000000;
+    private final int maxEnergy = 1000000000;
     double energy;
     private final int maxHealthPoints = 100;
     int healthpoints;
+
+    public int getMaxEnergy() {
+        return maxEnergy;
+    }
+
+    public double getEnergy() {
+        return energy;
+    }
+
+    public int getHealthpoints() {
+        return healthpoints;
+    }
+
+    public int getMaxHealthPoints() {
+        return maxHealthPoints;
+    }
 
     public void pickUpEnergyCell(){
         energy += maxEnergy * 0.14;
@@ -88,5 +104,20 @@ public class Robot {
             } else action = new RepairRobotAction(parameters);
         }
         return action;
+    }
+
+    private Robot(Robot another) {
+        this.positionX = another.positionX;
+        this.positionY = another.positionY;
+        this.energy = another.energy;
+        this.healthpoints = another.healthpoints;
+        this.genome = another.genome;
+        this.active = another.active;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        Object clone = super.clone();
+        return new Robot(this);
     }
 }
