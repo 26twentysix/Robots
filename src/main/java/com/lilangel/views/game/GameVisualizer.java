@@ -1,8 +1,10 @@
 package com.lilangel.views.game;
 
 import com.lilangel.presenters.ViewListener;
+import com.lilangel.utils.Pair;
 import com.lilangel.views.ReturnCode;
 import com.lilangel.views.View;
+import com.lilangel.views.game.enums.GameSpeed;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +23,8 @@ public class GameVisualizer extends JPanel implements View {
     private final Queue<FieldDrawEvent> drawQueue = new ArrayDeque<>();
 
     private ViewListener listener;
+
+    public static GameSpeed updateRate = GameSpeed.NORMAL;
 
     public void setListener(ViewListener listener){
         this.listener = listener;
@@ -42,11 +46,17 @@ public class GameVisualizer extends JPanel implements View {
                  notifyPresenter, оттуда он попадает в onViewEvent, в которм уже будет диспатчер, который будет обрабатывать
                  ActionEvent'ы полученные
                 */
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    Point currentPosition = e.getPoint();
+                    notifyListeners(new FieldClickEvent(e.getSource(), 0, e.paramString(),
+                            new Pair(currentPosition.x / 16,currentPosition.y / 16)));
+                    //System.out.println(currentPosition.x / 16 + " " + currentPosition.y / 16);
+                }
             }
         });
         this.setDoubleBuffered(true);
         Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(task, 0, 100);
+        timer.scheduleAtFixedRate(task, 0, (int)(100 * updateRate.value));
     }
 
     TimerTask task = new TimerTask() {
