@@ -1,4 +1,4 @@
-package com.lilangel.execpions;
+package com.lilangel.exсeptions;
 
 public class OurNotImplemetedException extends RuntimeException{
 }
