@@ -22,7 +22,7 @@ public class Robot {
         this.positionY += valueY;
     }
 
-    private final int maxEnergy = 1000;
+    private final int maxEnergy = 10000000;
     double energy;
     private final int maxHealthPoints = 100;
     int healthpoints;

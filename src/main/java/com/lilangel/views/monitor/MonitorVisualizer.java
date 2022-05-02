@@ -1,11 +1,12 @@
 package com.lilangel.views.monitor;
 
 import com.lilangel.presenters.ViewListener;
+import com.lilangel.views.DrawEvent;
 import com.lilangel.views.ReturnCode;
 import com.lilangel.views.View;
+import com.lilangel.views.game.FieldDrawEvent;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class MonitorVisualizer extends JPanel implements View {
@@ -23,7 +24,7 @@ public class MonitorVisualizer extends JPanel implements View {
     }
 
     @Override
-    public ReturnCode addDrawEvent(ActionEvent e) {
-        return ReturnCode.OK;
+    public void update(DrawEvent event) {
+
     }
 }

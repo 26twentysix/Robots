@@ -2,11 +2,9 @@ package com.lilangel.views;
 
 import com.lilangel.log.Logger;
 import com.lilangel.presenters.*;
-import com.lilangel.views.game.GameSettingsVisualizer;
-import com.lilangel.views.game.GameSettingsWindow;
-import com.lilangel.views.game.GameWindow;
+import com.lilangel.views.game.settings.GameSettingsWindow;
+import com.lilangel.views.game.main.GameWindow;
 import com.lilangel.views.logger.LogWindow;
-import com.lilangel.views.monitor.MonitorVisualizer;
 import com.lilangel.views.monitor.MonitorWindow;
 
 import java.awt.*;
@@ -43,7 +41,11 @@ public class MainApplicationFrame extends JFrame {
         return this.monitorWindow.getVisualizer();
     }
 
-    public MainApplicationFrame(ViewListener presenter) {
+    public View getGameSettingsVisualizer() {
+        return this.gameSettingsWindow.getVisualizer();
+    }
+
+    public MainApplicationFrame() {
         //Make the big window be indented 50 pixels from each edge
         //of the screen.
         int inset = 50;
@@ -54,9 +56,9 @@ public class MainApplicationFrame extends JFrame {
 
         setContentPane(desktopPane);
 
-        this.gameWindow = createGameWindow(presenter);
-        this.monitorWindow = createMonitorWindow(presenter);
-        this.gameSettingsWindow = createGameSettingsWindow(presenter);
+        this.gameWindow = createGameWindow();
+        this.monitorWindow = createMonitorWindow();
+        this.gameSettingsWindow = createGameSettingsWindow();
         addWindow(monitorWindow);
         addWindow(gameWindow);
         addWindow(gameSettingsWindow);
@@ -66,8 +68,8 @@ public class MainApplicationFrame extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
     }
 
-    protected GameWindow createGameWindow(ViewListener presenter) {
-        GameWindow gameWindow = new GameWindow(presenter);
+    protected GameWindow createGameWindow() {
+        GameWindow gameWindow = new GameWindow();
         gameWindow.setLocation(260, 10);
         gameWindow.setSize(1611, 674);
         return gameWindow;
@@ -82,15 +84,15 @@ public class MainApplicationFrame extends JFrame {
         return logWindow;
     }
 
-    protected MonitorWindow createMonitorWindow(ViewListener presenter){
-        MonitorWindow monitorWindow = new MonitorWindow(presenter);
-        monitorWindow.setLocation(10,550);
-        monitorWindow.setSize(210,362);
+    protected MonitorWindow createMonitorWindow() {
+        MonitorWindow monitorWindow = new MonitorWindow();
+        monitorWindow.setLocation(10, 550);
+        monitorWindow.setSize(210, 362);
         return monitorWindow;
     }
 
-    protected GameSettingsWindow createGameSettingsWindow(ViewListener presenter) {
-        GameSettingsWindow gameSettingsWindow = new GameSettingsWindow(presenter);
+    protected GameSettingsWindow createGameSettingsWindow() {
+        GameSettingsWindow gameSettingsWindow = new GameSettingsWindow();
         gameSettingsWindow.setLocation(260, 694);
         gameSettingsWindow.setSize(425, 127);
         return gameSettingsWindow;

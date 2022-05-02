@@ -1,6 +1,5 @@
 package com.lilangel;
 
-import com.lilangel.models.Model;
 import com.lilangel.models.RobotsModel;
 import com.lilangel.presenters.ModelListener;
 import com.lilangel.presenters.MonitorPresenter;
@@ -20,16 +19,15 @@ public class RobotApp {
     final MonitorPresenter monitorPresenter;
 
     public RobotApp() {
-        this.gamePresenter = new GamePresenter();
-        this.monitorPresenter = new MonitorPresenter();
+        this.frame = new MainApplicationFrame();
 
-        this.frame = new MainApplicationFrame(gamePresenter);
+        this.gamePresenter = new GamePresenter(this.frame);
+        this.monitorPresenter = new MonitorPresenter();
 
         this.model = new RobotsModel();
         this.model.setPresenters(new ModelListener[]{gamePresenter, monitorPresenter});
 
         gamePresenter.setModel(model);
-        gamePresenter.setView(this.frame.getGameVisualizer());
 
         monitorPresenter.setModel(model);
         monitorPresenter.setView(this.frame.getMonitorVisualizer());

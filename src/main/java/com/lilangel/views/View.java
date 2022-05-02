@@ -1,8 +1,8 @@
 package com.lilangel.views;
 
 import com.lilangel.presenters.ViewListener;
+import com.lilangel.views.game.FieldDrawEvent;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
@@ -16,5 +16,5 @@ public interface View {
 
     void setListener(ViewListener listener);
 
-    ReturnCode addDrawEvent(ActionEvent e);
+    void update(DrawEvent event);
 }
