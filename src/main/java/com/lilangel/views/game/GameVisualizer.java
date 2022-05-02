@@ -1,6 +1,7 @@
 package com.lilangel.views.game;
 
-import com.lilangel.models.ModelUpdateEvent;
+import com.lilangel.presenters.ViewListener;
+import com.lilangel.views.ReturnCode;
 import com.lilangel.views.View;
 
 import javax.swing.*;
@@ -17,21 +18,35 @@ import java.util.Timer;
 public class GameVisualizer extends JPanel implements View {
     private final Drawer drawer;
 
-    private final int DRAW_QUEUE_SIZE = 1000;
-
     private final Queue<FieldDrawEvent> drawQueue = new ArrayDeque<>();
+
+    private ViewListener listener;
+
+    public void setListener(ViewListener listener){
+        this.listener = listener;
+    }
 
     public GameVisualizer() {
         this.drawer = new Drawer();
         addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                notifyPresenter(new ActionEvent(e, 1, "mouseEvent"));
+            public void mousePressed(MouseEvent e) {
+                notifyListeners(new ActionEvent(e.getSource(),0,e.paramString()));
+                /*
+                 В этом методе надо обрабатывать нажатие мыши, на какие координаты, по ним вычислять клетку
+                 и потом эту клетку в ActionEvent'е отправлять в notifyPresenter().
+                 Возможно хорошей идеей будет отнаследовать свой класс адаптер и в нем логику прописывать для действий мыши.
+                 Аналогинчо для кнопок, для них только отдельные адаптеры-листенеры есть,
+                 кнопки в конструкторе или в приватном вспомогательном инит методе создаешь и им листенеры добавляешь
+                 В каждом методе-обработчике собирается ActionEvent с описанием че произошло, этот ивент отправляется в
+                 notifyPresenter, оттуда он попадает в onViewEvent, в которм уже будет диспатчер, который будет обрабатывать
+                 ActionEvent'ы полученные
+                */
             }
         });
         this.setDoubleBuffered(true);
         Timer timer = new Timer(true);
-        timer.scheduleAtFixedRate(task, 0, 300);
+        timer.scheduleAtFixedRate(task, 0, 100);
     }
 
     TimerTask task = new TimerTask() {
@@ -41,53 +56,32 @@ public class GameVisualizer extends JPanel implements View {
         }
     };
 
-    protected void onRedrawEvent() { // вот этот метод должен вызываться в цикле
+    protected void onRedrawEvent() {
         EventQueue.invokeLater(this::repaint);
     }
 
-//    ModelUpdateEvent previousState = new ModelUpdateEvent(this,0,"",new ObjectOnTile[200][300]);
-//    int i = 0;
-
     @Override
-    public void paint(Graphics g) { // вот этот метод умеет рисовать один кадр, используя для этого Drawer
+    public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2d = (Graphics2D) g;
         if (!drawQueue.isEmpty()) {
             var state = drawQueue.poll();
-//            System.out.print(i++);
-//            if (!stateChanged(previousState.getField(), state.getField())) {
-//                System.out.println(" state didnt changed");
-//                previousState = state;
-//            }
-            // Drawer должен отрисовывать один кадр
-//            System.out.println("Получил поле");
             drawer.draw(g2d, state.getField());
-//            previousState = state;
         }
     }
 
-//    boolean stateChanged(ObjectOnTile[][] firstState, ObjectOnTile[][] secondState) {
-//        for (int i = 0; i < firstState.length; i++)
-//            for (int j = 0; j < firstState[i].length; j++)
-//                if (firstState[i][j] != secondState[i][j]) {
-//                    return true;
-//                }
-//        return false;
-//    }
-
     @Override
-    public void notifyPresenter(ActionEvent e) {
-
+    public void notifyListeners(ActionEvent e) {
+        listener.onViewEvent(e);
     }
 
     @Override
-    public int addDrawEvent(ActionEvent e) {
+    public ReturnCode addDrawEvent(ActionEvent e) {
+        int DRAW_QUEUE_SIZE = 1000;
         if (drawQueue.size() <= DRAW_QUEUE_SIZE) {
-            if (e instanceof FieldDrawEvent) {
-                this.drawQueue.add((FieldDrawEvent) e);
-                return 0;
-            }
+            this.drawQueue.add((FieldDrawEvent) e);
+            return ReturnCode.OK;
         }
-        return 1;
+        return ReturnCode.QUEUE_IS_FULL;
     }
 }

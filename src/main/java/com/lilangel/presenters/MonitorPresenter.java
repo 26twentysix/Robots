@@ -3,6 +3,7 @@ package com.lilangel.presenters;
 import com.lilangel.views.View;
 import com.lilangel.models.Model;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 
 public class MonitorPresenter implements  ViewListener, ModelListener{
@@ -20,9 +21,8 @@ public class MonitorPresenter implements  ViewListener, ModelListener{
     }
 
     @Override
-    public int onModelUpdateEvent(ActionEvent e) {
+    public void onModelUpdateEvent(ActionEvent e) {
 
-        return 0;
     }
 
     @Override

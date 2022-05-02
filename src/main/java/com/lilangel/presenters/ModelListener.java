@@ -6,5 +6,5 @@ import java.awt.event.ActionEvent;
  * Interface that declares what events Model can invoke and Presenter must handle
  */
 public interface ModelListener {
-    int onModelUpdateEvent(ActionEvent e);
+    void onModelUpdateEvent(ActionEvent e);
 }
