@@ -92,7 +92,7 @@ public class MainApplicationFrame extends JFrame {
     protected GameSettingsWindow createGameSettingsWindow(ViewListener presenter) {
         GameSettingsWindow gameSettingsWindow = new GameSettingsWindow(presenter);
         gameSettingsWindow.setLocation(260, 694);
-        gameSettingsWindow.setSize(425, 85);
+        gameSettingsWindow.setSize(425, 127);
         return gameSettingsWindow;
     }
 
