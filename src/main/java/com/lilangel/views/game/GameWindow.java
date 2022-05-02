@@ -5,8 +5,7 @@ import com.lilangel.views.game.GameVisualizer;
 
 import java.awt.BorderLayout;
 
-import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
 public class GameWindow extends JInternalFrame {
     private final GameVisualizer visualizer;

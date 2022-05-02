@@ -2,6 +2,8 @@ package com.lilangel.views;
 
 import com.lilangel.log.Logger;
 import com.lilangel.presenters.*;
+import com.lilangel.views.game.GameSettingsVisualizer;
+import com.lilangel.views.game.GameSettingsWindow;
 import com.lilangel.views.game.GameWindow;
 import com.lilangel.views.logger.LogWindow;
 import com.lilangel.views.monitor.MonitorVisualizer;
@@ -31,6 +33,7 @@ public class MainApplicationFrame extends JFrame {
 
     private final GameWindow gameWindow;
     private final MonitorWindow monitorWindow;
+    private final GameSettingsWindow gameSettingsWindow;
 
     public View getGameVisualizer() {
         return this.gameWindow.getVisualizer();
@@ -53,8 +56,10 @@ public class MainApplicationFrame extends JFrame {
 
         this.gameWindow = createGameWindow(presenter);
         this.monitorWindow = createMonitorWindow(presenter);
+        this.gameSettingsWindow = createGameSettingsWindow(presenter);
         addWindow(monitorWindow);
         addWindow(gameWindow);
+        addWindow(gameSettingsWindow);
         addWindow(createLogWindow());
 
         setJMenuBar(generateMenuBar());
@@ -64,7 +69,7 @@ public class MainApplicationFrame extends JFrame {
     protected GameWindow createGameWindow(ViewListener presenter) {
         GameWindow gameWindow = new GameWindow(presenter);
         gameWindow.setLocation(260, 10);
-        gameWindow.setSize(1612, 902);
+        gameWindow.setSize(1611, 674);
         return gameWindow;
     }
 
@@ -82,6 +87,13 @@ public class MainApplicationFrame extends JFrame {
         monitorWindow.setLocation(10,550);
         monitorWindow.setSize(210,362);
         return monitorWindow;
+    }
+
+    protected GameSettingsWindow createGameSettingsWindow(ViewListener presenter) {
+        GameSettingsWindow gameSettingsWindow = new GameSettingsWindow(presenter);
+        gameSettingsWindow.setLocation(260, 694);
+        gameSettingsWindow.setSize(425, 85);
+        return gameSettingsWindow;
     }
 
     protected void addWindow(JInternalFrame frame) {
