@@ -40,15 +40,8 @@ public class Genome implements Cloneable{
         genomePointer%=genomeLimit;
     }
 
-    private Genome(Genome another){
-        this.genomeLimit = another.genomeLimit;
-        this.genomePointer = another.genomePointer;
-        this.genome = another.genome.clone();
-    }
-
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        Object clone = super.clone();
-        return new Genome(this);
+    public Genome clone() throws CloneNotSupportedException {
+        return (Genome)super.clone();
     }
 }

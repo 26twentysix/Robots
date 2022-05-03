@@ -106,18 +106,10 @@ public class Robot implements Cloneable{
         return action;
     }
 
-    private Robot(Robot another) {
-        this.positionX = another.positionX;
-        this.positionY = another.positionY;
-        this.energy = another.energy;
-        this.healthpoints = another.healthpoints;
-        this.genome = another.genome;
-        this.active = another.active;
-    }
-
     @Override
-    public Object clone() throws CloneNotSupportedException {
-        Object clone = super.clone();
-        return new Robot(this);
+    public Robot clone() throws CloneNotSupportedException {
+        Robot clone = (Robot)super.clone();
+        clone.genome = this.genome.clone();
+        return clone;
     }
 }

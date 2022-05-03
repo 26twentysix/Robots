@@ -33,7 +33,7 @@ public class Field {
     public Robot getObservableRobot() {
         try {
             if (observableRobot != null)
-                return (Robot) observableRobot.clone();
+                return observableRobot.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
@@ -142,7 +142,6 @@ public class Field {
             }
             if (robot.isAlive()) aliveList.add(robot);
             robot.setActive();
-            String a = fieldChanges();
             robotsMapping.put(new Coordinates(robot.getPositionX(), robot.getPositionY()), robot);
         }
         this.robots = aliveList;
