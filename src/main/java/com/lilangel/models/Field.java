@@ -33,7 +33,7 @@ public class Field {
     public Robot getObservableRobot() {
         try {
             if (observableRobot != null)
-            return (Robot) observableRobot.clone();
+                return (Robot) observableRobot.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();
         }
