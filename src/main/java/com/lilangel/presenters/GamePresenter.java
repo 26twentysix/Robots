@@ -8,6 +8,7 @@ import com.lilangel.views.game.main.FieldClickEvent;
 import com.lilangel.views.game.settings.ButtonClickEvent;
 import com.lilangel.views.game.settings.SpeedModeButtonDrawEvent;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.*;
 
@@ -35,7 +36,6 @@ public class GamePresenter implements ModelListener, ViewListener {
         this.settingView.setListener(this);
 
         this.gameViewTimer = new Timer(true);
-        scheduleGameViewUpdate(gameViewTimer,GameSpeed.NORMAL);
 
         new Timer(true).scheduleAtFixedRate(new TimerTask() {
             @Override
@@ -43,16 +43,12 @@ public class GamePresenter implements ModelListener, ViewListener {
                 settingView.update();
             }
         }, 0, 16);
-    }
-
-    private void scheduleGameViewUpdate(Timer timer, GameSpeed speed) {
-        timer.scheduleAtFixedRate(new TimerTask() {
+        new Timer(true).scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
-                if (!drawQueue.isEmpty())
-                    gameView.update(drawQueue.poll());
+                gameView.update(drawQueue.poll());
             }
-        }, 0, (int) (100 * speed.value));
+        }, 0, 16);
     }
 
     @Override
@@ -62,14 +58,8 @@ public class GamePresenter implements ModelListener, ViewListener {
         FieldDrawEvent event = new FieldDrawEvent(e.getSource(), 0, "redraw idk", model.getField());
         ReturnCode code = addDrawEvent(event);
 
-        while (code == ReturnCode.QUEUE_IS_FULL) {
-            try {
-                Thread.sleep(10);
-                code = addDrawEvent(event);
-            } catch (InterruptedException ex) {
-                ex.printStackTrace();
-            }
-        }
+        if (code != ReturnCode.OK)
+            EventQueue.invokeLater(() -> addDrawEvent(event));
     }
 
     private ReturnCode addDrawEvent(ActionEvent e) {
@@ -101,8 +91,8 @@ public class GamePresenter implements ModelListener, ViewListener {
             }
     }
 
-    private int i = 3;
-    private int previousI = i;
+    private int i = 0;
+    private int previousI = 3;
     Map<Integer, GameSpeed> speedMap = new HashMap<>() {{
         put(5, GameSpeed.VERY_FAST);
         put(4, GameSpeed.FAST);
@@ -130,9 +120,9 @@ public class GamePresenter implements ModelListener, ViewListener {
                 }
                 gameViewTimer.cancel();
                 gameViewTimer = new Timer(true);
-                GameSpeed mode = speedMap.get(i);
-                settingView.update(new SpeedModeButtonDrawEvent(this,0,"",mode));
-                scheduleGameViewUpdate(gameViewTimer, mode);
+                GameSpeed speed = speedMap.get(i);
+                settingView.update(new SpeedModeButtonDrawEvent(this, 0, "", speed));
+                model.setTactSpeed(speed);
             }
     }
 

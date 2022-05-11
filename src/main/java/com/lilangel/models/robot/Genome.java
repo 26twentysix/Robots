@@ -26,9 +26,9 @@ public class Genome implements Cloneable{
         int basePointerIncrease = 9;
         int value = switch (obj) {
             case WALL -> basePointerIncrease;
-            case ROBOT -> basePointerIncrease * 3;
+            case ROBOT, ROBOT_ENERGY_DEAD, ROBOT_HP_DEAD -> basePointerIncrease * 3;
             case ENERGY -> basePointerIncrease * 2;
-            case EMPTY -> basePointerIncrease * 4;
+            case EMPTY,ROBOT_HORIZONTAL_TRAIL,ROBOT_VERTICAL_TRAIL -> basePointerIncrease * 4;
         };
 
         this.genomePointer += value;

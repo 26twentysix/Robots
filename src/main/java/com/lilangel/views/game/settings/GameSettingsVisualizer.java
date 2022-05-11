@@ -35,12 +35,13 @@ public class GameSettingsVisualizer extends JPanel implements View {
                 new ImageIcon("src/resources/mc_button_pause_mouseover.png"),
                 new ImageIcon("src/resources/mc_button_pause_click.png"),
                 5, 50, 32, 32, ButtonClickEvents.CLICK_ON_PAUSE_BUTTON.command, new ButtonClickListener());
+        pauseButton.setEnabled(false);
         JButton playButton = createButton(new ImageIcon("src/resources/mc_button_play.png"),
                 new ImageIcon("src/resources/mc_button_play_mouseover.png"),
                 new ImageIcon("src/resources/mc_button_play_click.png"),
                 42, 50, 32, 32, ButtonClickEvents.CLICK_ON_PLAY_BUTTON.command, new ButtonClickListener());
-        playButton.setEnabled(false);
-        JButton speedInfoButton = createSimpleButton(new ImageIcon("src/resources/game_speed_normal.png"),
+        playButton.setEnabled(true);
+        JButton speedInfoButton = createSimpleButton(new ImageIcon("src/resources/game_speed_pause.png"),
                 110, 50, 300, 40);
 
         add(speedInfoButton);

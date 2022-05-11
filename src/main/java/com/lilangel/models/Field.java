@@ -26,7 +26,6 @@ public class Field {
     void observeRobot(int x, int y){
         if(robotsMapping.containsKey(new Coordinates(x,y))){
             this.observableRobot = robotsMapping.get(new Coordinates(x,y));
-            System.out.println("field "+observableRobot.getPositionX() + " " + observableRobot.getPositionY());
         }
     }
 

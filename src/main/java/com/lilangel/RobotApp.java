@@ -33,7 +33,7 @@ public class RobotApp {
 
     public void startApp() {
         var modelThread = new Thread(model);
-        modelThread.setDaemon(true);
+        modelThread.setDaemon(false);
         modelThread.start();
 
         SwingUtilities.invokeLater(this::startFrame);
