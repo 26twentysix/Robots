@@ -6,7 +6,8 @@ import com.lilangel.views.game.main.FieldDrawEvent;
 import com.lilangel.views.game.enums.GameSpeed;
 import com.lilangel.views.game.main.FieldClickEvent;
 import com.lilangel.views.game.settings.ButtonClickEvent;
-import com.lilangel.views.game.settings.SpeedModeButtonDrawEvent;
+import com.lilangel.views.game.settings.EvolutionTriggerButtonRedrawEvent;
+import com.lilangel.views.game.settings.SpeedModeButtonRedrawEvent;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -117,13 +118,17 @@ public class GamePresenter implements ModelListener, ViewListener {
                     case CLICK_ON_GAME_SPEED_DOWN -> {
                         if (i > 0) i--;
                     }
+                    case CLICK_ON_EVOLUTION_TRIGGER -> {
+                        boolean isActive = model.changeEvolutionActive();
+                        settingView.update(new EvolutionTriggerButtonRedrawEvent(this,0,"",isActive));
+                        return;
+                    }
                 }
                 gameViewTimer.cancel();
                 gameViewTimer = new Timer(true);
                 GameSpeed speed = speedMap.get(i);
-                settingView.update(new SpeedModeButtonDrawEvent(this, 0, "", speed));
+                settingView.update(new SpeedModeButtonRedrawEvent(this, 0, "", speed));
                 model.setTactSpeed(speed);
             }
     }
-
 }

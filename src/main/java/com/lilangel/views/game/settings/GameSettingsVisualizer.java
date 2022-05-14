@@ -43,13 +43,19 @@ public class GameSettingsVisualizer extends JPanel implements View {
         playButton.setEnabled(true);
         JButton speedInfoButton = createSimpleButton(new ImageIcon("src/resources/game_speed_pause.png"),
                 110, 50, 300, 40);
+        JButton evolutionTriggerButton = createButton(new ImageIcon("src/resources/start_evolution.png"),
+                new ImageIcon("src/resources/start_evolution_mouseover.png"),
+                new ImageIcon("src/resources/start_evolution_pressed.png"),
+                5,100,300,40, CLICK_ON_EVOLUTION_TRIGGER.command,new ButtonClickListener());
+        evolutionTriggerButton.setEnabled(false);
 
         add(speedInfoButton);
         add(speedUpButton);
         add(speedDownButton);
         add(pauseButton);
         add(playButton);
-        this.setBounds(0, 0, 425, 127);
+        add(evolutionTriggerButton);
+        this.setBounds(0, 0, 425, 177);
     }
 
     private JButton createButton(ImageIcon defaultIcon, ImageIcon hoverIcon, ImageIcon pressedIcon,
@@ -80,10 +86,12 @@ public class GameSettingsVisualizer extends JPanel implements View {
             put(ButtonClickEvents.CLICK_ON_GAME_SPEED_DOWN.command, CLICK_ON_GAME_SPEED_DOWN);
             put(ButtonClickEvents.CLICK_ON_PAUSE_BUTTON.command, ButtonClickEvents.CLICK_ON_PAUSE_BUTTON);
             put(ButtonClickEvents.CLICK_ON_PLAY_BUTTON.command, ButtonClickEvents.CLICK_ON_PLAY_BUTTON);
+            put(ButtonClickEvents.CLICK_ON_EVOLUTION_TRIGGER.command, ButtonClickEvents.CLICK_ON_EVOLUTION_TRIGGER);
         }};
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            System.out.println(e.getActionCommand());
             notifyListeners(new ButtonClickEvent(Source.GAME_SETTINGS_VISUALIZER, e.getID(), e.getActionCommand(), eventsMap.get(e.getActionCommand())));
         }
     }
@@ -105,8 +113,10 @@ public class GameSettingsVisualizer extends JPanel implements View {
 
     @Override
     public void update(DrawEvent e) {
-        if (e instanceof SpeedModeButtonDrawEvent event)
-            changeSpeedInfoButtonIcon(event.getMode());
+        if (e instanceof SpeedModeButtonRedrawEvent speedEvent)
+            changeSpeedInfoButtonIcon(speedEvent.getMode());
+        else if(e instanceof EvolutionTriggerButtonRedrawEvent evoEvent)
+            flipEvolutionButton(evoEvent.evolutionActive);
         onRedrawEvent();
     }
 
@@ -147,5 +157,37 @@ public class GameSettingsVisualizer extends JPanel implements View {
             playButton.setEnabled(false);
             pauseButton.setEnabled(true);
         }
+        JButton evolutionTriggerButton = (JButton) this.getComponentAt(5,100);
+        evolutionTriggerButton.setEnabled(true);
+    }
+
+    private void flipEvolutionButton(boolean evolutionActive){
+        JButton evolutionTriggerButton = (JButton) this.getComponentAt(5,100);
+        if(evolutionActive){
+            evolutionTriggerButton.setIcon(new ImageIcon("/src/resources/evolution_in_process.png"));
+            evolutionTriggerButton.setRolloverIcon(new ImageIcon("/src/resources/evolution_in_process_mouseover.png"));
+            evolutionTriggerButton.setPressedIcon(new ImageIcon("/src/resources/evolution_in_process_pressed.png"));
+            setEnabledAllButtons(false);
+        }
+        else {
+            evolutionTriggerButton.setIcon(new ImageIcon("src/resources/start_evolution.png"));
+            evolutionTriggerButton.setRolloverIcon(new ImageIcon("src/resources/start_evolution_mouseover.png"));
+            evolutionTriggerButton.setPressedIcon(new ImageIcon("src/resources/start_evolution_pressed.png"));
+            setEnabledAllButtons(true);
+        }
+        evolutionTriggerButton.setEnabled(true);
+        evolutionTriggerButton.setVisible(true);
+    }
+
+    private void setEnabledAllButtons(boolean value){
+        JButton pauseButton = (JButton) this.getComponentAt(5, 50);
+        JButton playButton = (JButton) this.getComponentAt(42, 50);
+        JButton speedUp = (JButton) this.getComponentAt(210, 5);
+        JButton speedDown = (JButton) this.getComponentAt(5, 5);
+
+        pauseButton.setEnabled(value);
+        playButton.setEnabled(value);
+        speedUp.setEnabled(value);
+        speedDown.setEnabled(value);
     }
 }

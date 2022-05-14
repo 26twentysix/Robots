@@ -1,15 +1,13 @@
 package com.lilangel.models;
 
+import com.lilangel.models.enums.ModelEventType;
 import com.lilangel.models.enums.ObjectOnTile;
 import com.lilangel.models.robot.Robot;
 import com.lilangel.presenters.ModelListener;
 import com.lilangel.views.game.enums.GameSpeed;
 
 import java.awt.event.ActionEvent;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.ArrayList;
 
 /**
  * Class that describes the model of battleground
@@ -25,6 +23,14 @@ public class RobotsModel implements Model, FieldStateModel, MonitorModel{
     private GameSpeed tactSpeed;
     private final Object lockObj = new Object();
 
+    private boolean isEvolutionActive;
+
+    public boolean changeEvolutionActive() {
+        var oldValue = isEvolutionActive;
+        isEvolutionActive = !oldValue;
+        return  isEvolutionActive;
+    }
+
     public void setTactSpeed(GameSpeed speed){
         this.tactSpeed = speed;
         synchronized (lockObj){
@@ -35,6 +41,7 @@ public class RobotsModel implements Model, FieldStateModel, MonitorModel{
     public RobotsModel() {
         this.field = new Field();
         this.tactSpeed = GameSpeed.PAUSE;
+        isEvolutionActive = false;
     }
 
     @Override
@@ -43,7 +50,7 @@ public class RobotsModel implements Model, FieldStateModel, MonitorModel{
     }
 
     @Override
-    public void notifyPresenter(String message) {
+    public void notifyPresenters(String message) {
         for (ModelListener presenter : presenters) {
             presenter.onModelUpdateEvent(new ActionEvent(this, 0, message));
         }
@@ -51,18 +58,29 @@ public class RobotsModel implements Model, FieldStateModel, MonitorModel{
 
     @Override
     public void run() {
-        while (field.isAnyRobotAlive()) {
-            synchronized (lockObj){
-                try {
-                    lockObj.wait((int)(tactSpeed.value*100));
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            field.doTact();
-            notifyPresenter(field.fieldChanges());
+        while(true){
+            doCycle();
+            field.prepareNewGeneration(field.getAliveList());
+            if(field.generationCount % 50 == 0)
+                notifyPresenters(ModelEventType.CYCLE_FINISHED.value);
         }
-        System.out.println("simulation finished");
+//        System.out.println("simulation finished");
+    }
+
+    private void doCycle(){
+        while (field.getAliveCount() > 10) {
+            field.doTact();
+            if(!(isEvolutionActive)){
+                synchronized (lockObj){
+                    try {
+                        lockObj.wait((int)(tactSpeed.value*100));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+                notifyPresenters(ModelEventType.TACT_FINISHED.value);
+            }
+        }
     }
 
     @Override
@@ -73,7 +91,7 @@ public class RobotsModel implements Model, FieldStateModel, MonitorModel{
     @Override
     public void selectRobot(int x, int y) {
         field.observeRobot(x,y);
-        notifyPresenter("");
+        notifyPresenters(ModelEventType.ROBOT_SELECTED.value);
     }
 
     @Override

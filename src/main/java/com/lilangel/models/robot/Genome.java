@@ -40,6 +40,13 @@ public class Genome implements Cloneable{
         genomePointer%=genomeLimit;
     }
 
+    public void mutateGenome(){
+        Random random = new Random();
+        int mutatedGeneCount = random.nextInt(0,5);
+        for (int i = 0; i < mutatedGeneCount; i++)
+            genome[random.nextInt(0,genomeLimit)] = random.nextInt(0,genomeLimit);
+    }
+
     @Override
     public Genome clone() throws CloneNotSupportedException {
         return (Genome)super.clone();

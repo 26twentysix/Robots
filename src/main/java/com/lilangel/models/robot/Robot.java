@@ -5,7 +5,7 @@ import com.lilangel.models.robot.actions.*;
 /**
  * Class that describes Robot
  */
-public class Robot implements Cloneable{
+public class Robot implements Cloneable {
     private int positionX;
     private int positionY;
 
@@ -22,7 +22,7 @@ public class Robot implements Cloneable{
         this.positionY += valueY;
     }
 
-    private final int maxEnergy = 1000000000;
+    private final int maxEnergy = 100;
     double energy;
     private final int maxHealthPoints = 100;
     int healthpoints;
@@ -43,20 +43,20 @@ public class Robot implements Cloneable{
         return maxHealthPoints;
     }
 
-    public void pickUpEnergyCell(){
+    public void pickUpEnergyCell() {
         energy += maxEnergy * 0.14;
     }
 
-    public void reduceEnergy(double value){
-        energy-=value;
+    public void reduceEnergy(double value) {
+        energy -= value;
     }
 
-    public void reduceHP(int value){
-        healthpoints-=value;
+    public void reduceHP(int value) {
+        healthpoints -= value;
     }
 
-    public void increaseHP(int value){
-        healthpoints+=value;
+    public void increaseHP(int value) {
+        healthpoints += value;
     }
 
     Genome genome;
@@ -65,14 +65,18 @@ public class Robot implements Cloneable{
         return genome;
     }
 
+    public void setGenome(Genome genome) {
+        this.genome = genome;
+    }
+
     private boolean active;
 
-    public boolean Active(){
+    public boolean Active() {
         return active;
     }
 
-    public void setActive(){
-        this.active = true;
+    public void setActive(boolean value) {
+        this.active = value;
     }
 
     public boolean isAlive() {
@@ -93,7 +97,7 @@ public class Robot implements Cloneable{
         if (isAlive()) {
             int geneValue = genome.getGene();
             ActionParameters parameters = new ActionParameters(geneValue);
-            if (geneValue>= 0 && geneValue <= 39)
+            if (geneValue >= 0 && geneValue <= 39)
                 action = new LookRobotAction(parameters);
             else if (geneValue >= 40 && geneValue <= 79) {
                 action = new MoveRobotAction(parameters);
@@ -108,7 +112,7 @@ public class Robot implements Cloneable{
 
     @Override
     public Robot clone() throws CloneNotSupportedException {
-        Robot clone = (Robot)super.clone();
+        Robot clone = (Robot) super.clone();
         clone.genome = this.genome.clone();
         return clone;
     }
