@@ -1,10 +1,9 @@
-package com.lilangel.views.game;
+package com.lilangel.views.game.main;
 
 import com.lilangel.models.enums.ObjectOnTile;
+import com.lilangel.views.DrawEvent;
 
-import java.awt.event.ActionEvent;
-
-public class FieldDrawEvent extends ActionEvent {
+public class FieldDrawEvent extends DrawEvent {
     ObjectOnTile[][] field;
 
     public ObjectOnTile[][] getField(){
@@ -15,6 +14,4 @@ public class FieldDrawEvent extends ActionEvent {
         super(source, id, command);
         this.field = field;
     }
-
-
 }
