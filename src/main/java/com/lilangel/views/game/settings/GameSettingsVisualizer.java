@@ -164,9 +164,9 @@ public class GameSettingsVisualizer extends JPanel implements View {
     private void flipEvolutionButton(boolean evolutionActive){
         JButton evolutionTriggerButton = (JButton) this.getComponentAt(5,100);
         if(evolutionActive){
-            evolutionTriggerButton.setIcon(new ImageIcon("/src/resources/evolution_in_process.png"));
-            evolutionTriggerButton.setRolloverIcon(new ImageIcon("/src/resources/evolution_in_process_mouseover.png"));
-            evolutionTriggerButton.setPressedIcon(new ImageIcon("/src/resources/evolution_in_process_pressed.png"));
+            evolutionTriggerButton.setIcon(new ImageIcon("src/resources/evolution_in_process.png"));
+            evolutionTriggerButton.setRolloverIcon(new ImageIcon("src/resources/evolution_in_process_mouseover.png"));
+            evolutionTriggerButton.setPressedIcon(new ImageIcon("src/resources/evolution_in_process_pressed.png"));
             setEnabledAllButtons(false);
         }
         else {
