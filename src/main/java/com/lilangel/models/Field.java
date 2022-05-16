@@ -6,7 +6,7 @@ import com.lilangel.models.enums.ObjectOnTile;
 import com.lilangel.models.robot.Coordinates;
 import com.lilangel.models.robot.Robot;
 
-import javax.swing.*;
+import java.nio.charset.CoderResult;
 import java.util.*;
 
 public class Field {
@@ -174,8 +174,17 @@ public class Field {
                 iterations++;
                 if(iterations>9) break;
             }
-            if (robot.isAlive()) aliveList.add(robot);
-            robot.setActive(true);
+
+            ObjectOnTile robotState = robot.getState();
+            if (robotState == ObjectOnTile.ROBOT) {
+                aliveList.add(robot);
+                robot.setActive(true);
+            }
+            else {
+                Coordinates robotCoordinates = normalize(robot.getPositionX(),robot.getPositionY());
+                field[robotCoordinates.yPos()][robotCoordinates.xPos()] = robotState;
+            }
+
             robotsMapping.put(new Coordinates(robot.getPositionX(), robot.getPositionY()), robot);
         }
 

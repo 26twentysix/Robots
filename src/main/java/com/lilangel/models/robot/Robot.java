@@ -1,5 +1,6 @@
 package com.lilangel.models.robot;
 
+import com.lilangel.models.enums.ObjectOnTile;
 import com.lilangel.models.robot.actions.*;
 
 /**
@@ -56,7 +57,7 @@ public class Robot implements Cloneable {
     }
 
     public void increaseHP(int value) {
-        healthpoints += value;
+        healthpoints = Math.min(maxHealthPoints,healthpoints+value);
     }
 
     Genome genome;
@@ -81,6 +82,13 @@ public class Robot implements Cloneable {
 
     public boolean isAlive() {
         return energy > 0 && healthpoints > 0;
+    }
+
+    public ObjectOnTile getState(){
+        if(healthpoints <= 0)
+            return ObjectOnTile.ROBOT_HP_DEAD;
+        else if (energy <= 0) return ObjectOnTile.ROBOT_ENERGY_DEAD;
+        return ObjectOnTile.ROBOT;
     }
 
     public Robot(Coordinates coords) {
