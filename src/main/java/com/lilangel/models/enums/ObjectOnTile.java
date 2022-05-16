@@ -23,8 +23,8 @@ public enum ObjectOnTile {
             case ROBOT -> "*";
             case ROBOT_ENERGY_DEAD -> "o";
             case ROBOT_HP_DEAD -> "x";
-            case ROBOT_VERTICAL_TRAIL -> "-";
-            case ROBOT_HORIZONTAL_TRAIL -> "|";
+            case ROBOT_VERTICAL_TRAIL -> "|";
+            case ROBOT_HORIZONTAL_TRAIL -> "-";
         };
     }
 }

@@ -3,6 +3,8 @@ package com.lilangel.models.robot;
 import com.lilangel.models.enums.ObjectOnTile;
 import com.lilangel.models.robot.actions.*;
 
+import java.util.HashSet;
+
 /**
  * Class that describes Robot
  */
@@ -21,6 +23,16 @@ public class Robot implements Cloneable {
     public void changePosition(int valueX, int valueY) {
         this.positionX += valueX;
         this.positionY += valueY;
+    }
+
+    private HashSet<Coordinates> trail;
+
+    public void addTileToTrail(Coordinates coordinates){
+        trail.add(coordinates);
+    }
+
+    public HashSet<Coordinates> getTrail() {
+        return trail;
     }
 
     private final int maxEnergy = 100;
@@ -87,7 +99,7 @@ public class Robot implements Cloneable {
     public ObjectOnTile getState(){
         if(healthpoints <= 0)
             return ObjectOnTile.ROBOT_HP_DEAD;
-        else if (energy <= 0) return ObjectOnTile.ROBOT_ENERGY_DEAD;
+        else if (((int)energy) <= 0) return ObjectOnTile.ROBOT_ENERGY_DEAD;
         return ObjectOnTile.ROBOT;
     }
 
@@ -98,6 +110,7 @@ public class Robot implements Cloneable {
         this.energy = maxHealthPoints;
         this.genome = new Genome();
         this.active = true;
+        this.trail = new HashSet<>();
     }
 
     public RobotAction prepareAction() {
@@ -123,5 +136,10 @@ public class Robot implements Cloneable {
         Robot clone = (Robot) super.clone();
         clone.genome = this.genome.clone();
         return clone;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(%d,%d), E=%.2f, H=%d",this.positionX,this.positionY,this.energy,this.healthpoints);
     }
 }

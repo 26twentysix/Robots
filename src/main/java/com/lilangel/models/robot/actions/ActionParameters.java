@@ -40,6 +40,16 @@ public class ActionParameters {
         Direction direction = getDirection(workingValue);
 
         int distance = value % 10;
+
+        if(distance == 0){
+            this.deltaY = 0;
+            this.deltaX = 0;
+            this.stepX = 0;
+            this.stepY = 0;
+            this.cost = 0;
+            return;
+        }
+
         this.cost = distance;
         switch (direction) {
             case RIGHT -> {

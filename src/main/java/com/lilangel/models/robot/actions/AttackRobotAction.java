@@ -2,6 +2,7 @@ package com.lilangel.models.robot.actions;
 
 import com.lilangel.models.Field;
 import com.lilangel.models.enums.ObjectOnTile;
+import com.lilangel.models.robot.Coordinates;
 import com.lilangel.models.robot.Robot;
 
 public class AttackRobotAction implements RobotAction {
@@ -26,9 +27,9 @@ public class AttackRobotAction implements RobotAction {
         }
 
         if (target == ObjectOnTile.WALL && parameters.getCost() > 6)
-            field.setTile(targetX, targetY, ObjectOnTile.EMPTY);
+            field.setTile(new Coordinates(targetX,targetY), ObjectOnTile.EMPTY);
         if (target == ObjectOnTile.ENERGY && parameters.getCost() > 4)
-            field.setTile(targetX, targetY, ObjectOnTile.EMPTY);
+            field.setTile(new Coordinates(targetX,targetY), ObjectOnTile.EMPTY);
 
         robot.getGenome().increaseGenomePointer(target);
         robot.reduceEnergy(parameters.getCost());

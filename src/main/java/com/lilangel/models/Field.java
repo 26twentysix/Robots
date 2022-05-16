@@ -48,18 +48,20 @@ public class Field {
     }
 
     public ObjectOnTile getTile(int x, int y) {
-        Coordinates normalized = normalize(x,y);
+        Coordinates normalized = normalize(new Coordinates(x,y));
 
         return field[normalized.yPos()][normalized.xPos()];
     }
 
-    public void setTile(int x, int y, ObjectOnTile obj) {
-        Coordinates normalized = normalize(x,y);
+    public void setTile(Coordinates coordinates, ObjectOnTile obj) {
+        Coordinates normalized = normalize(coordinates);
 
         this.field[normalized.yPos()][normalized.xPos()] = obj;
     }
 
-    private Coordinates normalize(int x, int y){
+    private Coordinates normalize(Coordinates coordinates){
+        int x = coordinates.xPos();
+        int y = coordinates.yPos();
         while (x < 0)
             x += width;
         while (x >= width)
@@ -166,13 +168,19 @@ public class Field {
     public void doTact() {
         ArrayList<Robot> aliveList = new ArrayList<>();
         for (Robot robot : robots) {
+            for (Coordinates tile : robot.getTrail()) {
+                Coordinates normalized = normalize(tile);
+                field[normalized.yPos()][normalized.xPos()] = ObjectOnTile.EMPTY;
+            }
+            robot.getTrail().clear();
             robotsMapping.remove(new Coordinates(robot.getPositionX(), robot.getPositionY()));
             int iterations = 0;
             while(robot.Active()){
                 RobotAction action = robot.prepareAction();
                 action.handle(robot,this);
                 iterations++;
-                if(iterations>9) break;
+                if(iterations>9)
+                    break;
             }
 
             ObjectOnTile robotState = robot.getState();
@@ -181,11 +189,11 @@ public class Field {
                 robot.setActive(true);
             }
             else {
-                Coordinates robotCoordinates = normalize(robot.getPositionX(),robot.getPositionY());
+                Coordinates robotCoordinates = normalize(new Coordinates(robot.getPositionX(),robot.getPositionY()));
                 field[robotCoordinates.yPos()][robotCoordinates.xPos()] = robotState;
             }
 
-            robotsMapping.put(new Coordinates(robot.getPositionX(), robot.getPositionY()), robot);
+            robotsMapping.put(normalize(new Coordinates(robot.getPositionX(), robot.getPositionY())), robot);
         }
 
         if(iterationsCount % 5 == 0)
