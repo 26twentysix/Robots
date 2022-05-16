@@ -14,7 +14,7 @@ public class RepairRobotAction implements RobotAction {
     @Override
     public void handle(Robot robot, Field field) {
         int repairValue = parameters.getGene() / 12;
-        robot.reduceEnergy(repairValue / 5.0);
+        robot.reduceEnergy(repairValue / 1.2);
         robot.increaseHP(repairValue);
         robot.getGenome().increaseGenomePointer(parameters.getGene() + 1);
     }

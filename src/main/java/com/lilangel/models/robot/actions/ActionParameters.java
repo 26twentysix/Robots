@@ -46,7 +46,7 @@ public class ActionParameters {
             this.deltaX = 0;
             this.stepX = 0;
             this.stepY = 0;
-            this.cost = 0;
+            this.cost = 1;
             return;
         }
 

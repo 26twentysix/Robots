@@ -97,14 +97,7 @@ public class Field {
         this.robots = new ArrayList<>();
         this.robotsMapping = new HashMap<>();
 
-        if(aliveRobots.size() < 10 && !aliveRobots.isEmpty()) {
-            while (aliveRobots.size() < 10)
-                aliveRobots.add(aliveRobots.get(new Random().nextInt(0, aliveRobots.size())));
-            createOffspring(aliveRobots);
-        }
-        else{
-            summonRobots();
-        }
+        createOffspring(aliveRobots);
 
         fillField();
         this.aliveCount = robots.size();
@@ -113,6 +106,20 @@ public class Field {
     }
 
     private void createOffspring(ArrayList<Robot> aliveRobots){
+        if(aliveRobots.size() == 0){
+            summonRobots();
+            return;
+        }
+
+        if(aliveRobots.size() < 10){
+            while(aliveRobots.size() < 10){
+                Robot forefather = new Robot(getEmptyCellCoordinates());
+                forefather.setGenome(aliveRobots.get(aliveRobots.size()-1).getGenome());
+                forefather.getGenome().mutateGenome();
+                aliveRobots.add(forefather);
+            }
+        }
+
         for (Robot robot : aliveRobots){
             for (int i = 0; i < 9; i++){
                 Robot descendant = new Robot(getEmptyCellCoordinates());
@@ -175,12 +182,15 @@ public class Field {
             robot.getTrail().clear();
             robotsMapping.remove(new Coordinates(robot.getPositionX(), robot.getPositionY()));
             int iterations = 0;
+            List<RobotAction> list = new ArrayList<>();
             while(robot.Active()){
                 RobotAction action = robot.prepareAction();
+                list.add(action);
                 action.handle(robot,this);
                 iterations++;
-                if(iterations>9)
+                if(iterations>9) {
                     break;
+                }
             }
 
             ObjectOnTile robotState = robot.getState();

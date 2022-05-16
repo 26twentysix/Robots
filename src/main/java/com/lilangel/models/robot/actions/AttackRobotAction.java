@@ -32,6 +32,6 @@ public class AttackRobotAction implements RobotAction {
             field.setTile(new Coordinates(targetX,targetY), ObjectOnTile.EMPTY);
 
         robot.getGenome().increaseGenomePointer(target);
-        robot.reduceEnergy(parameters.getCost());
+        robot.reduceEnergy(parameters.getCost()*2);
     }
 }

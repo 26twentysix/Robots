@@ -18,8 +18,8 @@ public class MoveRobotAction implements RobotAction {
 
     @Override
     public void handle(Robot robot, Field field) {
-        int maxDeltaX = (int)Math.ceil(parameters.getDeltaX() / 3.0);
-        int maxDeltaY = (int)Math.ceil(parameters.getDeltaY() / 3.0);
+        int maxDeltaX = (int)Math.ceil(parameters.getDeltaX() / 2.2);
+        int maxDeltaY = (int)Math.ceil(parameters.getDeltaY() / 2.2);
         int deltaX = parameters.getStepX();
         int deltaY = parameters.getStepY();
         ObjectOnTile target = field.getTile(robot.getPositionX() + deltaX, robot.getPositionY() + deltaY);
@@ -44,7 +44,7 @@ public class MoveRobotAction implements RobotAction {
 
         if(deltaX == 0 && deltaY == 0) {
             robot.getTrail().clear();
-            robot.reduceEnergy(1);
+            robot.reduceEnergy(22);
             return;
         }
 
