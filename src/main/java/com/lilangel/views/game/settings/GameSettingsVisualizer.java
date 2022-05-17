@@ -5,7 +5,7 @@ import com.lilangel.views.DrawEvent;
 import com.lilangel.views.Source;
 import com.lilangel.views.View;
 import com.lilangel.views.game.enums.ButtonClickEvents;
-import com.lilangel.views.game.enums.GameSpeed;
+import com.lilangel.models.enums.GameSpeed;
 
 import javax.swing.*;
 import java.awt.*;

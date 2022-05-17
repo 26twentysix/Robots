@@ -21,7 +21,7 @@ public class GameVisualizer extends JPanel implements View {
 
     private ViewListener listener;
 
-    public void setListener(ViewListener listener){
+    public void setListener(ViewListener listener) {
         this.listener = listener;
     }
 
@@ -33,7 +33,7 @@ public class GameVisualizer extends JPanel implements View {
                 if (e.getButton() == MouseEvent.BUTTON1) {
                     Point currentPosition = e.getPoint();
                     notifyListeners(new FieldClickEvent(Source.GAME_VISUALIZER, 0, e.paramString(),
-                            new Point(currentPosition.x / 16,currentPosition.y / 16)));
+                            new Point(currentPosition.x / 16, currentPosition.y / 16)));
                 }
             }
         });

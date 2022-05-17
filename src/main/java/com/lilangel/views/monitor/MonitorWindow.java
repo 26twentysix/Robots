@@ -6,11 +6,11 @@ import java.awt.*;
 public class MonitorWindow extends JInternalFrame {
     private final MonitorVisualizer visualizer;
 
-    public MonitorVisualizer getVisualizer(){
+    public MonitorVisualizer getVisualizer() {
         return this.visualizer;
     }
 
-    public MonitorWindow(){
+    public MonitorWindow() {
         super("Состояние робота", false, false, false, true);
         this.visualizer = new MonitorVisualizer();
         JPanel panel = new JPanel(new BorderLayout());

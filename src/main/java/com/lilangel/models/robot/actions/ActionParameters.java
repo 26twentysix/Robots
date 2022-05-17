@@ -41,7 +41,7 @@ public class ActionParameters {
 
         int distance = value % 10;
 
-        if(distance == 0){
+        if (distance == 0) {
             this.deltaY = 0;
             this.deltaX = 0;
             this.stepX = 0;

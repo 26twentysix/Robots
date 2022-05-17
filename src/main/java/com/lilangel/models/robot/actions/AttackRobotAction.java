@@ -9,7 +9,7 @@ public class AttackRobotAction implements RobotAction {
 
     private final ActionParameters parameters;
 
-    public AttackRobotAction(ActionParameters parameters){
+    public AttackRobotAction(ActionParameters parameters) {
         this.parameters = parameters;
     }
 
@@ -27,11 +27,11 @@ public class AttackRobotAction implements RobotAction {
         }
 
         if (target == ObjectOnTile.WALL && parameters.getCost() > 6)
-            field.setTile(new Coordinates(targetX,targetY), ObjectOnTile.EMPTY);
+            field.setTile(new Coordinates(targetX, targetY), ObjectOnTile.EMPTY);
         if (target == ObjectOnTile.ENERGY && parameters.getCost() > 4)
-            field.setTile(new Coordinates(targetX,targetY), ObjectOnTile.EMPTY);
+            field.setTile(new Coordinates(targetX, targetY), ObjectOnTile.EMPTY);
 
         robot.getGenome().increaseGenomePointer(target);
-        robot.reduceEnergy(parameters.getCost()*2);
+        robot.reduceEnergy(parameters.getCost() * 2);
     }
 }

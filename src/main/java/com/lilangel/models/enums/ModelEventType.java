@@ -7,7 +7,7 @@ public enum ModelEventType {
 
     public final String value;
 
-    private ModelEventType(String value){
+    private ModelEventType(String value) {
         this.value = value;
     }
 }

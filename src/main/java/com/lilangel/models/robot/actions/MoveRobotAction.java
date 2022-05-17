@@ -12,14 +12,14 @@ public class MoveRobotAction implements RobotAction {
 
     private final ActionParameters parameters;
 
-    public MoveRobotAction(ActionParameters parameters){
+    public MoveRobotAction(ActionParameters parameters) {
         this.parameters = parameters;
     }
 
     @Override
     public void handle(Robot robot, Field field) {
-        int maxDeltaX = (int)Math.ceil(parameters.getDeltaX() / 2.2);
-        int maxDeltaY = (int)Math.ceil(parameters.getDeltaY() / 2.2);
+        int maxDeltaX = (int) Math.ceil(parameters.getDeltaX() / 2.2);
+        int maxDeltaY = (int) Math.ceil(parameters.getDeltaY() / 2.2);
         int deltaX = parameters.getStepX();
         int deltaY = parameters.getStepY();
         ObjectOnTile target = field.getTile(robot.getPositionX() + deltaX, robot.getPositionY() + deltaY);
@@ -28,23 +28,23 @@ public class MoveRobotAction implements RobotAction {
 
         trail.add(new Coordinates(robot.getPositionX(), robot.getPositionY()));
         while ((target == ObjectOnTile.EMPTY || target == ObjectOnTile.ENERGY) && (Math.abs(deltaX) < Math.abs(maxDeltaX) || Math.abs(deltaY) < Math.abs(maxDeltaY))) {
-            trail.add(new Coordinates(robot.getPositionX()+deltaX, robot.getPositionY()+deltaY));
+            trail.add(new Coordinates(robot.getPositionX() + deltaX, robot.getPositionY() + deltaY));
             deltaX += parameters.getStepX();
             deltaY += parameters.getStepY();
             previousTarget = target;
             target = field.getTile(robot.getPositionX() + deltaX, robot.getPositionY() + deltaY);
         }
 
-        if(target == ObjectOnTile.WALL || target == ObjectOnTile.ROBOT){
+        if (target == ObjectOnTile.WALL || target == ObjectOnTile.ROBOT) {
             robot.reduceHP(5);
             target = previousTarget;
             deltaX -= parameters.getStepX();
             deltaY -= parameters.getStepY();
         }
 
-        if(deltaX == 0 && deltaY == 0) {
+        if (deltaX == 0 && deltaY == 0) {
             robot.getTrail().clear();
-            robot.reduceEnergy(22);
+            robot.reduceEnergy(40);
             return;
         }
 
@@ -54,8 +54,8 @@ public class MoveRobotAction implements RobotAction {
 
         ObjectOnTile trackTile = maxDeltaX == 0 ? ObjectOnTile.ROBOT_VERTICAL_TRAIL : ObjectOnTile.ROBOT_HORIZONTAL_TRAIL;
 
-        for(Coordinates tile : trail){
-            field.setTile(new Coordinates(tile.xPos(),tile.yPos()),
+        for (Coordinates tile : trail) {
+            field.setTile(new Coordinates(tile.xPos(), tile.yPos()),
                     trackTile);
             robot.addTileToTrail(tile);
         }

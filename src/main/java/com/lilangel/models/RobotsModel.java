@@ -4,15 +4,14 @@ import com.lilangel.models.enums.ModelEventType;
 import com.lilangel.models.enums.ObjectOnTile;
 import com.lilangel.models.robot.Robot;
 import com.lilangel.presenters.ModelListener;
-import com.lilangel.views.game.enums.GameSpeed;
+import com.lilangel.models.enums.GameSpeed;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 
 /**
  * Class that describes the model of battleground
  */
-public class RobotsModel implements Model, FieldStateModel, MonitorModel{
+public class RobotsModel implements Model, FieldStateModel, MonitorModel {
     /**
      * Presenter that model connected with
      */
@@ -28,12 +27,12 @@ public class RobotsModel implements Model, FieldStateModel, MonitorModel{
     public boolean changeEvolutionActive() {
         var oldValue = isEvolutionActive;
         isEvolutionActive = !oldValue;
-        return  isEvolutionActive;
+        return isEvolutionActive;
     }
 
-    public void setTactSpeed(GameSpeed speed){
+    public void setTactSpeed(GameSpeed speed) {
         this.tactSpeed = speed;
-        synchronized (lockObj){
+        synchronized (lockObj) {
             lockObj.notify();
         }
     }
@@ -58,22 +57,22 @@ public class RobotsModel implements Model, FieldStateModel, MonitorModel{
 
     @Override
     public void run() {
-        while(true){
+        while (true) {
             doCycle();
             field.prepareNewGeneration(field.getAliveList());
-            if(field.generationCount % 50 == 0)
+            if (field.generationCount % 50 == 0)
                 notifyPresenters(ModelEventType.CYCLE_FINISHED.value);
         }
 //        System.out.println("simulation finished");
     }
 
-    private void doCycle(){
+    private void doCycle() {
         while (field.getAliveCount() > 10) {
             field.doTact();
-            if(!(isEvolutionActive)){
-                synchronized (lockObj){
+            if (!(isEvolutionActive)) {
+                synchronized (lockObj) {
                     try {
-                        lockObj.wait((int)(tactSpeed.value*100));
+                        lockObj.wait((int) (tactSpeed.value * 100));
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -90,7 +89,7 @@ public class RobotsModel implements Model, FieldStateModel, MonitorModel{
 
     @Override
     public void selectRobot(int x, int y) {
-        field.observeRobot(x,y);
+        field.observeRobot(x, y);
         notifyPresenters(ModelEventType.ROBOT_SELECTED.value);
     }
 

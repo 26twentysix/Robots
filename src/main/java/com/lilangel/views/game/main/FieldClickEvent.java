@@ -8,7 +8,7 @@ import javax.swing.text.View;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 
-public class FieldClickEvent extends ActionEvent{
+public class FieldClickEvent extends ActionEvent {
     Point tile;
 
     public FieldClickEvent(Object source, int id, String command, Point p) {

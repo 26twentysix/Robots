@@ -11,8 +11,8 @@ public abstract class ViewEvent extends ActionEvent {
         return event;
     }
 
-    public ViewEvent(ActionEvent e, ButtonClickEvents event){
-        super(e.getSource(),e.getID(),e.getActionCommand());
+    public ViewEvent(ActionEvent e, ButtonClickEvents event) {
+        super(e.getSource(), e.getID(), e.getActionCommand());
         this.event = event;
     }
 }

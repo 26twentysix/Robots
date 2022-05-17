@@ -9,7 +9,7 @@ public enum ButtonClickEvents {
 
     public final String command;
 
-    ButtonClickEvents(String command){
+    ButtonClickEvents(String command) {
         this.command = command;
     }
 }

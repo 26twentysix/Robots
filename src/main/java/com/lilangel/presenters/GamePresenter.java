@@ -3,13 +3,12 @@ package com.lilangel.presenters;
 import com.lilangel.models.FieldStateModel;
 import com.lilangel.views.*;
 import com.lilangel.views.game.main.FieldDrawEvent;
-import com.lilangel.views.game.enums.GameSpeed;
+import com.lilangel.models.enums.GameSpeed;
 import com.lilangel.views.game.main.FieldClickEvent;
 import com.lilangel.views.game.settings.ButtonClickEvent;
 import com.lilangel.views.game.settings.EvolutionTriggerButtonRedrawEvent;
 import com.lilangel.views.game.settings.SpeedModeButtonRedrawEvent;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.*;
 
@@ -59,8 +58,10 @@ public class GamePresenter implements ModelListener, ViewListener {
         FieldDrawEvent event = new FieldDrawEvent(e.getSource(), 0, "redraw idk", model.getField());
         ReturnCode code = addDrawEvent(event);
 
-        if (code != ReturnCode.OK)
-            EventQueue.invokeLater(() -> addDrawEvent(event));
+        if (code != ReturnCode.OK) {
+//            EventQueue.invokeLater(() -> addDrawEvent(event));
+            addDrawEvent(event);
+        }
     }
 
     private ReturnCode addDrawEvent(ActionEvent e) {
@@ -120,7 +121,7 @@ public class GamePresenter implements ModelListener, ViewListener {
                     }
                     case CLICK_ON_EVOLUTION_TRIGGER -> {
                         boolean isActive = model.changeEvolutionActive();
-                        settingView.update(new EvolutionTriggerButtonRedrawEvent(this,0,"",isActive));
+                        settingView.update(new EvolutionTriggerButtonRedrawEvent(this, 0, "", isActive));
                         return;
                     }
                 }

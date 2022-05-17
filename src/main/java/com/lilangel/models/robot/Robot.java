@@ -27,7 +27,7 @@ public class Robot implements Cloneable {
 
     private HashSet<Coordinates> trail;
 
-    public void addTileToTrail(Coordinates coordinates){
+    public void addTileToTrail(Coordinates coordinates) {
         trail.add(coordinates);
     }
 
@@ -69,7 +69,7 @@ public class Robot implements Cloneable {
     }
 
     public void increaseHP(int value) {
-        healthpoints = Math.min(maxHealthPoints,healthpoints+value);
+        healthpoints = Math.min(maxHealthPoints, healthpoints + value);
     }
 
     Genome genome;
@@ -96,10 +96,10 @@ public class Robot implements Cloneable {
         return energy > 0 && healthpoints > 0;
     }
 
-    public ObjectOnTile getState(){
-        if(healthpoints <= 0)
+    public ObjectOnTile getState() {
+        if (healthpoints <= 0)
             return ObjectOnTile.ROBOT_HP_DEAD;
-        else if (((int)energy) <= 0) return ObjectOnTile.ROBOT_ENERGY_DEAD;
+        else if (((int) energy) <= 0) return ObjectOnTile.ROBOT_ENERGY_DEAD;
         return ObjectOnTile.ROBOT;
     }
 
@@ -140,6 +140,6 @@ public class Robot implements Cloneable {
 
     @Override
     public String toString() {
-        return String.format("(%d,%d), E=%.2f, H=%d",this.positionX,this.positionY,this.energy,this.healthpoints);
+        return String.format("(%d,%d), E=%.2f, H=%d", this.positionX, this.positionY, this.energy, this.healthpoints);
     }
 }

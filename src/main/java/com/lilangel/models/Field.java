@@ -25,15 +25,17 @@ public class Field {
     int generationCount = 0;
     int iterationsCount = 0;
 
-    public ArrayList<Robot> getAliveList(){
+    public ArrayList<Robot> getAliveList() {
         return this.robots;
     }
 
-    public int getAliveCount(){return aliveCount;}
+    public int getAliveCount() {
+        return aliveCount;
+    }
 
-    void observeRobot(int x, int y){
-        if(robotsMapping.containsKey(new Coordinates(x,y))){
-            this.observableRobot = robotsMapping.get(new Coordinates(x,y));
+    void observeRobot(int x, int y) {
+        if (robotsMapping.containsKey(new Coordinates(x, y))) {
+            this.observableRobot = robotsMapping.get(new Coordinates(x, y));
         }
     }
 
@@ -48,7 +50,7 @@ public class Field {
     }
 
     public ObjectOnTile getTile(int x, int y) {
-        Coordinates normalized = normalize(new Coordinates(x,y));
+        Coordinates normalized = normalize(new Coordinates(x, y));
 
         return field[normalized.yPos()][normalized.xPos()];
     }
@@ -59,7 +61,7 @@ public class Field {
         this.field[normalized.yPos()][normalized.xPos()] = obj;
     }
 
-    private Coordinates normalize(Coordinates coordinates){
+    private Coordinates normalize(Coordinates coordinates) {
         int x = coordinates.xPos();
         int y = coordinates.yPos();
         while (x < 0)
@@ -92,7 +94,7 @@ public class Field {
         this.aliveCount = robots.size();
     }
 
-    public void prepareNewGeneration(ArrayList<Robot> aliveRobots){
+    public void prepareNewGeneration(ArrayList<Robot> aliveRobots) {
         this.field = new ObjectOnTile[height][width];
         this.robots = new ArrayList<>();
         this.robotsMapping = new HashMap<>();
@@ -105,28 +107,28 @@ public class Field {
         generationCount++;
     }
 
-    private void createOffspring(ArrayList<Robot> aliveRobots){
-        if(aliveRobots.size() == 0){
+    private void createOffspring(ArrayList<Robot> aliveRobots) {
+        if (aliveRobots.size() == 0) {
             summonRobots();
             return;
         }
 
-        if(aliveRobots.size() < 10){
-            while(aliveRobots.size() < 10){
+        if (aliveRobots.size() < 10) {
+            while (aliveRobots.size() < 10) {
                 Robot forefather = new Robot(getEmptyCellCoordinates());
-                forefather.setGenome(aliveRobots.get(aliveRobots.size()-1).getGenome());
+                forefather.setGenome(aliveRobots.get(aliveRobots.size() - 1).getGenome());
                 forefather.getGenome().mutateGenome();
                 aliveRobots.add(forefather);
             }
         }
 
-        for (Robot robot : aliveRobots){
-            for (int i = 0; i < 9; i++){
+        for (Robot robot : aliveRobots) {
+            for (int i = 0; i < 9; i++) {
                 Robot descendant = new Robot(getEmptyCellCoordinates());
                 descendant.setGenome(robot.getGenome());
                 robots.add(descendant);
                 field[descendant.getPositionY()][descendant.getPositionX()] = ObjectOnTile.ROBOT;
-                robotsMapping.put(new Coordinates(descendant.getPositionX(),descendant.getPositionY()),descendant);
+                robotsMapping.put(new Coordinates(descendant.getPositionX(), descendant.getPositionY()), descendant);
             }
             Robot mutant = new Robot(getEmptyCellCoordinates());
             mutant.setGenome(robot.getGenome());
@@ -143,17 +145,17 @@ public class Field {
         }
     }
 
-    private Coordinates getEmptyCellCoordinates(){
+    private Coordinates getEmptyCellCoordinates() {
         Random random = new Random();
         int xPos = random.nextInt(ModelConstants.FIELD_WIDTH.value);
         int yPos = random.nextInt(ModelConstants.FIELD_HEIGT.value);
         ObjectOnTile obj = field[yPos][xPos];
-        while(obj!=ObjectOnTile.EMPTY && obj!=null){
+        while (obj != ObjectOnTile.EMPTY && obj != null) {
             xPos = random.nextInt(ModelConstants.FIELD_WIDTH.value);
             yPos = random.nextInt(ModelConstants.FIELD_HEIGT.value);
             obj = field[yPos][xPos];
         }
-        return new Coordinates(xPos,yPos);
+        return new Coordinates(xPos, yPos);
     }
 
     private void fillField() {
@@ -183,12 +185,12 @@ public class Field {
             robotsMapping.remove(new Coordinates(robot.getPositionX(), robot.getPositionY()));
             int iterations = 0;
             List<RobotAction> list = new ArrayList<>();
-            while(robot.Active()){
+            while (robot.Active()) {
                 RobotAction action = robot.prepareAction();
                 list.add(action);
-                action.handle(robot,this);
+                action.handle(robot, this);
                 iterations++;
-                if(iterations>9) {
+                if (iterations > 9) {
                     break;
                 }
             }
@@ -197,16 +199,15 @@ public class Field {
             if (robotState == ObjectOnTile.ROBOT) {
                 aliveList.add(robot);
                 robot.setActive(true);
-            }
-            else {
-                Coordinates robotCoordinates = normalize(new Coordinates(robot.getPositionX(),robot.getPositionY()));
+            } else {
+                Coordinates robotCoordinates = normalize(new Coordinates(robot.getPositionX(), robot.getPositionY()));
                 field[robotCoordinates.yPos()][robotCoordinates.xPos()] = robotState;
             }
 
             robotsMapping.put(normalize(new Coordinates(robot.getPositionX(), robot.getPositionY())), robot);
         }
 
-        if(iterationsCount % 5 == 0)
+        if (iterationsCount % 5 == 0)
             generateNewEnergy();
 
         this.robots = aliveList;
@@ -214,16 +215,16 @@ public class Field {
         iterationsCount++;
     }
 
-    private void generateNewEnergy(){
-        for(int i = 0 ; i < 20; i++){
+    private void generateNewEnergy() {
+        for (int i = 0; i < 20; i++) {
             Coordinates emptyCellCoordinates = getEmptyCellCoordinates();
             field[emptyCellCoordinates.yPos()][emptyCellCoordinates.xPos()] = ObjectOnTile.ENERGY;
         }
     }
 
-    public ObjectOnTile[][] makeCopyOfCurrentState(){
+    public ObjectOnTile[][] makeCopyOfCurrentState() {
         var result = new ObjectOnTile[height][width];
-        for(int i = 0; i < height; i++)
+        for (int i = 0; i < height; i++)
             System.arraycopy(field[i], 0, result[i], 0, width);
         return result;
     }

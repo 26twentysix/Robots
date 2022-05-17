@@ -7,7 +7,7 @@ public class RepairRobotAction implements RobotAction {
 
     private final ActionParameters parameters;
 
-    public RepairRobotAction(ActionParameters parameters){
+    public RepairRobotAction(ActionParameters parameters) {
         this.parameters = parameters;
     }
 

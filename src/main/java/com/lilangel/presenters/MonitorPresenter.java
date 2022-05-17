@@ -10,17 +10,17 @@ import java.awt.event.ActionEvent;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class MonitorPresenter implements  ViewListener, ModelListener{
+public class MonitorPresenter implements ViewListener, ModelListener {
 
     MonitorModel model;
 
-    public void setModel(MonitorModel model){
+    public void setModel(MonitorModel model) {
         this.model = model;
     }
 
     View view;
 
-    public MonitorPresenter(MainApplicationFrame frame){
+    public MonitorPresenter(MainApplicationFrame frame) {
         this.view = frame.getMonitorVisualizer();
         this.view.setListener(this);
         new Timer(true).scheduleAtFixedRate(new TimerTask() {
@@ -28,14 +28,14 @@ public class MonitorPresenter implements  ViewListener, ModelListener{
             public void run() {
                 view.update();
             }
-        },0,16);
+        }, 0, 16);
     }
 
     @Override
     public void onModelUpdateEvent(ActionEvent e) {
         Robot selectedRobot = model.getObservableRobot();
         if (selectedRobot == null)
-            view.update(new RobotMonitorDrawEvent(e.getSource(),-1,"null robot", null));
+            view.update(new RobotMonitorDrawEvent(e.getSource(), -1, "null robot", null));
         else
             view.update(new RobotMonitorDrawEvent(e, selectedRobot));
     }

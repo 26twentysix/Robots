@@ -9,7 +9,7 @@ public class MonitorDrawer {
 
     private Robot robot;
 
-    public MonitorDrawer(){
+    public MonitorDrawer() {
         this.scheme = new NoRobotDrawingScheme();
     }
 
@@ -21,7 +21,7 @@ public class MonitorDrawer {
         this.scheme = scheme;
     }
 
-    public void draw(Graphics2D g2d){
-        scheme.draw(robot,g2d);
+    public void draw(Graphics2D g2d) {
+        scheme.draw(robot, g2d);
     }
 }

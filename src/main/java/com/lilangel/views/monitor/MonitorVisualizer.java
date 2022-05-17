@@ -17,7 +17,7 @@ public class MonitorVisualizer extends JPanel implements View {
 
     private MonitorDrawer drawer;
 
-    public MonitorVisualizer(){
+    public MonitorVisualizer() {
         this.drawer = new MonitorDrawer();
         this.setDoubleBuffered(true);
     }

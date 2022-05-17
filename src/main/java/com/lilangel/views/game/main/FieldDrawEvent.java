@@ -6,7 +6,7 @@ import com.lilangel.views.DrawEvent;
 public class FieldDrawEvent extends DrawEvent {
     ObjectOnTile[][] field;
 
-    public ObjectOnTile[][] getField(){
+    public ObjectOnTile[][] getField() {
         return field;
     }
 

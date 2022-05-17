@@ -1,7 +1,7 @@
 package com.lilangel.views.game.settings;
 
 import com.lilangel.views.DrawEvent;
-import com.lilangel.views.game.enums.GameSpeed;
+import com.lilangel.models.enums.GameSpeed;
 
 public class SpeedModeButtonRedrawEvent extends DrawEvent {
     private GameSpeed mode;

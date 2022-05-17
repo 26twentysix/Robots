@@ -13,7 +13,7 @@ public class ModelUpdateEvent extends ActionEvent {
         this.field = field;
     }
 
-    public ObjectOnTile[][] getField(){
+    public ObjectOnTile[][] getField() {
         return field;
     }
 }

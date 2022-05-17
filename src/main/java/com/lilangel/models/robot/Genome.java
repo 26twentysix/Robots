@@ -5,12 +5,12 @@ import com.lilangel.models.enums.ObjectOnTile;
 import java.lang.management.ManagementFactory;
 import java.util.Random;
 
-public class Genome implements Cloneable{
+public class Genome implements Cloneable {
     int genomeLimit = 240;
     private int[] genome = new int[genomeLimit];
     private int genomePointer;
 
-    public Genome(){
+    public Genome() {
         Random random = new Random();
         for (int i = 0; i < genomeLimit; i++) {
             genome[i] = random.nextInt(genomeLimit);
@@ -18,7 +18,7 @@ public class Genome implements Cloneable{
         this.genomePointer = random.nextInt(genomeLimit);
     }
 
-    public int getGene(){
+    public int getGene() {
         return genome[genomePointer];
     }
 
@@ -28,27 +28,27 @@ public class Genome implements Cloneable{
             case WALL -> basePointerIncrease;
             case ROBOT, ROBOT_ENERGY_DEAD, ROBOT_HP_DEAD -> basePointerIncrease * 3;
             case ENERGY -> basePointerIncrease * 2;
-            case EMPTY,ROBOT_HORIZONTAL_TRAIL,ROBOT_VERTICAL_TRAIL -> basePointerIncrease * 4;
+            case EMPTY, ROBOT_HORIZONTAL_TRAIL, ROBOT_VERTICAL_TRAIL -> basePointerIncrease * 4;
         };
 
         this.genomePointer += value;
         this.genomePointer %= genomeLimit;
     }
 
-    public void increaseGenomePointer(int value){
+    public void increaseGenomePointer(int value) {
         genomePointer += value;
-        genomePointer%=genomeLimit;
+        genomePointer %= genomeLimit;
     }
 
-    public void mutateGenome(){
+    public void mutateGenome() {
         Random random = new Random();
-        int mutatedGeneCount = random.nextInt(0,5);
+        int mutatedGeneCount = random.nextInt(0, 5);
         for (int i = 0; i < mutatedGeneCount; i++)
-            genome[random.nextInt(0,genomeLimit)] = random.nextInt(0,genomeLimit);
+            genome[random.nextInt(0, genomeLimit)] = random.nextInt(0, genomeLimit);
     }
 
     @Override
     public Genome clone() throws CloneNotSupportedException {
-        return (Genome)super.clone();
+        return (Genome) super.clone();
     }
 }

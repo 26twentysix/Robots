@@ -15,7 +15,7 @@ public enum ObjectOnTile {
 
 
     @Override
-    public String toString(){
+    public String toString() {
         return switch (this) {
             case EMPTY -> ".";
             case ENERGY -> "$";
