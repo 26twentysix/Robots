@@ -46,7 +46,7 @@ public class GameSettingsVisualizer extends JPanel implements View {
         JButton evolutionTriggerButton = createButton(new ImageIcon("src/resources/start_evolution.png"),
                 new ImageIcon("src/resources/start_evolution_mouseover.png"),
                 new ImageIcon("src/resources/start_evolution_pressed.png"),
-                5,100,300,40, CLICK_ON_EVOLUTION_TRIGGER.command,new ButtonClickListener());
+                5,95,300,40, CLICK_ON_EVOLUTION_TRIGGER.command,new ButtonClickListener());
         evolutionTriggerButton.setEnabled(false);
 
         add(speedInfoButton);
