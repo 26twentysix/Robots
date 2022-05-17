@@ -46,7 +46,7 @@ public class GameSettingsVisualizer extends JPanel implements View {
         JButton evolutionTriggerButton = createButton(new ImageIcon("src/resources/start_evolution.png"),
                 new ImageIcon("src/resources/start_evolution_mouseover.png"),
                 new ImageIcon("src/resources/start_evolution_pressed.png"),
-                5,95,300,40, CLICK_ON_EVOLUTION_TRIGGER.command,new ButtonClickListener());
+                5, 95, 300, 40, CLICK_ON_EVOLUTION_TRIGGER.command, new ButtonClickListener());
         evolutionTriggerButton.setEnabled(false);
 
         add(speedInfoButton);
@@ -115,7 +115,7 @@ public class GameSettingsVisualizer extends JPanel implements View {
     public void update(DrawEvent e) {
         if (e instanceof SpeedModeButtonRedrawEvent speedEvent)
             changeSpeedInfoButtonIcon(speedEvent.getMode());
-        else if(e instanceof EvolutionTriggerButtonRedrawEvent evoEvent)
+        else if (e instanceof EvolutionTriggerButtonRedrawEvent evoEvent)
             flipEvolutionButton(evoEvent.evolutionActive);
         onRedrawEvent();
     }
@@ -157,19 +157,18 @@ public class GameSettingsVisualizer extends JPanel implements View {
             playButton.setEnabled(false);
             pauseButton.setEnabled(true);
         }
-        JButton evolutionTriggerButton = (JButton) this.getComponentAt(5,100);
+        JButton evolutionTriggerButton = (JButton) this.getComponentAt(5, 100);
         evolutionTriggerButton.setEnabled(true);
     }
 
-    private void flipEvolutionButton(boolean evolutionActive){
-        JButton evolutionTriggerButton = (JButton) this.getComponentAt(5,100);
-        if(evolutionActive){
+    private void flipEvolutionButton(boolean evolutionActive) {
+        JButton evolutionTriggerButton = (JButton) this.getComponentAt(5, 100);
+        if (evolutionActive) {
             evolutionTriggerButton.setIcon(new ImageIcon("src/resources/evolution_in_process.png"));
             evolutionTriggerButton.setRolloverIcon(new ImageIcon("src/resources/evolution_in_process_mouseover.png"));
             evolutionTriggerButton.setPressedIcon(new ImageIcon("src/resources/evolution_in_process_pressed.png"));
             setEnabledAllButtons(false);
-        }
-        else {
+        } else {
             evolutionTriggerButton.setIcon(new ImageIcon("src/resources/start_evolution.png"));
             evolutionTriggerButton.setRolloverIcon(new ImageIcon("src/resources/start_evolution_mouseover.png"));
             evolutionTriggerButton.setPressedIcon(new ImageIcon("src/resources/start_evolution_pressed.png"));
@@ -179,7 +178,7 @@ public class GameSettingsVisualizer extends JPanel implements View {
         evolutionTriggerButton.setVisible(true);
     }
 
-    private void setEnabledAllButtons(boolean value){
+    private void setEnabledAllButtons(boolean value) {
         JButton pauseButton = (JButton) this.getComponentAt(5, 50);
         JButton playButton = (JButton) this.getComponentAt(42, 50);
         JButton speedUp = (JButton) this.getComponentAt(210, 5);
