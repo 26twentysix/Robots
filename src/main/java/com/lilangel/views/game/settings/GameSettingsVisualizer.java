@@ -25,7 +25,7 @@ public class GameSettingsVisualizer extends JPanel implements View {
         JButton speedUpButton = createButton(new ImageIcon("src/resources/mc_button_speedup.png"),
                 new ImageIcon("src/resources/mc_button_speedup_mouseover.png"),
                 new ImageIcon("src/resources/mc_button_speedup_click.png"),
-                210, 5, 200, 40, ButtonClickEvents.CLICK_ON_GAME_SPEED_UP.command, new ButtonClickListener());
+                210, 5, 200, 40, CLICK_ON_GAME_SPEED_UP.command, new ButtonClickListener());
         JButton speedDownButton = createButton(new ImageIcon("src/resources/mc_button_speeddown.png"),
                 new ImageIcon("src/resources/mc_button_speeddown_mouseover.png"),
                 new ImageIcon("src/resources/mc_button_speeddown_click.png"),
@@ -34,12 +34,12 @@ public class GameSettingsVisualizer extends JPanel implements View {
         JButton pauseButton = createButton(new ImageIcon("src/resources/mc_button_pause.png"),
                 new ImageIcon("src/resources/mc_button_pause_mouseover.png"),
                 new ImageIcon("src/resources/mc_button_pause_click.png"),
-                5, 50, 32, 32, ButtonClickEvents.CLICK_ON_PAUSE_BUTTON.command, new ButtonClickListener());
+                5, 50, 32, 32, CLICK_ON_PAUSE_BUTTON.command, new ButtonClickListener());
         pauseButton.setEnabled(false);
         JButton playButton = createButton(new ImageIcon("src/resources/mc_button_play.png"),
                 new ImageIcon("src/resources/mc_button_play_mouseover.png"),
                 new ImageIcon("src/resources/mc_button_play_click.png"),
-                42, 50, 32, 32, ButtonClickEvents.CLICK_ON_PLAY_BUTTON.command, new ButtonClickListener());
+                42, 50, 32, 32, CLICK_ON_PLAY_BUTTON.command, new ButtonClickListener());
         playButton.setEnabled(true);
         JButton speedInfoButton = createSimpleButton(new ImageIcon("src/resources/game_speed_pause.png"),
                 110, 50, 300, 40);
@@ -82,11 +82,11 @@ public class GameSettingsVisualizer extends JPanel implements View {
 
     class ButtonClickListener implements ActionListener {
         Map<String, ButtonClickEvents> eventsMap = new HashMap<>() {{
-            put(ButtonClickEvents.CLICK_ON_GAME_SPEED_UP.command, ButtonClickEvents.CLICK_ON_GAME_SPEED_UP);
-            put(ButtonClickEvents.CLICK_ON_GAME_SPEED_DOWN.command, CLICK_ON_GAME_SPEED_DOWN);
-            put(ButtonClickEvents.CLICK_ON_PAUSE_BUTTON.command, ButtonClickEvents.CLICK_ON_PAUSE_BUTTON);
-            put(ButtonClickEvents.CLICK_ON_PLAY_BUTTON.command, ButtonClickEvents.CLICK_ON_PLAY_BUTTON);
-            put(ButtonClickEvents.CLICK_ON_EVOLUTION_TRIGGER.command, ButtonClickEvents.CLICK_ON_EVOLUTION_TRIGGER);
+            put(CLICK_ON_GAME_SPEED_UP.command, CLICK_ON_GAME_SPEED_UP);
+            put(CLICK_ON_GAME_SPEED_DOWN.command, CLICK_ON_GAME_SPEED_DOWN);
+            put(CLICK_ON_PAUSE_BUTTON.command, CLICK_ON_PAUSE_BUTTON);
+            put(CLICK_ON_PLAY_BUTTON.command, CLICK_ON_PLAY_BUTTON);
+            put(CLICK_ON_EVOLUTION_TRIGGER.command, CLICK_ON_EVOLUTION_TRIGGER);
         }};
 
         @Override
